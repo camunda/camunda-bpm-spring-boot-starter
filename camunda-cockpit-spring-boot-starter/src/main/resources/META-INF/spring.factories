@@ -1,0 +1,2 @@
+# AutoConfigurations
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.profi.spring.boot.starter.camunda.cockpit.CamundaBpmCockpitAutoConfiguration
