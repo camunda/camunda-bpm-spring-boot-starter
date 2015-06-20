@@ -17,51 +17,51 @@ import org.springframework.stereotype.Component;
 @Component
 public class Showcase implements ApplicationContextAware {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Showcase.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(Showcase.class);
 
-    @Autowired
-    private RuntimeService runtimeService;
+  @Autowired
+  private RuntimeService runtimeService;
 
-    @Autowired
-    private TaskService taskService;
+  @Autowired
+  private TaskService taskService;
 
-    private ApplicationContext context;
+  private ApplicationContext context;
 
-    protected boolean finished = false;
+  protected boolean finished = false;
 
-    public void show() {
-        ProcessInstance processInstance = runtimeService
-                .startProcessInstanceByKey("Sample");
-        LOGGER.info("started {}", processInstance);
-        Task task = taskService.createTaskQuery()
-                .processInstanceId(processInstance.getId()).singleResult();
-        runtimeService.signal(task.getExecutionId());
-        LOGGER.info("signaled {}", task);
-        waitForProcessFinished(processInstance);
+  public void show() {
+    ProcessInstance processInstance = runtimeService
+      .startProcessInstanceByKey("Sample");
+    LOGGER.info("started {}", processInstance);
+    Task task = taskService.createTaskQuery()
+      .processInstanceId(processInstance.getId()).singleResult();
+    runtimeService.signal(task.getExecutionId());
+    LOGGER.info("signaled {}", task);
+    waitForProcessFinished(processInstance);
+  }
+
+  private void waitForProcessFinished(ProcessInstance processInstance) {
+    while (runtimeService.createProcessInstanceQuery()
+      .processInstanceId(processInstance.getId()).singleResult() != null) {
+      try {
+        Thread.sleep(500);
+      } catch (InterruptedException e) {
+        LOGGER.error("", e);
+      }
     }
+    finished = true;
+    SpringApplication.exit(context, new ExitCodeGenerator() {
 
-    private void waitForProcessFinished(ProcessInstance processInstance) {
-        while (runtimeService.createProcessInstanceQuery()
-                .processInstanceId(processInstance.getId()).singleResult() != null) {
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                LOGGER.error("", e);
-            }
-        }
-        finished = true;
-        SpringApplication.exit(context, new ExitCodeGenerator() {
+      @Override
+      public int getExitCode() {
+        return 0;
+      }
+    });
+  }
 
-            @Override
-            public int getExitCode() {
-                return 0;
-            }
-        });
-    }
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext)
-            throws BeansException {
-        this.context = applicationContext;
-    }
+  @Override
+  public void setApplicationContext(ApplicationContext applicationContext)
+    throws BeansException {
+    this.context = applicationContext;
+  }
 }

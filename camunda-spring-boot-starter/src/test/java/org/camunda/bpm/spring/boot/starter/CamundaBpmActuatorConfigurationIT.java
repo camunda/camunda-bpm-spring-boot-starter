@@ -15,34 +15,34 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = { TestActuatorApplication.class })
+@SpringApplicationConfiguration(classes = {TestActuatorApplication.class})
 @WebAppConfiguration
-@IntegrationTest({ "server.port=0", "management.security.enabled:false" })
+@IntegrationTest({"server.port=0", "management.security.enabled:false"})
 @DirtiesContext
 public class CamundaBpmActuatorConfigurationIT {
 
-    @Value("${local.server.port}")
-    private int port;
+  @Value("${local.server.port}")
+  private int port;
 
-    @Test
-    public void jobExecutorHealthIndicatorTest() {
-        final String body = getHealthBody();
-        assertTrue("wrong body " + body,
-                body.contains("jobExecutor\":{\"status\":\"UP\""));
-    }
+  @Test
+  public void jobExecutorHealthIndicatorTest() {
+    final String body = getHealthBody();
+    assertTrue("wrong body " + body,
+      body.contains("jobExecutor\":{\"status\":\"UP\""));
+  }
 
-    @Test
-    public void processEngineHealthIndicatorTest() {
-        final String body = getHealthBody();
-        assertTrue(
-                "wrong body " + body,
-                body.contains("\"processEngine\":{\"status\":\"UP\",\"name\":\"testEngine\"}"));
-    }
+  @Test
+  public void processEngineHealthIndicatorTest() {
+    final String body = getHealthBody();
+    assertTrue(
+      "wrong body " + body,
+      body.contains("\"processEngine\":{\"status\":\"UP\",\"name\":\"testEngine\"}"));
+  }
 
-    private String getHealthBody() {
-        ResponseEntity<String> entity = new TestRestTemplate().getForEntity(
-                "http://localhost:{port}/health", String.class, port);
-        final String body = entity.getBody();
-        return body;
-    }
+  private String getHealthBody() {
+    ResponseEntity<String> entity = new TestRestTemplate().getForEntity(
+      "http://localhost:{port}/health", String.class, port);
+    final String body = entity.getBody();
+    return body;
+  }
 }

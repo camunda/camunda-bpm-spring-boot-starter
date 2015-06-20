@@ -3,7 +3,6 @@ package org.camunda.bpm.spring.boot.starter;
 import static org.junit.Assert.assertEquals;
 
 import org.camunda.bpm.engine.rest.dto.repository.ProcessDefinitionDto;
-import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties;
 import org.camunda.bpm.spring.boot.starter.test.TestActuatorApplication;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,29 +18,29 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = { TestActuatorApplication.class })
+@SpringApplicationConfiguration(classes = {TestActuatorApplication.class})
 @WebAppConfiguration
-@IntegrationTest({ "server.port=0" })
+@IntegrationTest({"server.port=0"})
 @DirtiesContext
 public class CamundaBpmRestConfigurationIT {
 
-    @Value("${local.server.port}")
-    private int port;
+  @Value("${local.server.port}")
+  private int port;
 
-    @Value("${security.user.password}")
-    private String password;
+  @Value("${security.user.password}")
+  private String password;
 
-    @Autowired
-    private CamundaBpmProperties camundaBpmProperties;
+  @Autowired
+  private CamundaBpmProperties camundaBpmProperties;
 
-    @Test
-    public void processDefinitionTest() {
-        ResponseEntity<ProcessDefinitionDto[]> entity = new TestRestTemplate("user",
-                password).getForEntity(
-                "http://localhost:{port}/engine/{engineName}/process-definition",
-                ProcessDefinitionDto[].class, port,
-                camundaBpmProperties.getProcessEngineName());
-        assertEquals(HttpStatus.OK, entity.getStatusCode());
-        assertEquals("TestProcess", entity.getBody()[0].getKey());
-    }
+  @Test
+  public void processDefinitionTest() {
+    ResponseEntity<ProcessDefinitionDto[]> entity = new TestRestTemplate("user",
+      password).getForEntity(
+      "http://localhost:{port}/engine/{engineName}/process-definition",
+      ProcessDefinitionDto[].class, port,
+      camundaBpmProperties.getProcessEngineName());
+    assertEquals(HttpStatus.OK, entity.getStatusCode());
+    assertEquals("TestProcess", entity.getBody()[0].getKey());
+  }
 }

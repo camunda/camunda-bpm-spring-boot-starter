@@ -19,16 +19,16 @@ import org.springframework.context.annotation.DependsOn;
 @DependsOn("runtimeService")
 public class CamundaBpmActuatorConfiguration {
 
-    @Bean
-    @ConditionalOnBean(name = "jobExecutor")
-    @ConditionalOnMissingBean(name = "jobExecutorHealthIndicator")
-    public HealthIndicator jobExecutorHealthIndicator(JobExecutor jobExecutor) {
-        return new JobExecutorHealthIndicator(jobExecutor);
-    }
+  @Bean
+  @ConditionalOnBean(name = "jobExecutor")
+  @ConditionalOnMissingBean(name = "jobExecutorHealthIndicator")
+  public HealthIndicator jobExecutorHealthIndicator(JobExecutor jobExecutor) {
+    return new JobExecutorHealthIndicator(jobExecutor);
+  }
 
-    @Bean
-    @ConditionalOnMissingBean(name = "processEngineHealthIndicator")
-    public HealthIndicator processEngineHealthIndicator(ProcessEngine processEngine) {
-        return new ProcessEngineHealthIndicator(processEngine);
-    }
+  @Bean
+  @ConditionalOnMissingBean(name = "processEngineHealthIndicator")
+  public HealthIndicator processEngineHealthIndicator(ProcessEngine processEngine) {
+    return new ProcessEngineHealthIndicator(processEngine);
+  }
 }

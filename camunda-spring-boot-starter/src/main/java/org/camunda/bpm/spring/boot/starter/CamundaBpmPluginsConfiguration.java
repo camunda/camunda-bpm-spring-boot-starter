@@ -11,25 +11,25 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class CamundaBpmPluginsConfiguration {
 
-    @ConditionalOnClass(SpinProcessEnginePlugin.class)
-    @Configuration
-    static class SpinConfiguration {
+  @ConditionalOnClass(SpinProcessEnginePlugin.class)
+  @Configuration
+  static class SpinConfiguration {
 
-        @Bean
-        @ConditionalOnMissingBean(name = "spinProcessEnginePlugin")
-        public static ProcessEnginePlugin spinProcessEnginePlugin() {
-            return new SpinProcessEnginePlugin();
-        }
+    @Bean
+    @ConditionalOnMissingBean(name = "spinProcessEnginePlugin")
+    public static ProcessEnginePlugin spinProcessEnginePlugin() {
+      return new SpinProcessEnginePlugin();
     }
+  }
 
-    @ConditionalOnClass(ConnectProcessEnginePlugin.class)
-    @Configuration
-    static class ConnectConfiguration {
+  @ConditionalOnClass(ConnectProcessEnginePlugin.class)
+  @Configuration
+  static class ConnectConfiguration {
 
-        @Bean
-        @ConditionalOnMissingBean(name = "connectProcessEnginePlugin")
-        public static ProcessEnginePlugin connectProcessEnginePlugin() {
-            return new ConnectProcessEnginePlugin();
-        }
+    @Bean
+    @ConditionalOnMissingBean(name = "connectProcessEnginePlugin")
+    public static ProcessEnginePlugin connectProcessEnginePlugin() {
+      return new ConnectProcessEnginePlugin();
     }
+  }
 }

@@ -9,25 +9,25 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class DefaultHistoryConfiguration extends AbstractCamundaConfiguration implements
-        CamundaHistoryConfiguration {
+  CamundaHistoryConfiguration {
 
-    private static final Logger LOGGER = LoggerFactory
-            .getLogger(DefaultHistoryConfiguration.class);
+  private static final Logger LOGGER = LoggerFactory
+    .getLogger(DefaultHistoryConfiguration.class);
 
-    @Autowired(required = false)
-    protected HistoryEventHandler historyEventHandler;
+  @Autowired(required = false)
+  protected HistoryEventHandler historyEventHandler;
 
-    @Override
-    public void apply(SpringProcessEngineConfiguration configuration) {
-        HistoryLevel historyLevel = camundaBpmProperties.getHistoryLevel();
-        if (historyLevel != null) {
-            configuration.setHistoryLevel(historyLevel);
-        }
-        if (historyEventHandler != null) {
-            LOGGER.debug("registered history event handler: {}",
-                    historyEventHandler.getClass());
-            configuration.setHistoryEventHandler(historyEventHandler);
-        }
+  @Override
+  public void apply(SpringProcessEngineConfiguration configuration) {
+    HistoryLevel historyLevel = camundaBpmProperties.getHistoryLevel();
+    if (historyLevel != null) {
+      configuration.setHistoryLevel(historyLevel);
     }
+    if (historyEventHandler != null) {
+      LOGGER.debug("registered history event handler: {}",
+        historyEventHandler.getClass());
+      configuration.setHistoryEventHandler(historyEventHandler);
+    }
+  }
 
 }

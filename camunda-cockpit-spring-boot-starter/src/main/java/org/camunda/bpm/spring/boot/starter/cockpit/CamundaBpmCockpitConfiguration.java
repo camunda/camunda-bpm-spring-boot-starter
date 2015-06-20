@@ -11,9 +11,9 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnProperty(prefix = "camunda.bpm.cockpit", name = "enabled", matchIfMissing = true)
 public class CamundaBpmCockpitConfiguration {
 
-    @ConditionalOnMissingBean(name = "camundaBpmCockpitInitializer")
-    @Bean
-    public CamundaBpmCockpitInitializer camundaBpmCockpitInitializer() {
-        return new CamundaBpmCockpitInitializer();
-    }
+  @ConditionalOnMissingBean(name = "camundaBpmCockpitInitializer")
+  @Bean
+  public CamundaBpmCockpitInitializer camundaBpmCockpitInitializer() {
+    return new CamundaBpmCockpitInitializer();
+  }
 }

@@ -3,7 +3,6 @@ package org.camunda.bpm.spring.boot.starter.example.web;
 import static org.junit.Assert.assertEquals;
 
 import org.camunda.bpm.engine.rest.dto.repository.ProcessDefinitionDto;
-import org.camunda.bpm.spring.boot.starter.example.web.Application;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,25 +16,25 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = { Application.class })
+@SpringApplicationConfiguration(classes = {Application.class})
 @WebAppConfiguration
-@IntegrationTest({ "server.port=0" })
+@IntegrationTest({"server.port=0"})
 @DirtiesContext
 public class CamundaBpmRestIT {
 
-    @Value("${local.server.port}")
-    private int port;
+  @Value("${local.server.port}")
+  private int port;
 
-    @Value("${security.user.password}")
-    private String password;
+  @Value("${security.user.password}")
+  private String password;
 
-    @Test
-    public void processDefinitionTest() {
-        ResponseEntity<ProcessDefinitionDto[]> entity = new TestRestTemplate("user",
-                password).getForEntity(
-                "http://localhost:{port}/engine/{engineName}/process-definition",
-                ProcessDefinitionDto[].class, port, "default");
-        assertEquals(HttpStatus.OK, entity.getStatusCode());
-        assertEquals("Sample", entity.getBody()[0].getKey());
-    }
+  @Test
+  public void processDefinitionTest() {
+    ResponseEntity<ProcessDefinitionDto[]> entity = new TestRestTemplate("user",
+      password).getForEntity(
+      "http://localhost:{port}/engine/{engineName}/process-definition",
+      ProcessDefinitionDto[].class, port, "default");
+    assertEquals(HttpStatus.OK, entity.getStatusCode());
+    assertEquals("Sample", entity.getBody()[0].getKey());
+  }
 }

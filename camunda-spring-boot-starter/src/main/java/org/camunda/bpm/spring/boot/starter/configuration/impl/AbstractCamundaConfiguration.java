@@ -6,19 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class AbstractCamundaConfiguration implements CamundaConfiguration {
 
-    @Autowired
-    protected CamundaBpmProperties camundaBpmProperties;
+  @Autowired
+  protected CamundaBpmProperties camundaBpmProperties;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.camunda.bpm.spring.boot.starter.configuration.CamundaConfiguration
-     * #getOrder()
-     */
-    @Override
-    public int getOrder() {
-        return CamundaConfiguration.DEFAULT_ORDER;
-    }
+  /*
+   * (non-Javadoc)
+   *
+   * @see
+   * org.camunda.bpm.spring.boot.starter.configuration.CamundaConfiguration
+   * #getOrder()
+   */
+  @Override
+  public int getOrder() {
+    return CamundaConfiguration.DEFAULT_ORDER;
+  }
 
 }

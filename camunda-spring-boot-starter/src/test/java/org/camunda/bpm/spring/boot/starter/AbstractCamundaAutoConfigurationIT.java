@@ -17,37 +17,37 @@ import org.springframework.test.annotation.DirtiesContext;
 @DirtiesContext
 public abstract class AbstractCamundaAutoConfigurationIT {
 
-    @Autowired
-    protected RuntimeService runtimeService;
+  @Autowired
+  protected RuntimeService runtimeService;
 
-    @Autowired
-    protected RepositoryService repositoryService;
+  @Autowired
+  protected RepositoryService repositoryService;
 
-    @Autowired
-    protected FormService formService;
+  @Autowired
+  protected FormService formService;
 
-    @Autowired
-    protected TaskService taskService;
+  @Autowired
+  protected TaskService taskService;
 
-    @Autowired
-    protected HistoryService historyService;
+  @Autowired
+  protected HistoryService historyService;
 
-    @Autowired
-    protected IdentityService identityService;
+  @Autowired
+  protected IdentityService identityService;
 
-    @Autowired
-    protected ManagementService managementService;
+  @Autowired
+  protected ManagementService managementService;
 
-    @Autowired
-    protected AuthorizationService authorizationService;
+  @Autowired
+  protected AuthorizationService authorizationService;
 
-    @Autowired
-    protected CaseService caseService;
+  @Autowired
+  protected CaseService caseService;
 
-    @Autowired
-    protected FilterService filterService;
+  @Autowired
+  protected FilterService filterService;
 
-    @Autowired(required = false)
-    protected JobExecutor jobExecutor;
+  @Autowired(required = false)
+  protected JobExecutor jobExecutor;
 
 }
