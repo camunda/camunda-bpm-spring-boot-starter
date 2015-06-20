@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.profi.camunda</groupId>
+	<groupId>org.camunda.bpm</groupId>
 	<artifactId>camunda-spring-boot-starter-example-parent</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
@@ -23,7 +23,7 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.profi.camunda</groupId>
+			<groupId>org.camunda.bpm</groupId>
 			<artifactId>camunda-spring-boot-starter</artifactId>
 			<version>${project.version}</version>
 		</dependency>
@@ -42,7 +42,7 @@
 		<dependencies>
 			<dependency>
 				<!-- Import dependency management from camunda startet -->
-				<groupId>com.profi.camunda</groupId>
+				<groupId>org.camunda.bpm</groupId>
 				<artifactId>camunda-spring-boot-starter</artifactId>
 				<version>${project.version}</version>
 				<scope>import</scope>

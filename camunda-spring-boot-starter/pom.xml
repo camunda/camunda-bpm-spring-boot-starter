@@ -6,7 +6,7 @@
 		<artifactId>spring-boot-starters</artifactId>
 		<version>1.2.4.RELEASE</version>
 	</parent>
-	<groupId>com.profi.camunda</groupId>
+	<groupId>org.camunda.bpm</groupId>
 	<artifactId>camunda-spring-boot-starter</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 

@@ -6,7 +6,7 @@
 		<artifactId>spring-boot-starters</artifactId>
 		<version>1.2.4.RELEASE</version>
 	</parent>
-	<groupId>com.profi.camunda</groupId>
+	<groupId>org.camunda.bpm</groupId>
 	<artifactId>camunda-cockpit-spring-boot-starter</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
@@ -17,7 +17,7 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.profi.camunda</groupId>
+			<groupId>org.camunda.bpm</groupId>
 			<artifactId>camunda-spring-boot-starter</artifactId>
 			<version>${project.version}</version>
 		</dependency>
@@ -78,7 +78,7 @@
 		<dependencies>
 			<dependency>
 				<!-- Import dependency management from camunda startet -->
-				<groupId>com.profi.camunda</groupId>
+				<groupId>org.camunda.bpm</groupId>
 				<artifactId>camunda-spring-boot-starter</artifactId>
 				<version>${project.version}</version>
 				<scope>import</scope>
