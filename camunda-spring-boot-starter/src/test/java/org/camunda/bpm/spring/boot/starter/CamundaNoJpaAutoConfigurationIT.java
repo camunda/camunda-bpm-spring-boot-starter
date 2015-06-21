@@ -1,8 +1,5 @@
 package org.camunda.bpm.spring.boot.starter;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-
 import org.camunda.bpm.engine.ProcessEngineException;
 import org.camunda.bpm.spring.boot.starter.test.TestNoJpaApplication;
 import org.camunda.bpm.spring.boot.starter.test.jpa.domain.TestEntity;
@@ -17,6 +14,9 @@ import javax.transaction.Transactional;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = {TestNoJpaApplication.class})

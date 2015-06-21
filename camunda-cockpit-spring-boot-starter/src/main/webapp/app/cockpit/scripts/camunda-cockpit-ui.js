@@ -2931,8 +2931,8 @@ define("text", {
               }
             }
           }).result.then(function (e) {
-            t.variable.value = e.value, t.variable.valueInfo = e.valueInfo
-          })
+              t.variable.value = e.value, t.variable.valueInfo = e.valueInfo
+            })
         }
       }
     }

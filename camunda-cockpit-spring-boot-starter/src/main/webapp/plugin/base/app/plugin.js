@@ -313,8 +313,8 @@ define("text!base/app/views/dashboard/process-definitions.html", [], function ()
             }
           }, controller: "VariableInstanceInspectController", template: t
         }).result.then(function () {
-          b.set("filter", e.copy(s.filter))
-        })
+            b.set("filter", e.copy(s.filter))
+          })
       }
     }]);
     var i = function (e) {
@@ -694,15 +694,15 @@ define("text!base/app/views/dashboard/process-definitions.html", [], function ()
         withException: !0,
         noRetriesLeft: !0
       }).$promise.then(function (e) {
-        for (var t, s = 0; t = e[s]; s++) {
-          g[t.id] = t;
-          var a = D[t.executionId];
-          t.instance = a;
-          var i = f.indexOf(t.id);
-          t.selected = -1 !== i
-        }
-        n.failedJobs = e, n.loadingState = e.length ? "LOADED" : "EMPTY"
-      }), a.count({processInstanceId: o.id, withException: !0}).$promise.then(function (e) {
+          for (var t, s = 0; t = e[s]; s++) {
+            g[t.id] = t;
+            var a = D[t.executionId];
+            t.instance = a;
+            var i = f.indexOf(t.id);
+            t.selected = -1 !== i
+          }
+          n.failedJobs = e, n.loadingState = e.length ? "LOADED" : "EMPTY"
+        }), a.count({processInstanceId: o.id, withException: !0}).$promise.then(function (e) {
         u.total = e.count
       })
     }

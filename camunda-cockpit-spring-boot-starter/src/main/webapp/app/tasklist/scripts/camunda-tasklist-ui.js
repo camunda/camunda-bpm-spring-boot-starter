@@ -3295,8 +3295,8 @@
           }
         }
       }).result.then(function () {
-        i.changed("task")
-      })
+          i.changed("task")
+        })
     }
   }], i = function (n) {
     n.registerDefaultView("tasklist.task.action", {
@@ -3371,8 +3371,8 @@
           }
         }
       }).result.then(function () {
-        e.tasklistApp && e.tasklistApp.refreshProvider && e.tasklistApp.refreshProvider.refreshTaskList()
-      })
+          e.tasklistApp && e.tasklistApp.refreshProvider && e.tasklistApp.refreshProvider.refreshTaskList()
+        })
     }
   }], i = function (n) {
     n.registerDefaultView("tasklist.navbar.action", {
@@ -4344,10 +4344,10 @@
           }
         }
       }).result.then(function () {
-        r.changed("filters")
-      }, function () {
-        r.changed("filters")
-      })
+          r.changed("filters")
+        }, function () {
+          r.changed("filters")
+        })
     }
   }]
 }), define("scripts/filter/modals/cam-tasklist-filter-modal", ["angular"], function (e) {
