@@ -1,9 +1,5 @@
 package org.camunda.bpm.spring.boot.starter.actuator;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 import org.camunda.bpm.engine.impl.ProcessEngineImpl;
 import org.camunda.bpm.engine.impl.jobexecutor.JobExecutor;
 import org.camunda.bpm.spring.boot.starter.actuator.JobExecutorHealthIndicator.Details;
@@ -17,6 +13,10 @@ import org.springframework.boot.actuate.health.Status;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class JobExecutorHealthIndicatorTest {

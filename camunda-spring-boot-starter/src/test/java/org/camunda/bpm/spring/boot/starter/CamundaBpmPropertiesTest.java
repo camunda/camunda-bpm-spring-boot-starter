@@ -1,9 +1,5 @@
 package org.camunda.bpm.spring.boot.starter;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 import org.camunda.bpm.engine.impl.history.HistoryLevel;
 import org.junit.Test;
 
@@ -11,6 +7,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 public class CamundaBpmPropertiesTest {
 

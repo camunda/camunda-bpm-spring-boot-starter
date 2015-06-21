@@ -1254,8 +1254,8 @@ define("camunda-commons-ui/util/uriFilter", [], function () {
               }
             }
           }).result.then(function (e) {
-            t.variable.value = e.value, t.variable.valueInfo = e.valueInfo
-          })
+              t.variable.value = e.value, t.variable.valueInfo = e.valueInfo
+            })
         }
       }
     }
@@ -12038,8 +12038,8 @@ define("camunda-commons-ui/util/uriFilter", [], function () {
             firstResult: (e.pages.current - 1) * e.pages.size,
             maxResults: e.pages.size
           }).$promise.then(function (t) {
-            e.authorizations = t, e.loadingState = t.length ? "LOADED" : "EMPTY"
-          }, t)
+              e.authorizations = t, e.loadingState = t.length ? "LOADED" : "EMPTY"
+            }, t)
         };
         e.$watch("pages.current", p), e.getPermissionsForResource = function () {
           return e.selectedResourceType ? e.permissionMap[e.selectedResourceType] : []
@@ -14032,8 +14032,8 @@ define("camunda-commons-ui/util/uriFilter", [], function () {
             resourceName: "group membership",
             resourceType: 3
           }).$promise.then(function (e) {
-            t.availableOperations.removeGroup = e.authorized
-          })
+              t.availableOperations.removeGroup = e.authorized
+            })
         }
 
         t.encodedUserId = i.userId.replace(/\//g, "%2F").replace(/\\/g, "%5C"), t.decodedUserId = i.userId.replace(/%2F/g, "/").replace(/%5C/g, "\\"), t.authenticatedUser = d, t.profile = null, t.profile = null, t.profileCopy = null, t.credentials = {

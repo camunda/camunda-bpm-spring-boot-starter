@@ -1,8 +1,5 @@
 package org.camunda.bpm.spring.boot.starter.configuration.impl;
 
-import static org.junit.Assert.assertSame;
-import static org.mockito.Mockito.mock;
-
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties;
 import org.junit.Before;
@@ -15,6 +12,9 @@ import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
+
+import static org.junit.Assert.assertSame;
+import static org.mockito.Mockito.mock;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultDatasourceConfigurationTest {

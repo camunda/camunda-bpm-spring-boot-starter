@@ -1,11 +1,11 @@
 package org.camunda.bpm.spring.boot.starter.configuration.impl;
 
-import static org.junit.Assert.assertEquals;
-
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class DefaultDeploymentConfigurationTest {
 
