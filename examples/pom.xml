@@ -2,6 +2,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <parent>
+    <groupId>org.camunda.bpm.extension</groupId>
+    <artifactId>camunda-spring-boot-starter-root</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+
   <artifactId>camunda-spring-boot-starter-example-root</artifactId>
   <packaging>pom</packaging>
 
@@ -9,12 +15,6 @@
     <module>camunda-spring-boot-starter-example-simple</module>
     <module>camunda-spring-boot-starter-example-web</module>
   </modules>
-
-  <parent>
-    <groupId>org.camunda.bpm.extension</groupId>
-    <artifactId>camunda-spring-boot-starter-root</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent>
 
   <dependencies>
     <dependency>
@@ -24,6 +24,11 @@
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-jdbc</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -32,5 +37,13 @@
     </dependency>
   </dependencies>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>
