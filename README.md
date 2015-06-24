@@ -3,6 +3,8 @@
 
 ## How to contribute
 
+*Hint for eclipse users:* clone the repo as `camunda-spring-boot-starter-root`
+
 ## Code Format
 
 We use http://editorconfig.org in this project. If your IDE supports it, you do not have to add any additional configuration.
