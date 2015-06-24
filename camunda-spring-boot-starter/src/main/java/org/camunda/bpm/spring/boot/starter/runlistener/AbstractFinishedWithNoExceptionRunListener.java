@@ -11,13 +11,11 @@ abstract class AbstractFinishedWithNoExceptionRunListener implements SpringAppli
 
   /**
    * convention constructor for SpringApplicationRunListener
-   * 
+   * <p/>
    * automatically called when registered in spring.factories
-   * 
-   * @param application
-   *          started application
-   * @param args
-   *          application arguments
+   *
+   * @param application started application
+   * @param args        application arguments
    */
   public AbstractFinishedWithNoExceptionRunListener(SpringApplication application, String[] args) {
   }
@@ -51,14 +49,12 @@ abstract class AbstractFinishedWithNoExceptionRunListener implements SpringAppli
   /**
    * Equivalent to {@link #getBean(ConfigurableApplicationContext, Class)},
    * except any exceptions will be ignored.
-   * 
-   * @param context
-   *          to get bean from
-   * @param requiredType
-   *          see
-   *          {@link org.springframework.beans.factory.BeanFactory#getBean(Class)}
+   *
+   * @param context      to get bean from
+   * @param requiredType see
+   *                     {@link org.springframework.beans.factory.BeanFactory#getBean(Class)}
    * @return see
-   *         {@link org.springframework.beans.factory.BeanFactory#getBean(Class)}
+   * {@link org.springframework.beans.factory.BeanFactory#getBean(Class)}
    */
   protected <T> T getBeanQuietly(ConfigurableApplicationContext context, Class<T> requiredType) {
     try {
@@ -71,18 +67,14 @@ abstract class AbstractFinishedWithNoExceptionRunListener implements SpringAppli
   }
 
   /**
-   * @see org.springframework.beans.factory.BeanFactory#getBean(Class)
-   * 
-   * @param context
-   *          to get bean from
-   * @param requiredType
-   *          see
-   *          {@link org.springframework.beans.factory.BeanFactory#getBean(Class)}
+   * @param context      to get bean from
+   * @param requiredType see
+   *                     {@link org.springframework.beans.factory.BeanFactory#getBean(Class)}
    * @return see
-   *         {@link org.springframework.beans.factory.BeanFactory#getBean(Class)}
-   * @throws Exception
-   *           see
-   *           {@link org.springframework.beans.factory.BeanFactory#getBean(Class)}
+   * {@link org.springframework.beans.factory.BeanFactory#getBean(Class)}
+   * @throws Exception see
+   *                   {@link org.springframework.beans.factory.BeanFactory#getBean(Class)}
+   * @see org.springframework.beans.factory.BeanFactory#getBean(Class)
    */
   protected <T> T getBean(ConfigurableApplicationContext context, Class<T> requiredType) {
     return context.getBean(requiredType);
@@ -95,11 +87,9 @@ abstract class AbstractFinishedWithNoExceptionRunListener implements SpringAppli
 
   /**
    * is called when no exception occurred in context initialization
-   * 
-   * @param context
-   *          initialized context
-   * @param camundaBpmProperties
-   *          camunda properties in the context
+   *
+   * @param context              initialized context
+   * @param camundaBpmProperties camunda properties in the context
    */
   protected abstract void finishedWithNoException(ConfigurableApplicationContext context, CamundaBpmProperties camundaBpmProperties);
 

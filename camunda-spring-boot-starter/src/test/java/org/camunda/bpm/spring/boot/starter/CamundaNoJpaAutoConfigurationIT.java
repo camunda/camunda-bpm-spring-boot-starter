@@ -29,7 +29,7 @@ public class CamundaNoJpaAutoConfigurationIT extends AbstractCamundaAutoConfigur
   @Test
   public void jpaDisabledTest() {
     TestEntity testEntity = testEntityRepository.save(new TestEntity());
-    Map<String, Object> variables = new HashMap<>();
+    Map<String, Object> variables = new HashMap<String, Object>();
     variables.put("test", testEntity);
     try {
       runtimeService.startProcessInstanceByKey("TestProcess", variables);
@@ -41,7 +41,7 @@ public class CamundaNoJpaAutoConfigurationIT extends AbstractCamundaAutoConfigur
 
   @Test
   public void pojoTest() {
-    Map<String, Object> variables = new HashMap<>();
+    Map<String, Object> variables = new HashMap<String, Object>();
     Pojo pojo = new Pojo();
     variables.put("test", pojo);
     assertNotNull(runtimeService.startProcessInstanceByKey("TestProcess", variables));

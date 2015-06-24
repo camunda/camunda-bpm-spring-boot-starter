@@ -49,7 +49,7 @@ public class CamundaBpmConfigurationTest {
   }
 
   private Collection<CamundaConfiguration> createUnordedList() {
-    Collection<CamundaConfiguration> list = new ArrayList<>();
+    Collection<CamundaConfiguration> list = new ArrayList<CamundaConfiguration>();
     list.add(createConfiguration(5));
     list.add(createConfiguration(4));
     list.add(createConfiguration(7));

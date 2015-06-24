@@ -36,7 +36,7 @@ public class JobExecutorHealthIndicator extends AbstractHealthIndicator {
     private int lockTimeInMillis;
     private int maxJobsPerAcquisition;
     private int waitTimeInMillis;
-    private Set<String> processEngineNames = new HashSet<>();
+    private Set<String> processEngineNames = new HashSet<String>();
 
     private static Details from(JobExecutor jobExecutor) {
       Details details = new Details();

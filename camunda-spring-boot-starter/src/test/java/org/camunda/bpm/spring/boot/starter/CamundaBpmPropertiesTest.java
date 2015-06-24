@@ -16,7 +16,7 @@ public class CamundaBpmPropertiesTest {
 
   @Test
   public void allHistoryLevelsTest() throws Exception {
-    List<Class<? extends HistoryLevel>> historyLevels = new ArrayList<>();
+    List<Class<? extends HistoryLevel>> historyLevels = new ArrayList<Class<? extends HistoryLevel>>();
     for (HistoryLevel historyLevel : CamundaBpmProperties.HISTORY_LEVELS) {
       historyLevels.add(historyLevel.getClass());
     }

@@ -37,7 +37,7 @@ public class CamundaBpmConfiguration {
   private static final Logger LOGGER = LoggerFactory
     .getLogger(CamundaBpmConfiguration.class);
 
-  protected List<CamundaConfiguration> camundaConfigurationsOrdered = new ArrayList<>();
+  protected List<CamundaConfiguration> camundaConfigurationsOrdered = new ArrayList<CamundaConfiguration>();
 
   @Autowired
   public void setCamundaConfigurations(
