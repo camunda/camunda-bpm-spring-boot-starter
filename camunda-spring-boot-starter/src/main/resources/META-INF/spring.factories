@@ -1,2 +1,4 @@
 # AutoConfigurations
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=org.camunda.bpm.spring.boot.starter.CamundaBpmAutoConfiguration
+# RunListeners
+org.springframework.boot.SpringApplicationRunListener=org.camunda.bpm.spring.boot.starter.runlistener.JobExecutorRunListener

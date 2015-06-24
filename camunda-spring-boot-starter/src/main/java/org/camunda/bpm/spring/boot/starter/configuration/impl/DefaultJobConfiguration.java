@@ -11,17 +11,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-public class DefaultJobConfiguration extends AbstractCamundaConfiguration implements
-  CamundaJobConfiguration {
+public class DefaultJobConfiguration extends AbstractCamundaConfiguration implements CamundaJobConfiguration {
 
   @Autowired
   protected JobExecutor jobExecutor;
 
   @Override
   public void apply(SpringProcessEngineConfiguration configuration) {
-    configuration.setJobExecutorActivate(camundaBpmProperties.isJobExecutorActive());
-    configuration.setJobExecutorDeploymentAware(camundaBpmProperties
-      .isJobExecutorDeploymentAware());
+    // note: the job executor will be activated in
+    // org.camunda.bpm.spring.boot.starter.runlistener.JobExecutorRunListener
+    configuration.setJobExecutorActivate(false);
+    configuration.setJobExecutorDeploymentAware(camundaBpmProperties.isJobExecutorDeploymentAware());
     configuration.setJobExecutor(jobExecutor);
   }
 
