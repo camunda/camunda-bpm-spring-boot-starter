@@ -1,9 +1,10 @@
 package org.camunda.bpm.spring.boot.starter;
 
+import java.util.List;
+
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaConfiguration;
-import org.camunda.bpm.spring.boot.starter.configuration.CamundaConfigurationComparator;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaDatasourceConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaDeploymentConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaHistoryConfiguration;
@@ -26,33 +27,20 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
 @Import(JobConfiguration.class)
 public class CamundaBpmConfiguration {
 
-  private static final Logger LOGGER = LoggerFactory
-    .getLogger(CamundaBpmConfiguration.class);
-
-  protected List<CamundaConfiguration> camundaConfigurationsOrdered = new ArrayList<CamundaConfiguration>();
+  private static final Logger LOGGER = LoggerFactory.getLogger(CamundaBpmConfiguration.class);
 
   @Autowired
-  public void setCamundaConfigurations(
-    Collection<CamundaConfiguration> camundaConfigurations) {
-    camundaConfigurationsOrdered.addAll(camundaConfigurations);
-    Collections.sort(camundaConfigurationsOrdered,
-      new CamundaConfigurationComparator());
-  }
+  protected List<CamundaConfiguration> camundaConfigurations;
 
   @Bean
   @ConditionalOnMissingBean(ProcessEngineConfigurationImpl.class)
   public ProcessEngineConfigurationImpl processEngineConfigurationImpl() {
     SpringProcessEngineConfiguration configuration = new SpringProcessEngineConfiguration();
 
-    for (CamundaConfiguration camundaConfiguration : camundaConfigurationsOrdered) {
+    for (CamundaConfiguration camundaConfiguration : camundaConfigurations) {
       LOGGER.debug("applying {}", camundaConfiguration.getClass());
       camundaConfiguration.apply(configuration);
     }
