@@ -1,0 +1,14 @@
+= camunda bpm spring boot starter Reference Guide
+
+== What is camunda-spring-boot-starter?
+
+== Getting started
+
+[source,xml]
+----
+<dependency>
+	<groupId>org.camunda.bpm.extension</groupId>
+	<artifactId>camunda-spring-boot-starter-root</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+</dependency>
+----
