@@ -1,14 +1,182 @@
-= camunda bpm spring boot starter Reference Guide
+= Camunda BPM Spring Boot Starter Reference Guide
 
 == What is camunda-spring-boot-starter?
 
 == Getting started
 
-[source,xml]
+If you are not familiar with link:http://projects.spring.io/spring-boot/[Spring Boot^] read the reference documentation link:http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#getting-started[getting started^] guide.
+
+To enable camunda bpm auto configuration add the following dependency:
+
+[source,xml,subs="verbatim,attributes"]
+.pom.xml
 ----
 <dependency>
 	<groupId>org.camunda.bpm.extension</groupId>
-	<artifactId>camunda-spring-boot-starter-root</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>camunda-spring-boot-starter</artifactId>
+	<version>{project-version}</version>
 </dependency>
 ----
+
+This will add the camunda version `{camunda-version}` to your dependencies. If you want to override the version add `camunda.version` property with the camunda version you want to use:
+[source,xml,subs="verbatim,attributes"]
+.pom.xml
+----
+<properties>
+	...
+	<camunda.version>{camunda-version}</camunda.version>
+	...
+</properties>
+----
+
+== Process engine configuration
+The auto starter automatically applies all beans implementing the `org.camunda.bpm.spring.boot.starter.configuration.CamundaConfiguration` interface to configure the engine.
+
+The configuration is divided into _sections_. These _sections_ are represented by the marker interfaces:
+
+* `CamundaProcessEngineConfiguration`
+* `CamundaDatasourceConfiguration`
+* `CamundaHistoryConfiguration`
+* `CamundaJobConfiguration`
+* `CamundaDeploymentConfiguration`
+* `CamundaJpaConfiguration`
+
+=== Default configurations
+
+The following default and best practice configurations are provided by the starter and can be customized or overridden if you like to.
+
+==== `DefaultProcessEngineConfiguration`
+
+Automatically adds all `ProcessEnginePlugin` beans.
+...
+
+==== `DefaultDatasourceConfiguration`
+
+Describe multiple data source configuration.
+
+==== `DefaultHistoryConfiguration`
+
+...
+
+==== `DefaultJobConfiguration`
+
+...
+
+==== `DefaultDeploymentConfiguration`
+
+...
+
+==== `DefaultJpaConfiguration`
+
+=== Overriding a default configuration
+
+Provide a bean implementing one of the marker interfaces. For example to customize the data source configuration:
+
+[source,java]
+----
+@Configuration
+public class MyCamundaConfiguration {
+
+	@Bean
+	public static CamundaDatasourceConfiguration camundaDatasourceConfiguration() {
+		return new MyCamundaDatasourceConfiguration();
+	}
+
+}
+----
+
+=== Adding additional configurations
+
+You just have to provide one or more beans implementing the `CamundaConfiguration` interface. The configurations are applied ordered using the spring ordering mechanism. So if you want that your configuration is applied before the default configurations add a `@Order(CamundaConfiguration.DEFAULT_ORDER - 1)` annotation to your class. If you want that your configuration is applied after the default configurations add a `@Order(CamundaConfiguration.DEFAULT_ORDER + 1)` annotation to your class. 
+
+[source,java]
+----
+@Configuration
+public class MyCamundaConfiguration {
+
+	@Bean
+	@Order(CamundaConfiguration.DEFAULT_ORDER + 1)
+	public static CamundaConfiguration myCustomConfiguration() {
+		return new MyCustomConfiguration();
+	}
+
+}
+----
+
+Or if you have component scan enabled:
+
+[source,java]
+----
+@Component
+@Order(CamundaConfiguration.DEFAULT_ORDER + 1)
+public class MyCustomConfiguration implements CamundaConfiguration {
+
+	@Override
+	public void apply(SpringProcessEngineConfiguration configuration) {
+		//...
+	}
+
+}
+----
+
+== Camunda application properties
+[options="header"]
+|===
+|Property name |Description | Default value
+|`{properties-prefix}.processEngineName`
+|name of the process engine
+|camunda default value
+
+|`{properties-prefix}.jobExecutorActive`
+|activate job execution after successful startup
+|`true`
+
+|`{properties-prefix}.jobExecutorDeploymentAware`
+|if job executor is deployment aware
+|`false`
+
+|`{properties-prefix}.schemaUpdate`
+|if automatic schema update should be applied
+|`true`
+
+|`{properties-prefix}.databaseType`
+|type of the underlying database
+|
+
+|`{properties-prefix}.databaseTablePrefix`
+|prefix of the camunda database tables
+|camunda default value
+
+|`{properties-prefix}.historyLevel`
+|camunda history level
+|camunda default value
+
+|`{properties-prefix}.autoDeploymentEnabled`
+|if processes should be auto deployed
+|`true`
+
+|`{properties-prefix}.deploymentResourcePattern`
+|location for auto deployment
+|`classpath*:**/*.bpmn`
+
+
+|`{properties-prefix}.jpaPersistenceUnitName`
+|JPA persistence unit name
+|
+
+|`{properties-prefix}.jpaCloseEntityManager`
+|close JPA entity manager
+|`true`
+
+|`{properties-prefix}.jpaHandleTransaction`
+|JPA handle transaction
+|`true`
+
+|`management.health.camunda.enabled`
+|enables default camunda health indicators
+|`true`
+
+|`camunda.bpm.rest.enabled`
+|enables camunda rest services
+|`true`
+|===

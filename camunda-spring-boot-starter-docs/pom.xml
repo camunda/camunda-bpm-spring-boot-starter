@@ -29,6 +29,9 @@
           <attributes>
             <toc>left</toc>
             <numbered>true</numbered>
+            <project-version>${project.version}</project-version>
+            <camunda-version>${camunda.version}</camunda-version>
+            <properties-prefix>camunda.bpm</properties-prefix>
           </attributes>
         </configuration>
       </plugin>
