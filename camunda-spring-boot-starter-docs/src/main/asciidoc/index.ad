@@ -34,12 +34,12 @@ The auto starter automatically applies all beans implementing the `org.camunda.b
 
 The configuration is divided into _sections_. These _sections_ are represented by the marker interfaces:
 
-* `CamundaProcessEngineConfiguration`
-* `CamundaDatasourceConfiguration`
-* `CamundaHistoryConfiguration`
-* `CamundaJobConfiguration`
-* `CamundaDeploymentConfiguration`
-* `CamundaJpaConfiguration`
+* `org.camunda.bpm.spring.boot.starter.configuration.CamundaProcessEngineConfiguration`
+* `org.camunda.bpm.spring.boot.starter.configuration.CamundaDatasourceConfiguration`
+* `org.camunda.bpm.spring.boot.starter.configuration.CamundaHistoryConfiguration`
+* `org.camunda.bpm.spring.boot.starter.configuration.CamundaJobConfiguration`
+* `org.camunda.bpm.spring.boot.starter.configuration.CamundaDeploymentConfiguration`
+* `org.camunda.bpm.spring.boot.starter.configuration.CamundaJpaConfiguration`
 
 === Default configurations
 
@@ -47,12 +47,28 @@ The following default and best practice configurations are provided by the start
 
 ==== `DefaultProcessEngineConfiguration`
 
-Automatically adds all `ProcessEnginePlugin` beans.
-...
+Sets the process engine name and automatically adds all `ProcessEnginePlugin` beans to the configuration.
 
 ==== `DefaultDatasourceConfiguration`
 
-Describe multiple data source configuration.
+Applies the datasource and transaction management configurations to the process engine. 
+If you want to link:http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#howto-two-datasources[configure more than one datasource^] and don't want to use the `@Primary` one for the process engine then name the one you want to use as `camundaBpmDataSource`.
+
+[source,java]
+----
+@Bean
+@Primary
+@ConfigurationProperties(prefix="datasource.primary")
+public DataSource primaryDataSource() {
+    return DataSourceBuilder.create().build();
+}
+
+@Bean(name="camundaBpmDataSource")
+@ConfigurationProperties(prefix="datasource.secondary")
+public DataSource secondaryDataSource() {
+    return DataSourceBuilder.create().build();
+}
+----
 
 ==== `DefaultHistoryConfiguration`
 
@@ -70,7 +86,7 @@ Describe multiple data source configuration.
 
 === Overriding a default configuration
 
-Provide a bean implementing one of the marker interfaces. For example to customize the data source configuration:
+Provide a bean implementing one of the marker interfaces. For example to customize the datasource configuration:
 
 [source,java]
 ----
@@ -87,7 +103,7 @@ public class MyCamundaConfiguration {
 
 === Adding additional configurations
 
-You just have to provide one or more beans implementing the `CamundaConfiguration` interface. The configurations are applied ordered using the spring ordering mechanism. So if you want that your configuration is applied before the default configurations add a `@Order(CamundaConfiguration.DEFAULT_ORDER - 1)` annotation to your class. If you want that your configuration is applied after the default configurations add a `@Order(CamundaConfiguration.DEFAULT_ORDER + 1)` annotation to your class. 
+You just have to provide one or more beans implementing the `org.camunda.bpm.spring.boot.starter.configuration.CamundaConfiguration` interface. The configurations are applied ordered using the spring ordering mechanism (`@Order` annotation and `Ordered` interface). So if you want that your configuration is applied before the default configurations add a `@Order(CamundaConfiguration.DEFAULT_ORDER - 1)` annotation to your class. If you want that your configuration is applied after the default configurations add a `@Order(CamundaConfiguration.DEFAULT_ORDER + 1)` annotation to your class. 
 
 [source,java]
 ----
