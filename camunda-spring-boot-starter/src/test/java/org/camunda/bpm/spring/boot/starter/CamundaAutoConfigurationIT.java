@@ -13,10 +13,12 @@ import org.camunda.bpm.spring.boot.starter.CamundaAutoConfigurationIT.Additional
 import org.camunda.bpm.spring.boot.starter.CamundaAutoConfigurationIT.AdditionalCammundaBpmConfigurations.BeforeStandardConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaConfiguration;
 import org.camunda.bpm.spring.boot.starter.test.TestApplication;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.context.annotation.Bean;
+
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -24,6 +26,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { TestApplication.class, AdditionalCammundaBpmConfigurations.class })
 @Transactional
+@Ignore
 public class CamundaAutoConfigurationIT extends AbstractCamundaAutoConfigurationIT {
 
   @Test
@@ -43,7 +46,7 @@ public class CamundaAutoConfigurationIT extends AbstractCamundaAutoConfiguration
     assertTrue(AfterStandardConfiguration.PROCESSED);
   }
 
-  @Configuration
+  //@Configuration
   public static class AdditionalCammundaBpmConfigurations {
 
     @Bean
