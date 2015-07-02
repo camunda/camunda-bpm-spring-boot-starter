@@ -3,9 +3,32 @@
 
 ## How to contribute
 
-*Hint for eclipse users:* clone the repo as `camunda-spring-boot-starter-root`
 
-## Code Format
 
-We use http://editorconfig.org in this project. If your IDE supports it, you do not have to add any additional configuration.
-If you are not able to use this (unfortunately this applies to all eclipse based IDEs so far), make sure you use the [eclipse formatter](https://github.com/camunda/camunda-bpm-platform/blob/master/settings/eclipse/formatter.xml).
+
+## Get started
+
+- to be done
+
+
+## Resources
+
+* [Issue Tracker](https://github.com/camunda/camunda-spring-boot-starter/issues)
+* [Contributing](https://github.com/camunda/camunda-spring-boot-starter/blob/master/CONTRIBUTE.md)
+
+
+## Roadmap
+
+- to be done
+
+
+## Maintainer
+
+*  _[Oliver Steinhauer](https://github.com/osteinhauer)_
+*  _[Jan Galinski](https://github.com/galinski)_
+*  _[Christian Lipphardt](https://github.com/hawky-4s-)_
+
+
+## License
+
+Apache License, Version 2.0
