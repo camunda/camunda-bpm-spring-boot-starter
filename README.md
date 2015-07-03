@@ -25,7 +25,7 @@
 ## Maintainer
 
 *  _[Oliver Steinhauer](https://github.com/osteinhauer)_
-*  _[Jan Galinski](https://github.com/galinski)_
+*  _[Jan Galinski](https://github.com/jangalinski)_
 *  _[Christian Lipphardt](https://github.com/hawky-4s-)_
 
 
