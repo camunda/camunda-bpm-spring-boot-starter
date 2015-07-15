@@ -12,9 +12,9 @@ To enable camunda bpm auto configuration add the following dependency:
 .pom.xml
 ----
 <dependency>
-	<groupId>org.camunda.bpm.extension</groupId>
-	<artifactId>camunda-spring-boot-starter</artifactId>
-	<version>{project-version}</version>
+  <groupId>org.camunda.bpm.extension</groupId>
+  <artifactId>camunda-spring-boot-starter</artifactId>
+  <version>{project-version}</version>
 </dependency>
 ----
 
@@ -23,9 +23,9 @@ This will add the camunda version `{camunda-version}` to your dependencies. If y
 .pom.xml
 ----
 <properties>
-	...
-	<camunda.version>{camunda-version}</camunda.version>
-	...
+  ...
+  <camunda.version>{camunda-version}</camunda.version>
+  ...
 </properties>
 ----
 
@@ -51,7 +51,7 @@ Sets the process engine name and automatically adds all `ProcessEnginePlugin` be
 
 ==== `DefaultDatasourceConfiguration`
 
-Applies the datasource and transaction management configurations to the process engine. 
+Applies the datasource and transaction management configurations to the process engine.
 If you want to link:http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#howto-two-datasources[configure more than one datasource^] and don't want to use the `@Primary` one for the process engine then name the one you want to use as `camundaBpmDataSource`.
 
 [source,java]
@@ -60,19 +60,27 @@ If you want to link:http://docs.spring.io/spring-boot/docs/current/reference/htm
 @Primary
 @ConfigurationProperties(prefix="datasource.primary")
 public DataSource primaryDataSource() {
-    return DataSourceBuilder.create().build();
+  return DataSourceBuilder.create().build();
 }
 
 @Bean(name="camundaBpmDataSource")
 @ConfigurationProperties(prefix="datasource.secondary")
 public DataSource secondaryDataSource() {
-    return DataSourceBuilder.create().build();
+  return DataSourceBuilder.create().build();
 }
 ----
 
 ==== `DefaultHistoryConfiguration`
 
-...
+Applies the history configuration for the process engine. If not configured the `camunda` default level will be used.
+If you want to use a custom `HistoryEventHandler` you just have to provide a bean implementing the interface.
+[source,java]
+----
+@Bean
+public HistoryEventHandler customHistoryEventHandler() {
+  return new CustomHistoryEventHanlder();
+}
+----
 
 ==== `DefaultJobConfiguration`
 
@@ -103,7 +111,7 @@ public class MyCamundaConfiguration {
 
 === Adding additional configurations
 
-You just have to provide one or more beans implementing the `org.camunda.bpm.spring.boot.starter.configuration.CamundaConfiguration` interface. The configurations are applied ordered using the spring ordering mechanism (`@Order` annotation and `Ordered` interface). So if you want that your configuration is applied before the default configurations add a `@Order(CamundaConfiguration.DEFAULT_ORDER - 1)` annotation to your class. If you want that your configuration is applied after the default configurations add a `@Order(CamundaConfiguration.DEFAULT_ORDER + 1)` annotation to your class. 
+You just have to provide one or more beans implementing the `org.camunda.bpm.spring.boot.starter.configuration.CamundaConfiguration` interface. The configurations are applied ordered using the spring ordering mechanism (`@Order` annotation and `Ordered` interface). So if you want that your configuration is applied before the default configurations add a `@Order(CamundaConfiguration.DEFAULT_ORDER - 1)` annotation to your class. If you want that your configuration is applied after the default configurations add a `@Order(CamundaConfiguration.DEFAULT_ORDER + 1)` annotation to your class.
 
 [source,java]
 ----
