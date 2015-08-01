@@ -98,9 +98,12 @@ This is done after the spring context successfully loaded (see `org.camunda.bpm.
 
 ==== `DefaultDeploymentConfiguration`
 
-...
+If auto deployment is enabled (this is by default) all process found in the classpath will be deployed.
+The resource pattern can be changed using properties (see <<properties>>). 
 
 ==== `DefaultJpaConfiguration`
+
+If JPA is enabled and a `entityManagerFactory` bean is configured the process engine will be enabled to use JPA (see <<properties>>).
 
 === Overriding a default configuration
 
@@ -153,6 +156,7 @@ public class MyCustomConfiguration implements CamundaConfiguration {
 }
 ----
 
+[[properties]]
 == Camunda application properties
 [options="header"]
 |===
@@ -193,6 +197,9 @@ public class MyCustomConfiguration implements CamundaConfiguration {
 |location for auto deployment
 |`classpath*:**/*.bpmn`
 
+|`{properties-prefix}.jpaEnabled`
+|enables jpa configuration
+|`true`. Depends on `entityManagerFactory` bean.
 
 |`{properties-prefix}.jpaPersistenceUnitName`
 |JPA persistence unit name
