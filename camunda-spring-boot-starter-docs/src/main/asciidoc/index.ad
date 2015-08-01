@@ -72,7 +72,7 @@ public DataSource secondaryDataSource() {
 
 ==== `DefaultHistoryConfiguration`
 
-Applies the history configuration for the process engine. If not configured the `camunda` default level will be used.
+Applies the history configuration to the process engine. If not configured the `camunda` default level will be used.
 If you want to use a custom `HistoryEventHandler` you just have to provide a bean implementing the interface.
 [source,java]
 ----
@@ -84,7 +84,17 @@ public HistoryEventHandler customHistoryEventHandler() {
 
 ==== `DefaultJobConfiguration`
 
-...
+Applies the job execution properties to the process engine.
+
+To have more control about the execution itself you can provide your own
+
+- `org.camunda.bpm.engine.impl.jobexecutor.JobExecutor`
+- `org.springframework.core.task.TaskExecutor`
+
+beans.
+
+IMPORTANT: The job executor is not enabled in the configuration.
+This is done after the spring context successfully loaded (see `org.camunda.bpm.spring.boot.starter.runlistener`).
 
 ==== `DefaultDeploymentConfiguration`
 
