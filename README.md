@@ -8,8 +8,7 @@
 
 ## Get started
 
-- to be done
-
+See [Documentation source preview](https://github.com/camunda/camunda-bpm-spring-boot-starter/blob/master/camunda-spring-boot-starter-docs/src/main/asciidoc/index.adoc)
 
 ## Resources
 
