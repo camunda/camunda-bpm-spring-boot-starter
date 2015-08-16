@@ -1,7 +1,12 @@
 package org.camunda.bpm.spring.boot.starter.runlistener;
 
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import org.camunda.bpm.engine.impl.jobexecutor.JobExecutor;
 import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties;
+import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties.JobExecution;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,10 +14,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ConfigurableApplicationContext;
-
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class JobExecutorRunListenerTest {
@@ -26,11 +27,15 @@ public class JobExecutorRunListenerTest {
   @Mock
   private CamundaBpmProperties camundaBpmProperties;
 
+  @Mock
+  private JobExecution jobExecution;
+
   @Before
   public void init() {
     when(context.getBean(JobExecutor.class)).thenReturn(jobExecutor);
     when(context.getBean(CamundaBpmProperties.class)).thenReturn(camundaBpmProperties);
-    when(camundaBpmProperties.isJobExecutorActive()).thenReturn(true);
+    when(camundaBpmProperties.getJobExecution()).thenReturn(jobExecution);
+    when(jobExecution.isActive()).thenReturn(true);
     when(jobExecutor.isActive()).thenReturn(false);
   }
 
@@ -62,7 +67,7 @@ public class JobExecutorRunListenerTest {
 
   @Test
   public void disabledJobActivationTest() {
-    when(camundaBpmProperties.isJobExecutorActive()).thenReturn(false);
+    when(camundaBpmProperties.getJobExecution().isActive()).thenReturn(false);
     new JobExecutorRunListener(null, null).finished(context, null);
     verify(jobExecutor, times(0)).start();
   }

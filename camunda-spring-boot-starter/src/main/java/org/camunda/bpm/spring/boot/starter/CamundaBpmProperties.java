@@ -7,33 +7,93 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("camunda.bpm")
 public class CamundaBpmProperties {
 
-  protected static final HistoryLevel[] HISTORY_LEVELS = {
-    HistoryLevel.HISTORY_LEVEL_ACTIVITY, HistoryLevel.HISTORY_LEVEL_AUDIT,
-    HistoryLevel.HISTORY_LEVEL_FULL, HistoryLevel.HISTORY_LEVEL_NONE};
+  protected static final HistoryLevel[] HISTORY_LEVELS = { HistoryLevel.HISTORY_LEVEL_ACTIVITY, HistoryLevel.HISTORY_LEVEL_AUDIT,
+      HistoryLevel.HISTORY_LEVEL_FULL, HistoryLevel.HISTORY_LEVEL_NONE };
 
+  /**
+   * name of the process engine
+   */
   private String processEngineName;
 
-  private boolean jobExecutorActive = true;
-
-  private boolean jobExecutorDeploymentAware;
-
-  private boolean schemaUpdate = true;
-
-  private String databaseType;
-
-  private String databaseTablePrefix;
-
+  /**
+   * the history level to use
+   */
   private HistoryLevel historyLevel;
 
+  /**
+   * enables auto deployment of processes
+   */
   private boolean autoDeploymentEnabled = true;
 
+  /**
+   * resource pattern for locating process sources
+   */
   private String deploymentResourcePattern = "classpath*:**/*.bpmn";
 
-  private String jpaPersistenceUnitName;
+  /**
+   * database configuration
+   */
+  private Database database = new Database();
 
-  private boolean jpaCloseEntityManager = true;
+  /**
+   * JPA configuration
+   */
+  private Jpa jpa = new Jpa();
 
-  private boolean jpaHandleTransaction = true;
+  /**
+   * job execution configuration
+   */
+  private JobExecution jobExecution = new JobExecution();
+
+  /**
+   * rest configuration
+   */
+  private Rest rest = new Rest();
+
+  /**
+   * @return the database
+   */
+  public Database getDatabase() {
+    return database;
+  }
+
+  /**
+   * @param database
+   *          the database to set
+   */
+  public void setDatabase(Database database) {
+    this.database = database;
+  }
+
+  /**
+   * @return the jpa
+   */
+  public Jpa getJpa() {
+    return jpa;
+  }
+
+  /**
+   * @param jpa
+   *          the jpa to set
+   */
+  public void setJpa(Jpa jpa) {
+    this.jpa = jpa;
+  }
+
+  /**
+   * @return the jobExecution
+   */
+  public JobExecution getJobExecution() {
+    return jobExecution;
+  }
+
+  /**
+   * @param jobExecution
+   *          the jobExecution to set
+   */
+  public void setJobExecution(JobExecution jobExecution) {
+    this.jobExecution = jobExecution;
+  }
 
   /**
    * @return the processEngineName
@@ -43,7 +103,8 @@ public class CamundaBpmProperties {
   }
 
   /**
-   * @param processEngineName the processEngineName to set
+   * @param processEngineName
+   *          the processEngineName to set
    */
   public void setProcessEngineName(String processEngineName) {
     this.processEngineName = processEngineName;
@@ -52,8 +113,7 @@ public class CamundaBpmProperties {
   public void setHistoryLevel(String historyLevelString) {
     if (StringUtils.isNotBlank(historyLevelString)) {
       for (HistoryLevel historyLevel : HISTORY_LEVELS) {
-        if (historyLevel.getName().toUpperCase()
-          .equals(historyLevelString.toUpperCase())) {
+        if (historyLevel.getName().toUpperCase().equals(historyLevelString.toUpperCase())) {
           this.historyLevel = historyLevel;
           break;
         }
@@ -66,76 +126,6 @@ public class CamundaBpmProperties {
   }
 
   /**
-   * @return the jobExecutorActive
-   */
-  public boolean isJobExecutorActive() {
-    return jobExecutorActive;
-  }
-
-  /**
-   * @param jobExecutorActive the jobExecutorActive to set
-   */
-  public void setJobExecutorActive(boolean jobExecutorActive) {
-    this.jobExecutorActive = jobExecutorActive;
-  }
-
-  /**
-   * @return the jobExecutorDeploymentAware
-   */
-  public boolean isJobExecutorDeploymentAware() {
-    return jobExecutorDeploymentAware;
-  }
-
-  /**
-   * @param jobExecutorDeploymentAware the jobExecutorDeploymentAware to set
-   */
-  public void setJobExecutorDeploymentAware(boolean jobExecutorDeploymentAware) {
-    this.jobExecutorDeploymentAware = jobExecutorDeploymentAware;
-  }
-
-  /**
-   * @return the schemaUpdate
-   */
-  public boolean isSchemaUpdate() {
-    return schemaUpdate;
-  }
-
-  /**
-   * @param schemaUpdate the schemaUpdate to set
-   */
-  public void setSchemaUpdate(boolean schemaUpdate) {
-    this.schemaUpdate = schemaUpdate;
-  }
-
-  /**
-   * @return the databaseType
-   */
-  public String getDatabaseType() {
-    return databaseType;
-  }
-
-  /**
-   * @param databaseType the databaseType to set
-   */
-  public void setDatabaseType(String databaseType) {
-    this.databaseType = databaseType;
-  }
-
-  /**
-   * @return the databaseTablePrefix
-   */
-  public String getDatabaseTablePrefix() {
-    return databaseTablePrefix;
-  }
-
-  /**
-   * @param databaseTablePrefix the databaseTablePrefix to set
-   */
-  public void setDatabaseTablePrefix(String databaseTablePrefix) {
-    this.databaseTablePrefix = databaseTablePrefix;
-  }
-
-  /**
    * @return the autoDeploymentEnabled
    */
   public boolean isAutoDeploymentEnabled() {
@@ -143,7 +133,8 @@ public class CamundaBpmProperties {
   }
 
   /**
-   * @param autoDeploymentEnabled the autoDeploymentEnabled to set
+   * @param autoDeploymentEnabled
+   *          the autoDeploymentEnabled to set
    */
   public void setAutoDeploymentEnabled(boolean autoDeploymentEnabled) {
     this.autoDeploymentEnabled = autoDeploymentEnabled;
@@ -157,52 +148,258 @@ public class CamundaBpmProperties {
   }
 
   /**
-   * @param deploymentResourcePattern the deploymentResourcePattern to set
+   * @param deploymentResourcePattern
+   *          the deploymentResourcePattern to set
    */
   public void setDeploymentResourcePattern(String deploymentResourcePattern) {
     this.deploymentResourcePattern = deploymentResourcePattern;
   }
 
   /**
-   * @return the jpaPersistenceUnitName
+   * @return the rest
    */
-  public String getJpaPersistenceUnitName() {
-    return jpaPersistenceUnitName;
+  public Rest getRest() {
+    return rest;
   }
 
   /**
-   * @param jpaPersistenceUnitName the jpaPersistenceUnitName to set
+   * @param rest
+   *          the rest to set
    */
-  public void setJpaPersistenceUnitName(String jpaPersistenceUnitName) {
-    this.jpaPersistenceUnitName = jpaPersistenceUnitName;
+  public void setRest(Rest rest) {
+    this.rest = rest;
   }
 
-  /**
-   * @return the jpaCloseEntityManager
-   */
-  public boolean isJpaCloseEntityManager() {
-    return jpaCloseEntityManager;
+  public class Database {
+    /**
+     * enables automatic schema update
+     */
+    private boolean schemaUpdate = true;
+
+    /**
+     * the database type
+     */
+    private String type;
+
+    /**
+     * the database table prefix to use
+     */
+    private String tablePrefix;
+
+    /**
+     * @return the schemaUpdate
+     */
+    public boolean isSchemaUpdate() {
+      return schemaUpdate;
+    }
+
+    /**
+     * @param schemaUpdate
+     *          the schemaUpdate to set
+     */
+    public void setSchemaUpdate(boolean schemaUpdate) {
+      this.schemaUpdate = schemaUpdate;
+    }
+
+    /**
+     * @return the type
+     */
+    public String getType() {
+      return type;
+    }
+
+    /**
+     * @param type
+     *          the type to set
+     */
+    public void setType(String type) {
+      this.type = type;
+    }
+
+    /**
+     * @return the tablePrefix
+     */
+    public String getTablePrefix() {
+      return tablePrefix;
+    }
+
+    /**
+     * @param tablePrefix
+     *          the tablePrefix to set
+     */
+    public void setTablePrefix(String tablePrefix) {
+      this.tablePrefix = tablePrefix;
+    }
+
   }
 
-  /**
-   * @param jpaCloseEntityManager the jpaCloseEntityManager to set
-   */
-  public void setJpaCloseEntityManager(boolean jpaCloseEntityManager) {
-    this.jpaCloseEntityManager = jpaCloseEntityManager;
+  public static class JobExecution {
+
+    /**
+     * enables job execution
+     */
+    private boolean enabled;
+
+    /**
+     * activate job execution
+     */
+    private boolean active = true;
+
+    /**
+     * if job execution is deployment aware
+     */
+    private boolean deploymentAware;
+
+    /**
+     * @return the enabled
+     */
+    public boolean isEnabled() {
+      return enabled;
+    }
+
+    /**
+     * @param enabled
+     *          the enabled to set
+     */
+    public void setEnabled(boolean enabled) {
+      this.enabled = enabled;
+    }
+
+    /**
+     * @return the active
+     */
+    public boolean isActive() {
+      return active;
+    }
+
+    /**
+     * @param active
+     *          the active to set
+     */
+    public void setActive(boolean active) {
+      this.active = active;
+    }
+
+    /**
+     * @return the deploymentAware
+     */
+    public boolean isDeploymentAware() {
+      return deploymentAware;
+    }
+
+    /**
+     * @param deploymentAware
+     *          the deploymentAware to set
+     */
+    public void setDeploymentAware(boolean deploymentAware) {
+      this.deploymentAware = deploymentAware;
+    }
+
   }
 
-  /**
-   * @return the jpaHandleTransaction
-   */
-  public boolean isJpaHandleTransaction() {
-    return jpaHandleTransaction;
+  public static class Rest {
+
+    /**
+     * enables rest services
+     */
+    private boolean enabled = true;
+
+    /**
+     * @return the enabled
+     */
+    public boolean isEnabled() {
+      return enabled;
+    }
+
+    /**
+     * @param enabled
+     *          the enabled to set
+     */
+    public void setEnabled(boolean enabled) {
+      this.enabled = enabled;
+    }
   }
 
-  /**
-   * @param jpaHandleTransaction the jpaHandleTransaction to set
-   */
-  public void setJpaHandleTransaction(boolean jpaHandleTransaction) {
-    this.jpaHandleTransaction = jpaHandleTransaction;
-  }
+  public static class Jpa {
+    /**
+     * enables JPA
+     */
+    private boolean enabled;
 
+    /**
+     * the JPA persistence unit name
+     */
+    private String persistenceUnitName;
+
+    /**
+     * close JPA entity manager
+     */
+    private boolean closeEntityManager = true;
+
+    /**
+     * handle transactions by JPA
+     */
+    private boolean handleTransaction = true;
+
+    /**
+     * @return the enabled
+     */
+    public boolean isEnabled() {
+      return enabled;
+    }
+
+    /**
+     * @param enabled
+     *          the enabled to set
+     */
+    public void setEnabled(boolean enabled) {
+      this.enabled = enabled;
+    }
+
+    /**
+     * @return the persistenceUnitName
+     */
+    public String getPersistenceUnitName() {
+      return persistenceUnitName;
+    }
+
+    /**
+     * @param persistenceUnitName
+     *          the persistenceUnitName to set
+     */
+    public void setPersistenceUnitName(String persistenceUnitName) {
+      this.persistenceUnitName = persistenceUnitName;
+    }
+
+    /**
+     * @return the closeEntityManager
+     */
+    public boolean isCloseEntityManager() {
+      return closeEntityManager;
+    }
+
+    /**
+     * @param closeEntityManager
+     *          the closeEntityManager to set
+     */
+    public void setCloseEntityManager(boolean closeEntityManager) {
+      this.closeEntityManager = closeEntityManager;
+    }
+
+    /**
+     * @return the handleTransaction
+     */
+    public boolean isHandleTransaction() {
+      return handleTransaction;
+    }
+
+    /**
+     * @param handleTransaction
+     *          the handleTransaction to set
+     */
+    public void setHandleTransaction(boolean handleTransaction) {
+      this.handleTransaction = handleTransaction;
+    }
+
+  }
 }

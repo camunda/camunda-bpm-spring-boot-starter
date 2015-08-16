@@ -21,7 +21,7 @@ public class DefaultJobConfiguration extends AbstractCamundaConfiguration implem
     // note: the job executor will be activated in
     // org.camunda.bpm.spring.boot.starter.runlistener.JobExecutorRunListener
     configuration.setJobExecutorActivate(false);
-    configuration.setJobExecutorDeploymentAware(camundaBpmProperties.isJobExecutorDeploymentAware());
+    configuration.setJobExecutorDeploymentAware(camundaBpmProperties.getJobExecution().isDeploymentAware());
     configuration.setJobExecutor(jobExecutor);
   }
 
@@ -29,14 +29,14 @@ public class DefaultJobConfiguration extends AbstractCamundaConfiguration implem
 
     @Bean
     @ConditionalOnMissingBean(TaskExecutor.class)
-    @ConditionalOnProperty(prefix = "camunda.bpm", name = "jobExecutionEnabled", havingValue = "true", matchIfMissing = true)
+    @ConditionalOnProperty(prefix = "camunda.bpm.job-execution", name = "enabled", havingValue = "true", matchIfMissing = true)
     public static TaskExecutor taskExecutor() {
       return new ThreadPoolTaskExecutor();
     }
 
     @Bean
     @ConditionalOnMissingBean(JobExecutor.class)
-    @ConditionalOnProperty(prefix = "camunda.bpm", name = "jobExecutionEnabled", havingValue = "true", matchIfMissing = true)
+    @ConditionalOnProperty(prefix = "camunda.bpm.job-execution", name = "enabled", havingValue = "true", matchIfMissing = true)
     public static JobExecutor jobExecutor(TaskExecutor taskExecutor) {
       SpringJobExecutor springJobExecutor = new SpringJobExecutor();
       springJobExecutor.setTaskExecutor(taskExecutor);

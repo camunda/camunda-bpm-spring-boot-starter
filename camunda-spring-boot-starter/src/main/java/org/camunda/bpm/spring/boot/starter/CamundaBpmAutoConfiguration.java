@@ -1,5 +1,7 @@
 package org.camunda.bpm.spring.boot.starter;
 
+import javax.annotation.PostConstruct;
+
 import org.camunda.bpm.engine.AuthorizationService;
 import org.camunda.bpm.engine.CaseService;
 import org.camunda.bpm.engine.FilterService;
@@ -20,11 +22,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 
-import javax.annotation.PostConstruct;
-
-@EnableConfigurationProperties(CamundaBpmProperties.class)
-@Import({CamundaBpmConfiguration.class, CamundaBpmActuatorConfiguration.class,
-  CamundaBpmRestConfiguration.class, CamundaBpmPluginsConfiguration.class})
+@EnableConfigurationProperties({ CamundaBpmProperties.class, CamundaBpmManagementProperties.class })
+@Import({ CamundaBpmConfiguration.class, CamundaBpmActuatorConfiguration.class, CamundaBpmRestConfiguration.class, CamundaBpmPluginsConfiguration.class })
 @AutoConfigureAfter(HibernateJpaAutoConfiguration.class)
 public class CamundaBpmAutoConfiguration {
 
@@ -36,8 +35,7 @@ public class CamundaBpmAutoConfiguration {
 
   @PostConstruct
   public void init() {
-    processEngineFactoryBean
-      .setProcessEngineConfiguration(processEngineConfigurationImpl);
+    processEngineFactoryBean.setProcessEngineConfiguration(processEngineConfigurationImpl);
   }
 
   @Bean

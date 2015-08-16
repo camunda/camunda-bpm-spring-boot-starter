@@ -63,14 +63,14 @@ public class CamundaBpmConfiguration {
   @Bean
   @ConditionalOnBean(name = "entityManagerFactory")
   @ConditionalOnMissingBean(CamundaJpaConfiguration.class)
-  @ConditionalOnProperty(prefix = "camunda.bpm", name = "jpaEnabled", havingValue = "true", matchIfMissing = true)
+  @ConditionalOnProperty(prefix = "camunda.bpm.jpa", name = "enabled", havingValue = "true", matchIfMissing = true)
   public static CamundaJpaConfiguration camundaJpaConfiguration() {
     return new DefaultJpaConfiguration();
   }
 
   @Bean
   @ConditionalOnMissingBean(CamundaJobConfiguration.class)
-  @ConditionalOnProperty(prefix = "camunda.bpm", name = "jobExecutionEnabled", havingValue = "true", matchIfMissing = true)
+  @ConditionalOnProperty(prefix = "camunda.bpm.job-execution", name = "enabled", havingValue = "true", matchIfMissing = true)
   public static CamundaJobConfiguration camundaJobConfiguration() {
     return new DefaultJobConfiguration();
   }

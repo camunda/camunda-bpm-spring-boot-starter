@@ -31,7 +31,7 @@ public class JobExecutorRunListener extends AbstractFinishedWithNoExceptionRunLi
   }
 
   private void activate(JobExecutor jobExecutor, CamundaBpmProperties camundaBpmProperties) {
-    if (camundaBpmProperties.isJobExecutorActive()) {
+    if (camundaBpmProperties.getJobExecution().isActive()) {
       if (!jobExecutor.isActive()) {
         jobExecutor.start();
       } else {
