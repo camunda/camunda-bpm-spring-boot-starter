@@ -32,6 +32,7 @@ public class DefaultDeploymentConfigurationTest {
   public void deploymentTest() {
     camundaBpmProperties.setAutoDeploymentEnabled(true);
     defaultDeploymentConfiguration.apply(configuration);
-    assertEquals(1, configuration.getDeploymentResources().length);
+    assertEquals(4, configuration.getDeploymentResources().length);
   }
+
 }

@@ -5,10 +5,8 @@ import org.camunda.bpm.spring.boot.starter.configuration.CamundaDeploymentConfig
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.core.io.support.ResourceArrayPropertyEditor;
 
-import java.io.IOException;
 import java.util.Arrays;
 
 public class DefaultDeploymentConfiguration extends AbstractCamundaConfiguration implements
@@ -26,13 +24,16 @@ public class DefaultDeploymentConfiguration extends AbstractCamundaConfiguration
 
   protected Resource[] getDeploymentResources() {
     Resource[] resources = null;
-    ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+
+
+    ResourceArrayPropertyEditor resolver = new ResourceArrayPropertyEditor();
     try {
-      String resourcePattern = camundaBpmProperties.getDeploymentResourcePattern();
+      String[] resourcePattern = camundaBpmProperties.getDeploymentResourcePattern();
       LOGGER.debug("resolving deployment resources for pattern {}", resourcePattern);
-      resources = resolver.getResources(resourcePattern);
+      resolver.setValue(resourcePattern);
+      resources = (Resource[]) resolver.getValue();
       LOGGER.debug("resolved {}", Arrays.asList(resources));
-    } catch (IOException e) {
+    } catch (RuntimeException e) {
       LOGGER.error("unable to resolve resources", e);
     }
     return resources;

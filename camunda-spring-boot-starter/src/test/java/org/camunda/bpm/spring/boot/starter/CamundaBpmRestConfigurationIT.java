@@ -1,7 +1,5 @@
 package org.camunda.bpm.spring.boot.starter;
 
-import static org.junit.Assert.assertEquals;
-
 import org.camunda.bpm.engine.rest.dto.repository.ProcessDefinitionDto;
 import org.camunda.bpm.spring.boot.starter.test.TestActuatorApplication;
 import org.junit.Test;
@@ -16,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = { TestActuatorApplication.class })
@@ -35,9 +35,9 @@ public class CamundaBpmRestConfigurationIT {
 
   @Test
   public void processDefinitionTest() {
-    ResponseEntity<ProcessDefinitionDto[]> entity = new TestRestTemplate("user", password).getForEntity(
-        "http://localhost:{port}/engine/{engineName}/process-definition", ProcessDefinitionDto[].class, port, camundaBpmProperties.getProcessEngineName());
+    ResponseEntity<ProcessDefinitionDto> entity = new TestRestTemplate("user", password).getForEntity(
+        "http://localhost:{port}/engine/{engineName}/process-definition/key/TestProcess/", ProcessDefinitionDto.class, port, camundaBpmProperties.getProcessEngineName());
     assertEquals(HttpStatus.OK, entity.getStatusCode());
-    assertEquals("TestProcess", entity.getBody()[0].getKey());
+    assertEquals("TestProcess", entity.getBody().getKey());
   }
 }

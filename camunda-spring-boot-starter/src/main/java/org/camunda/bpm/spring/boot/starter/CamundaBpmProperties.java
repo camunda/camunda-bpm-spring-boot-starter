@@ -28,7 +28,12 @@ public class CamundaBpmProperties {
   /**
    * resource pattern for locating process sources
    */
-  private String deploymentResourcePattern = "classpath*:**/*.bpmn";
+  private String[] deploymentResourcePattern = new String[] {
+    "classpath*:**/*.bpmn",
+    "classpath*:**/*.bpmn20.xml",
+    "classpath*:**/*.cmmn",
+    "classpath*:**/*.cmmn10.xml"
+  };
 
   /**
    * database configuration
@@ -143,7 +148,7 @@ public class CamundaBpmProperties {
   /**
    * @return the deploymentResourcePattern
    */
-  public String getDeploymentResourcePattern() {
+  public String[] getDeploymentResourcePattern() {
     return deploymentResourcePattern;
   }
 
@@ -151,7 +156,7 @@ public class CamundaBpmProperties {
    * @param deploymentResourcePattern
    *          the deploymentResourcePattern to set
    */
-  public void setDeploymentResourcePattern(String deploymentResourcePattern) {
+  public void setDeploymentResourcePattern(String[] deploymentResourcePattern) {
     this.deploymentResourcePattern = deploymentResourcePattern;
   }
 
