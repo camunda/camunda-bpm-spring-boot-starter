@@ -1,14 +1,10 @@
 # camunda-bpm-spring-boot-starter
 
 
-## How to contribute
-
-
-
-
 ## Get started
 
-See [Documentation source preview](https://github.com/camunda/camunda-bpm-spring-boot-starter/blob/master/camunda-spring-boot-starter-docs/src/main/asciidoc/index.adoc)
+See [Documentation](https://camunda.github.io/camunda-bpm-spring-boot-starter)
+
 
 ## Resources
 
