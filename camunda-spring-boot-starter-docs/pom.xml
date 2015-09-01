@@ -31,11 +31,13 @@
             <numbered>true</numbered>
             <project-version>${project.version}</project-version>
             <camunda-version>${camunda.version}</camunda-version>
+            <spring-boot-version>${spring-boot.version}</spring-boot-version>
             <properties-prefix>camunda.bpm</properties-prefix>
           </attributes>
         </configuration>
       </plugin>
     </plugins>
+
     <pluginManagement>
       <plugins>
         <plugin>
