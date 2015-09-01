@@ -95,6 +95,15 @@
     </dependency>
   </dependencies>
 
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+  </build>
+
   <profiles>
     <!-- this is only for jdk 1.6. you can remove this when using java version
       later than 1.6 -->
