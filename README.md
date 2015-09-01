@@ -1,4 +1,4 @@
-# camunda-spring-boot-starter
+# camunda-bpm-spring-boot-starter
 
 
 ## How to contribute
@@ -12,8 +12,8 @@ See [Documentation source preview](https://github.com/camunda/camunda-bpm-spring
 
 ## Resources
 
-* [Issue Tracker](https://github.com/camunda/camunda-spring-boot-starter/issues)
-* [Contributing](https://github.com/camunda/camunda-spring-boot-starter/blob/master/CONTRIBUTE.md)
+* [Issue Tracker](https://github.com/camunda/camunda-bpm-spring-boot-starter/issues)
+* [Contributing](https://github.com/camunda/camunda-bpm-spring-boot-starter/blob/master/CONTRIBUTE.md)
 
 
 ## Roadmap

@@ -3,11 +3,11 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.camunda.bpm.extension</groupId>
-    <artifactId>camunda-spring-boot-starter-root</artifactId>
+    <artifactId>camunda-bpm-spring-boot-starter-root</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
 
-  <artifactId>camunda-spring-boot-starter</artifactId>
+  <artifactId>camunda-bpm-spring-boot-starter</artifactId>
 
   <dependencies>
     <dependency>

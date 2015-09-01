@@ -1,11 +1,11 @@
 # How to contribute
 
-We love you to contribute to this project by filing bugs, helping others on the [issue tracker](https://github.com/camunda/camunda-spring-boot-starter/issues), by contributing features/bug fixes through pull requests.
+We love you to contribute to this project by filing bugs, helping others on the [issue tracker](https://github.com/camunda/camunda-bpm-spring-boot-starter/issues), by contributing features/bug fixes through pull requests.
 
 
 ## Creating issues
 
-We use our [issue tracker](https://github.com/camunda/camunda-spring-boot-starter/issues) for project communication.
+We use our [issue tracker](https://github.com/camunda/camunda-bpm-spring-boot-starter/issues) for project communication.
 When using the issue tracker:
 
 * Be descriptive when creating an issue (what, where, when and how does a problem pop up)?
@@ -36,7 +36,7 @@ If you are not able to use this (unfortunately this applies to all eclipse based
     * spaces instead of tabs
     * single-quotes
     * ...
-    * see the [.editorconfig](https://github.com/camunda/camunda-spring-boot-starter/blob/master/.editorconfig) file
+    * see the [.editorconfig](https://github.com/camunda/camunda-bpm-spring-boot-starter/blob/master/.editorconfig) file
 * The code is tested
 * The `mvn clean install` build passes including tests
 * The work is combined into a single commit
