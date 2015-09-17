@@ -1,5 +1,6 @@
 package org.camunda.bpm.spring.boot.starter.configuration.impl;
 
+import org.camunda.bpm.engine.impl.jobexecutor.CallerRunsRejectedJobsHandler;
 import org.camunda.bpm.engine.impl.jobexecutor.JobExecutor;
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 import org.camunda.bpm.engine.spring.components.jobexecutor.SpringJobExecutor;
@@ -40,6 +41,7 @@ public class DefaultJobConfiguration extends AbstractCamundaConfiguration implem
     public static JobExecutor jobExecutor(TaskExecutor taskExecutor) {
       SpringJobExecutor springJobExecutor = new SpringJobExecutor();
       springJobExecutor.setTaskExecutor(taskExecutor);
+      springJobExecutor.setRejectedJobsHandler(new CallerRunsRejectedJobsHandler());
       return springJobExecutor;
     }
 
