@@ -23,7 +23,7 @@ See [Documentation](https://camunda.github.io/camunda-bpm-spring-boot-starter)
 *  _[Jan Galinski](https://github.com/jangalinski)_
 *  _[Christian Lipphardt](https://github.com/hawky-4s-)_
 
-
 ## License
 
-Apache License, Version 2.0
+* [Apache License, Version 2.0](./LICENSE)
+
