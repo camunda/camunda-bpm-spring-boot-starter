@@ -308,6 +308,7 @@ public class CamundaBpmProperties {
      * enables rest services
      */
     private boolean enabled = true;
+    private String mappedUrl = "/rest/*";
 
     /**
      * @return the enabled
@@ -322,6 +323,28 @@ public class CamundaBpmProperties {
      */
     public void setEnabled(boolean enabled) {
       this.enabled = enabled;
+    }
+
+    public String getMappedUrl() {
+      return mappedUrl;
+    }
+
+    public void setMappedUrl(String mappedUrl) {
+      if (mappedUrl == null || mappedUrl.equals("/")) {
+        mappedUrl = "/*";
+      }
+
+      if (!mappedUrl.startsWith("/")) {
+        mappedUrl = "/" + mappedUrl;
+      }
+
+      if (mappedUrl.equals("/")) {
+        mappedUrl = "/*";
+      } else {
+        mappedUrl += "/*";
+      }
+
+      this.mappedUrl = mappedUrl;
     }
   }
 

@@ -1,67 +1,72 @@
 package org.camunda.bpm.spring.boot.starter;
 
 import org.camunda.bpm.engine.rest.impl.CamundaRestResources;
+import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
-import org.jboss.resteasy.plugins.server.servlet.FilterDispatcher;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.boot.context.embedded.FilterRegistrationBean;
+import org.springframework.boot.autoconfigure.jersey.JerseyAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import javax.servlet.Filter;
-import javax.ws.rs.core.Application;
-import java.util.HashSet;
-import java.util.Set;
+import javax.ws.rs.ApplicationPath;
+import java.util.logging.Logger;
 
 @Configuration
 @ConditionalOnWebApplication
-@ConditionalOnClass({ResourceConfig.class, FilterDispatcher.class})
+@ConditionalOnClass(org.camunda.bpm.engine.rest.impl.CamundaRestResources.class)
 @ConditionalOnProperty(prefix = "camunda.bpm.rest", name = "enabled", matchIfMissing = true)
+@AutoConfigureBefore(JerseyAutoConfiguration.class)
 public class CamundaBpmRestConfiguration {
 
-  @Bean
-  @ConditionalOnMissingBean(name = "filterDispatcherRegistrationBean")
-  public FilterRegistrationBean filterDispatcherRegistrationBean(
-    @Qualifier("filterDispatcher") Filter filterDispatcher) {
-    FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
-    filterRegistrationBean.setName("Resteasy");
-    filterRegistrationBean.setFilter(filterDispatcher);
-    filterRegistrationBean.addUrlPatterns("/*");
-    filterRegistrationBean.addInitParameter("javax.ws.rs.Application",
-      RestProcessEngineDeployment.class.getName());
-    return filterRegistrationBean;
-  }
+  protected Logger logger = Logger.getLogger(this.getClass().getName());
+
+  @Autowired
+  protected CamundaBpmProperties camundaBpmProperties;
+
+//  @Bean
+//  @ConditionalOnMissingBean(name = "jerseyFilterRegistration")
+//  public FilterRegistrationBean jerseyFilterRegistration(ResourceConfig eurekaJerseyApp) {
+//    FilterRegistrationBean registration = new FilterRegistrationBean();
+//    registration.setFilter(new ServletContainer(eurekaJerseyApp));
+//    registration.setOrder(Ordered.LOWEST_PRECEDENCE);
+//    registration.setUrlPatterns(Collections.singletonList(camundaBpmProperties.getRest().getMappedUrl()));
+//
+//    registration.addInitParameter(ServletProperties.FILTER_CONTEXT_PATH,
+//      camundaBpmProperties.getRest().getMappedUrl());
+//    registration.addInitParameter(CommonProperties.METAINF_SERVICES_LOOKUP_DISABLE,
+//      "true");
+//    registration.setName("jerseyFilter");
+//    registration.setDispatcherTypes(EnumSet.allOf(DispatcherType.class));
+//
+//    return registration;
+//  }
 
   @Bean
-  @ConditionalOnMissingBean(name = "filterDispatcher")
-  public static Filter filterDispatcher() {
-    return new FilterDispatcher();
+  @ConditionalOnMissingBean(type = "org.glassfish.jersey.server.ResourceConfig")
+  public ResourceConfig jerseyConfig() {
+    return new CamundaJerseyConfig();
   }
 
-  @Configuration
-  @ConditionalOnWebApplication
-  public static class JerseyConfig extends ResourceConfig {
-    public JerseyConfig() {
+  @ApplicationPath("/rest")
+  public static class CamundaJerseyConfig extends ResourceConfig {
+
+    protected Logger logger = Logger.getLogger(this.getClass().getName());
+
+    public CamundaJerseyConfig() {
+      logger.info("Configuring camunda rest api.");
+
       this.registerClasses(CamundaRestResources.getResourceClasses());
       this.registerClasses(CamundaRestResources.getConfigurationClasses());
-    }
-  }
+      this.register(JacksonFeature.class);
 
-  public static class RestProcessEngineDeployment extends Application {
-
-    @Override
-    public Set<Class<?>> getClasses() {
-      Set<Class<?>> classes = new HashSet<Class<?>>();
-
-      classes.addAll(CamundaRestResources.getResourceClasses());
-      classes.addAll(CamundaRestResources.getConfigurationClasses());
-
-      return classes;
+      logger.info("Finished configuring camunda rest api.");
     }
 
   }
+
 }
