@@ -13,6 +13,7 @@ import org.springframework.boot.autoconfigure.jersey.JerseyAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.annotation.PostConstruct;
 import javax.ws.rs.ApplicationPath;
 import java.util.logging.Logger;
 
@@ -25,27 +26,6 @@ public class CamundaBpmRestConfiguration {
 
   protected Logger logger = Logger.getLogger(this.getClass().getName());
 
-  @Autowired
-  protected CamundaBpmProperties camundaBpmProperties;
-
-//  @Bean
-//  @ConditionalOnMissingBean(name = "jerseyFilterRegistration")
-//  public FilterRegistrationBean jerseyFilterRegistration(ResourceConfig eurekaJerseyApp) {
-//    FilterRegistrationBean registration = new FilterRegistrationBean();
-//    registration.setFilter(new ServletContainer(eurekaJerseyApp));
-//    registration.setOrder(Ordered.LOWEST_PRECEDENCE);
-//    registration.setUrlPatterns(Collections.singletonList(camundaBpmProperties.getRest().getMappedUrl()));
-//
-//    registration.addInitParameter(ServletProperties.FILTER_CONTEXT_PATH,
-//      camundaBpmProperties.getRest().getMappedUrl());
-//    registration.addInitParameter(CommonProperties.METAINF_SERVICES_LOOKUP_DISABLE,
-//      "true");
-//    registration.setName("jerseyFilter");
-//    registration.setDispatcherTypes(EnumSet.allOf(DispatcherType.class));
-//
-//    return registration;
-//  }
-
   @Bean
   @ConditionalOnMissingBean(type = "org.glassfish.jersey.server.ResourceConfig")
   public ResourceConfig jerseyConfig() {
@@ -57,7 +37,8 @@ public class CamundaBpmRestConfiguration {
 
     protected Logger logger = Logger.getLogger(this.getClass().getName());
 
-    public CamundaJerseyConfig() {
+    @PostConstruct
+    public void registerCamundaRestResources() {
       logger.info("Configuring camunda rest api.");
 
       this.registerClasses(CamundaRestResources.getResourceClasses());
