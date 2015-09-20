@@ -5,8 +5,6 @@
     <groupId>org.camunda.bpm.extension</groupId>
     <artifactId>camunda-bpm-spring-boot-starter-root</artifactId>
     <version>1.1.0-SNAPSHOT</version>
-    <!-- DO NOT REMOVE EMPTY TAG https://issues.apache.org/jira/browse/MNG-4687 -->
-    <relativePath />
   </parent>
 
   <artifactId>camunda-bpm-spring-boot-starter-extension-root</artifactId>
