@@ -23,7 +23,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 
 @EnableConfigurationProperties({ CamundaBpmProperties.class, CamundaBpmManagementProperties.class })
-@Import({ CamundaBpmConfiguration.class, CamundaBpmActuatorConfiguration.class, CamundaBpmRestConfiguration.class, CamundaBpmPluginsConfiguration.class })
+@Import({ CamundaBpmConfiguration.class, CamundaBpmActuatorConfiguration.class, CamundaBpmPluginsConfiguration.class })
 @AutoConfigureAfter(HibernateJpaAutoConfiguration.class)
 public class CamundaBpmAutoConfiguration {
 

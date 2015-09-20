@@ -22,22 +22,24 @@ import static org.junit.Assert.assertNotNull;
 @SpringApplicationConfiguration(classes = SampleCamundaRestApplication.class)
 @WebIntegrationTest(randomPort = true)
 @DirtiesContext
-public class SampleCamundaRestApplicationTest {
+public class SampleCamundaRestApplicationIT {
+
+  private final TestRestTemplate restTemplate = new TestRestTemplate();
 
   @Value("${local.server.port}")
   private int port;
 
   @Test
   public void restApiIsAvailable() throws Exception {
-    ResponseEntity<String> entity = new TestRestTemplate().getForEntity(
+    ResponseEntity<String> entity = restTemplate.getForEntity(
       "http://localhost:" + port + "/rest/engine/", String.class);
     assertEquals(HttpStatus.OK, entity.getStatusCode());
-    assertEquals("[{\"name\":\"default\"}]", entity.getBody());
+    assertEquals("[{\"name\":\"testEngine\"}]", entity.getBody());
   }
 
   @Test
   public void startProcessInstanceByCustomResource() throws Exception {
-    ResponseEntity<ProcessInstanceDto> entity = new TestRestTemplate().postForEntity(
+    ResponseEntity<ProcessInstanceDto> entity = restTemplate.postForEntity(
       "http://localhost:" + port + "/rest/process/start",
       HttpEntity.EMPTY,
       ProcessInstanceDto.class);
@@ -48,7 +50,7 @@ public class SampleCamundaRestApplicationTest {
   @Ignore
   @Test
   public void multipartFileUploadCamundaRestIsWorking() throws Exception {
-    ResponseEntity<String> entity = new TestRestTemplate().postForEntity(
+    ResponseEntity<String> entity = restTemplate.postForEntity(
       "http://localhost:" + port + "/rest/start/process",
       HttpEntity.EMPTY,
       String.class);

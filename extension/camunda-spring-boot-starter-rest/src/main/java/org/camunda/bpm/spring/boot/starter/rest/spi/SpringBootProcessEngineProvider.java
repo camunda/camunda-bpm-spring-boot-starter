@@ -1,4 +1,4 @@
-package org.camunda.bpm.spring.boot.starter;
+package org.camunda.bpm.spring.boot.starter.rest.spi;
 
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.ProcessEngines;

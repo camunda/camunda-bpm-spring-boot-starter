@@ -18,19 +18,18 @@ import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultJobConfigur
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultJobConfiguration.JobConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultJpaConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultProcessEngineConfiguration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import java.util.logging.Logger;
 
 @Import(JobConfiguration.class)
 public class CamundaBpmConfiguration {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(CamundaBpmConfiguration.class);
+  private static final Logger LOGGER = Logger.getLogger(CamundaBpmConfiguration.class.getName());
 
   @Autowired
   protected List<CamundaConfiguration> camundaConfigurations;
@@ -41,7 +40,7 @@ public class CamundaBpmConfiguration {
     SpringProcessEngineConfiguration configuration = new SpringProcessEngineConfiguration();
 
     for (CamundaConfiguration camundaConfiguration : camundaConfigurations) {
-      LOGGER.debug("applying {}", camundaConfiguration.getClass());
+      LOGGER.fine("applying " + camundaConfiguration.getClass());
       camundaConfiguration.apply(configuration);
     }
 
