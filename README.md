@@ -1,6 +1,6 @@
 # camunda-bpm-spring-boot-starter
 
-<a href="https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension/camunda-bpm-spring-boot-starter"><img align="right" src="https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension/ccamunda-bpm-spring-boot-starter/badge.svg"/></a>
+<a href="https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension/camunda-bpm-spring-boot-starter"><img align="right" src="https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension/camunda-bpm-spring-boot-starter/badge.svg"/></a>
 
 ## Get started
 
