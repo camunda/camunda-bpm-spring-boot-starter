@@ -1,6 +1,7 @@
 package org.camunda.bpm.spring.boot.starter;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
@@ -18,13 +19,17 @@ import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultJobConfigur
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultJobConfiguration.JobConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultJpaConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultProcessEngineConfiguration;
+import org.camunda.bpm.spring.boot.starter.configuration.impl.HistoryLevelAutoHandlingConfiguration;
+import org.camunda.bpm.spring.boot.starter.jdbc.HistoryLevelDeterminator;
+import org.camunda.bpm.spring.boot.starter.jdbc.HistoryLevelDeterminatorJdbcTemplateImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
-import java.util.logging.Logger;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 @Import(JobConfiguration.class)
 public class CamundaBpmConfiguration {
@@ -78,6 +83,34 @@ public class CamundaBpmConfiguration {
   @ConditionalOnMissingBean(CamundaHistoryConfiguration.class)
   public static CamundaHistoryConfiguration camundaHistoryConfiguration() {
     return new DefaultHistoryConfiguration();
+  }
+
+  @Bean(name = "historyLevelAutoConfiguration")
+  @ConditionalOnProperty(prefix = "camunda.bpm", name = "history-level", havingValue = "auto", matchIfMissing = false)
+  public static HistoryLevelAutoHandlingConfiguration historyLevelAutoHandlingConfiguration() {
+    return new HistoryLevelAutoHandlingConfiguration();
+  }
+
+  @Bean(name = "historyLevelDeterminator")
+  @ConditionalOnMissingBean(name = { "camundaBpmJdbcTemplate", "historyLevelDeterminator" })
+  @ConditionalOnBean(name = "historyLevelAutoConfiguration")
+  public static HistoryLevelDeterminator historyLevelDeterminator(CamundaBpmProperties camundaBpmProperties, JdbcTemplate jdbcTemplate) {
+    return createHistoryLevelDeterminator(camundaBpmProperties, jdbcTemplate);
+  }
+
+  @Bean(name = "historyLevelDeterminator")
+  @ConditionalOnBean(name = { "camundaBpmJdbcTemplate", "historyLevelAutoConfiguration", "historyLevelDeterminator" })
+  @ConditionalOnMissingBean(name = "historyLevelDeterminator")
+  public static HistoryLevelDeterminator historyLevelDeterminatorMultiDatabase(CamundaBpmProperties camundaBpmProperties,
+      @Qualifier("camundaBpmJdbcTemplate") JdbcTemplate jdbcTemplate) {
+    return createHistoryLevelDeterminator(camundaBpmProperties, jdbcTemplate);
+  }
+
+  private static HistoryLevelDeterminator createHistoryLevelDeterminator(CamundaBpmProperties camundaBpmProperties, JdbcTemplate jdbcTemplate) {
+    HistoryLevelDeterminatorJdbcTemplateImpl determinator = new HistoryLevelDeterminatorJdbcTemplateImpl();
+    determinator.setCamundaBpmProperties(camundaBpmProperties);
+    determinator.setJdbcTemplate(jdbcTemplate);
+    return determinator;
   }
 
   @Bean

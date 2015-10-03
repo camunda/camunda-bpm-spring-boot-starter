@@ -1,14 +1,9 @@
 package org.camunda.bpm.spring.boot.starter;
 
-import org.apache.commons.lang.StringUtils;
-import org.camunda.bpm.engine.impl.history.HistoryLevel;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties("camunda.bpm")
 public class CamundaBpmProperties {
-
-  protected static final HistoryLevel[] HISTORY_LEVELS = { HistoryLevel.HISTORY_LEVEL_ACTIVITY, HistoryLevel.HISTORY_LEVEL_AUDIT,
-      HistoryLevel.HISTORY_LEVEL_FULL, HistoryLevel.HISTORY_LEVEL_NONE };
 
   /**
    * name of the process engine
@@ -18,7 +13,7 @@ public class CamundaBpmProperties {
   /**
    * the history level to use
    */
-  private HistoryLevel historyLevel;
+  private String historyLevel;
 
   /**
    * enables auto deployment of processes
@@ -28,12 +23,8 @@ public class CamundaBpmProperties {
   /**
    * resource pattern for locating process sources
    */
-  private String[] deploymentResourcePattern = new String[] {
-    "classpath*:**/*.bpmn",
-    "classpath*:**/*.bpmn20.xml",
-    "classpath*:**/*.cmmn",
-    "classpath*:**/*.cmmn10.xml"
-  };
+  private String[] deploymentResourcePattern = new String[] { "classpath*:**/*.bpmn", "classpath*:**/*.bpmn20.xml", "classpath*:**/*.cmmn",
+      "classpath*:**/*.cmmn10.xml" };
 
   /**
    * database configuration
@@ -115,18 +106,11 @@ public class CamundaBpmProperties {
     this.processEngineName = processEngineName;
   }
 
-  public void setHistoryLevel(String historyLevelString) {
-    if (StringUtils.isNotBlank(historyLevelString)) {
-      for (HistoryLevel historyLevel : HISTORY_LEVELS) {
-        if (historyLevel.getName().toUpperCase().equals(historyLevelString.toUpperCase())) {
-          this.historyLevel = historyLevel;
-          break;
-        }
-      }
-    }
+  public void setHistoryLevel(String historyLevel) {
+    this.historyLevel = historyLevel;
   }
 
-  public HistoryLevel getHistoryLevel() {
+  public String getHistoryLevel() {
     return historyLevel;
   }
 
