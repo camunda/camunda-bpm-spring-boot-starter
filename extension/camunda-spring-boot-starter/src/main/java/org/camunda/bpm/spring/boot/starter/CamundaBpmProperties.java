@@ -16,6 +16,11 @@ public class CamundaBpmProperties {
   private String historyLevel;
 
   /**
+   * the default history level to use when 'historyLevel' is 'auto'
+   */
+  private String historyLevelDefault;
+
+  /**
    * enables auto deployment of processes
    */
   private boolean autoDeploymentEnabled = true;
@@ -112,6 +117,21 @@ public class CamundaBpmProperties {
 
   public String getHistoryLevel() {
     return historyLevel;
+  }
+
+  /**
+   * @return the historyLevelDefault
+   */
+  public String getHistoryLevelDefault() {
+    return historyLevelDefault;
+  }
+
+  /**
+   * @param historyLevelDefault
+   *          the historyLevelDefault to set
+   */
+  public void setHistoryLevelDefault(String historyLevelDefault) {
+    this.historyLevelDefault = historyLevelDefault;
   }
 
   /**

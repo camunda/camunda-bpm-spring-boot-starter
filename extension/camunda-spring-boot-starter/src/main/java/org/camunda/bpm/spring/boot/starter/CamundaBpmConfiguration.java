@@ -9,17 +9,18 @@ import org.camunda.bpm.spring.boot.starter.configuration.CamundaConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaDatasourceConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaDeploymentConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaHistoryConfiguration;
+import org.camunda.bpm.spring.boot.starter.configuration.CamundaHistoryLevelAutoHandlingConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaJobConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaJpaConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultDatasourceConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultDeploymentConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultHistoryConfiguration;
+import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultHistoryLevelAutoHandlingConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultJobConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultJobConfiguration.JobConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultJpaConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultProcessEngineConfiguration;
-import org.camunda.bpm.spring.boot.starter.configuration.impl.HistoryLevelAutoHandlingConfiguration;
 import org.camunda.bpm.spring.boot.starter.jdbc.HistoryLevelDeterminator;
 import org.camunda.bpm.spring.boot.starter.jdbc.HistoryLevelDeterminatorJdbcTemplateImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,9 +87,10 @@ public class CamundaBpmConfiguration {
   }
 
   @Bean(name = "historyLevelAutoConfiguration")
+  @ConditionalOnMissingBean(CamundaHistoryLevelAutoHandlingConfiguration.class)
   @ConditionalOnProperty(prefix = "camunda.bpm", name = "history-level", havingValue = "auto", matchIfMissing = false)
-  public static HistoryLevelAutoHandlingConfiguration historyLevelAutoHandlingConfiguration() {
-    return new HistoryLevelAutoHandlingConfiguration();
+  public static CamundaHistoryLevelAutoHandlingConfiguration historyLevelAutoHandlingConfiguration() {
+    return new DefaultHistoryLevelAutoHandlingConfiguration();
   }
 
   @Bean(name = "historyLevelDeterminator")

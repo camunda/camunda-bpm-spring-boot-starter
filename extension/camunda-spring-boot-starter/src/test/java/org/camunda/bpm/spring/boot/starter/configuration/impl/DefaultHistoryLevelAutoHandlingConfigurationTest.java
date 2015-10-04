@@ -17,7 +17,7 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class HistoryLevelAutoHandlingConfigurationTest {
+public class DefaultHistoryLevelAutoHandlingConfigurationTest {
 
   @Mock
   private SpringProcessEngineConfiguration springProcessEngineConfiguration;
@@ -27,12 +27,12 @@ public class HistoryLevelAutoHandlingConfigurationTest {
 
   private CamundaBpmProperties camundaBpmProperties;
 
-  private HistoryLevelAutoHandlingConfiguration historyLevelAutoHandlingConfiguration;
+  private DefaultHistoryLevelAutoHandlingConfiguration historyLevelAutoHandlingConfiguration;
 
   @Before
   public void before() {
     camundaBpmProperties = new CamundaBpmProperties();
-    historyLevelAutoHandlingConfiguration = new HistoryLevelAutoHandlingConfiguration();
+    historyLevelAutoHandlingConfiguration = new DefaultHistoryLevelAutoHandlingConfiguration();
     historyLevelAutoHandlingConfiguration.camundaBpmProperties = camundaBpmProperties;
     historyLevelAutoHandlingConfiguration.historyLevelDeterminator = historyLevelDeterminator;
   }

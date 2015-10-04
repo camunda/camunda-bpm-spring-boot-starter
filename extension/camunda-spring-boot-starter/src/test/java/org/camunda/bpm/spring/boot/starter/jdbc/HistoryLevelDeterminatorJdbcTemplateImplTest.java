@@ -11,6 +11,7 @@ import java.util.Collections;
 import org.camunda.bpm.engine.impl.history.HistoryLevel;
 import org.camunda.bpm.engine.impl.history.HistoryLevelAudit;
 import org.camunda.bpm.engine.impl.history.event.HistoryEventType;
+import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,22 +41,35 @@ public class HistoryLevelDeterminatorJdbcTemplateImplTest {
     determinator.setJdbcTemplate(jdbcTemplate);
     determinator.setCamundaBpmProperties(camundaBpmProperties);
     determinator.afterPropertiesSet();
+    assertEquals(new SpringProcessEngineConfiguration().getHistory(), determinator.defaultHistoryLevel);
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void afterPropertiesSetTest2() throws Exception {
-    new HistoryLevelDeterminatorJdbcTemplateImpl().afterPropertiesSet();
+    camundaBpmProperties = new CamundaBpmProperties();
+    final String historyLevelDefault = "defaultValue";
+    camundaBpmProperties.setHistoryLevelDefault(historyLevelDefault);
+    HistoryLevelDeterminatorJdbcTemplateImpl determinator = new HistoryLevelDeterminatorJdbcTemplateImpl();
+    determinator.setJdbcTemplate(jdbcTemplate);
+    determinator.setCamundaBpmProperties(camundaBpmProperties);
+    determinator.afterPropertiesSet();
+    assertEquals(historyLevelDefault, determinator.defaultHistoryLevel);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void afterPropertiesSetTest3() throws Exception {
+    new HistoryLevelDeterminatorJdbcTemplateImpl().afterPropertiesSet();
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void afterPropertiesSetTest4() throws Exception {
     HistoryLevelDeterminatorJdbcTemplateImpl determinator = new HistoryLevelDeterminatorJdbcTemplateImpl();
     determinator.setJdbcTemplate(jdbcTemplate);
     determinator.afterPropertiesSet();
   }
 
   @Test(expected = IllegalArgumentException.class)
-  public void afterPropertiesSetTest4() throws Exception {
+  public void afterPropertiesSetTest5() throws Exception {
     HistoryLevelDeterminatorJdbcTemplateImpl determinator = new HistoryLevelDeterminatorJdbcTemplateImpl();
     determinator.setCamundaBpmProperties(camundaBpmProperties);
     determinator.afterPropertiesSet();

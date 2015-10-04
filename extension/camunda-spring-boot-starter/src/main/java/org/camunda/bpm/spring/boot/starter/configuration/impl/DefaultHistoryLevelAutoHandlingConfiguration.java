@@ -3,13 +3,14 @@ package org.camunda.bpm.spring.boot.starter.configuration.impl;
 import org.camunda.bpm.engine.ProcessEngineConfiguration;
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaConfiguration;
+import org.camunda.bpm.spring.boot.starter.configuration.CamundaHistoryLevelAutoHandlingConfiguration;
 import org.camunda.bpm.spring.boot.starter.jdbc.HistoryLevelDeterminator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.util.ReflectionUtils;
 
 @Order(CamundaConfiguration.DEFAULT_ORDER + 1)
-public class HistoryLevelAutoHandlingConfiguration extends AbstractCamundaConfiguration {
+public class DefaultHistoryLevelAutoHandlingConfiguration extends AbstractCamundaConfiguration implements CamundaHistoryLevelAutoHandlingConfiguration {
 
   protected static final String HISTORY_AUTO = "auto";
 

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 public class HistoryLevelDeterminatorJdbcTemplateImpl implements HistoryLevelDeterminator, InitializingBean {
 
@@ -38,6 +39,10 @@ public class HistoryLevelDeterminatorJdbcTemplateImpl implements HistoryLevelDet
   public void afterPropertiesSet() throws Exception {
     Assert.notNull(jdbcTemplate, "a jdbc template must be set");
     Assert.notNull(camundaBpmProperties, "camunda bpm properties must be set");
+    String historyLevelDefault = camundaBpmProperties.getHistoryLevelDefault();
+    if (StringUtils.hasText(historyLevelDefault)) {
+      defaultHistoryLevel = historyLevelDefault;
+    }
   }
 
   @Override
