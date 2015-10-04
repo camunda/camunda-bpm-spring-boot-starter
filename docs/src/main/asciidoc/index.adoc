@@ -49,6 +49,7 @@ The configuration is divided into _sections_. These _sections_ are represented b
 * `org.camunda.bpm.spring.boot.starter.configuration.CamundaProcessEngineConfiguration`
 * `org.camunda.bpm.spring.boot.starter.configuration.CamundaDatasourceConfiguration`
 * `org.camunda.bpm.spring.boot.starter.configuration.CamundaHistoryConfiguration`
+* `org.camunda.bpm.spring.boot.starter.configuration.CamundaHistoryLevelAutoHandlingConfiguration`
 * `org.camunda.bpm.spring.boot.starter.configuration.CamundaJobConfiguration`
 * `org.camunda.bpm.spring.boot.starter.configuration.CamundaDeploymentConfiguration`
 * `org.camunda.bpm.spring.boot.starter.configuration.CamundaJpaConfiguration`
@@ -82,6 +83,8 @@ public DataSource secondaryDataSource() {
 }
 ----
 
+IMPORTANT: When using `history-level auto` with more then one database and camunda version < 7.4 you have to provide a `JdbcTemplate` bean as `camundaBpmJdbcTemplate` corresponding to the `camundaBpmDataSource`.
+
 ==== `DefaultHistoryConfiguration`
 
 Applies the history configuration to the process engine. If not configured the `camunda` default level will be used.
@@ -93,6 +96,15 @@ public HistoryEventHandler customHistoryEventHandler() {
   return new CustomHistoryEventHanlder();
 }
 ----
+
+==== `DefaultHistoryLevelAutoHandlingConfiguration`
+As camunda version >= 7.4 supports `history-level auto` this configuration adds support for versions < = 7.3.
+
+To have more control about the handling you can provide your own
+
+- `org.camunda.bpm.spring.boot.starter.jdbc.HistoryLevelDeterminator` with name `historyLevelDeterminator`
+
+IMPORTANT: The default configuration is applied after all other default configurations using the ordering mechanism.
 
 ==== `DefaultJobConfiguration`
 
@@ -200,6 +212,10 @@ public class MyCustomConfiguration implements CamundaConfiguration {
 |`{properties-prefix}.history-level`
 |camunda history level
 |camunda default value
+
+|`{properties-prefix}.history-level-default`
+|camunda history level to use when `history-level` is `auto` but the level can not determined automatically
+|default value from `history-level`
 
 |`{properties-prefix}.auto-deployment-enabled`
 |if processes should be auto deployed
