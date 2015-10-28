@@ -35,7 +35,7 @@ public class DefaultHistoryConfigurationTest {
   @Test
   public void noHistoryLevelTest() {
     defaultHistoryConfiguration.apply(springProcessEngineConfiguration);
-    verify(springProcessEngineConfiguration, times(0)).setHistoryLevel(Mockito.any(HistoryLevel.class));
+    verify(springProcessEngineConfiguration, times(0)).setHistory(Mockito.anyString());
   }
 
   @Test
