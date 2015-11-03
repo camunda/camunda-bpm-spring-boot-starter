@@ -13,6 +13,7 @@ import org.camunda.bpm.spring.boot.starter.configuration.CamundaHistoryLevelAuto
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaJobConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaJpaConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaProcessEngineConfiguration;
+import org.camunda.bpm.spring.boot.starter.configuration.condition.NeedsHistoryAutoConfigurationCondition;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultDatasourceConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultDeploymentConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultHistoryConfiguration;
@@ -29,6 +30,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -89,6 +91,7 @@ public class CamundaBpmConfiguration {
   @Bean(name = "historyLevelAutoConfiguration")
   @ConditionalOnMissingBean(CamundaHistoryLevelAutoHandlingConfiguration.class)
   @ConditionalOnProperty(prefix = "camunda.bpm", name = "history-level", havingValue = "auto", matchIfMissing = false)
+  @Conditional(NeedsHistoryAutoConfigurationCondition.class)
   public static CamundaHistoryLevelAutoHandlingConfiguration historyLevelAutoHandlingConfiguration() {
     return new DefaultHistoryLevelAutoHandlingConfiguration();
   }

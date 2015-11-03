@@ -1,7 +1,5 @@
 package org.camunda.bpm.spring.boot.starter.configuration.impl;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -38,77 +36,19 @@ public class DefaultHistoryLevelAutoHandlingConfigurationTest {
   }
 
   @Test
-  public void applyTest1() {
-    when(springProcessEngineConfiguration.getHistory()).thenReturn("audit");
-    historyLevelAutoHandlingConfiguration.apply(springProcessEngineConfiguration);
-    verify(historyLevelDeterminator, times(0)).determineHistoryLevel();
-    verify(springProcessEngineConfiguration, times(0)).setHistory(Mockito.anyString());
-  }
-
-  @Test
-  public void applyTest2() {
-    when(springProcessEngineConfiguration.getHistory()).thenReturn("auto");
-    final String historyLevel = "testLevel";
-    when(historyLevelDeterminator.determineHistoryLevel()).thenReturn(historyLevel);
-    simulateHistoryAutoIsNotSupported();
+  public void applyTest() {
+    when(historyLevelDeterminator.determineHistoryLevel()).thenReturn("audit");
     historyLevelAutoHandlingConfiguration.apply(springProcessEngineConfiguration);
     verify(historyLevelDeterminator).determineHistoryLevel();
-    verify(springProcessEngineConfiguration).setHistory(historyLevel);
+    verify(springProcessEngineConfiguration).setHistory(Mockito.anyString());
   }
 
   @Test
-  public void applyTest3() {
-    when(springProcessEngineConfiguration.getHistory()).thenReturn("auto");
-    final String historyLevel = null;
-    when(historyLevelDeterminator.determineHistoryLevel()).thenReturn(historyLevel);
-    simulateHistoryAutoIsNotSupported();
+  public void notApplyTest() {
+    when(historyLevelDeterminator.determineHistoryLevel()).thenReturn(null);
     historyLevelAutoHandlingConfiguration.apply(springProcessEngineConfiguration);
     verify(historyLevelDeterminator).determineHistoryLevel();
     verify(springProcessEngineConfiguration, times(0)).setHistory(Mockito.anyString());
   }
 
-  @Test
-  public void needsAdditionalConfigurationTest1() {
-    when(springProcessEngineConfiguration.getHistory()).thenReturn("auto");
-    simulateHistoryAutoIsNotSupported();
-    assertTrue(historyLevelAutoHandlingConfiguration.needsAdditionalConfiguration(springProcessEngineConfiguration));
-  }
-
-  @Test
-  public void needsAdditionalConfigurationTest2() {
-    when(springProcessEngineConfiguration.getHistory()).thenReturn("auto");
-    simulateHistoryAutoIsSupported();
-    assertFalse(historyLevelAutoHandlingConfiguration.needsAdditionalConfiguration(springProcessEngineConfiguration));
-  }
-
-  @Test
-  public void needsAdditionalConfigurationTest3() {
-    when(springProcessEngineConfiguration.getHistory()).thenReturn("audit");
-    simulateHistoryAutoIsNotSupported();
-    assertFalse(historyLevelAutoHandlingConfiguration.needsAdditionalConfiguration(springProcessEngineConfiguration));
-  }
-
-  @Test
-  public void needsAdditionalConfigurationTest4() {
-    when(springProcessEngineConfiguration.getHistory()).thenReturn("audit");
-    simulateHistoryAutoIsSupported();
-    assertFalse(historyLevelAutoHandlingConfiguration.needsAdditionalConfiguration(springProcessEngineConfiguration));
-  }
-
-  @Test
-  public void isHistoryAutoSupportedTest() {
-    simulateHistoryAutoIsSupported();
-    assertTrue(historyLevelAutoHandlingConfiguration.isHistoryAutoSupported());
-
-    simulateHistoryAutoIsNotSupported();
-    assertFalse(historyLevelAutoHandlingConfiguration.isHistoryAutoSupported());
-  }
-
-  private void simulateHistoryAutoIsNotSupported() {
-    historyLevelAutoHandlingConfiguration.historyAutoFieldName = "NOT_FOUND_FIELD";
-  }
-
-  private void simulateHistoryAutoIsSupported() {
-    historyLevelAutoHandlingConfiguration.historyAutoFieldName = "HISTORY_AUDIT";
-  }
 }
