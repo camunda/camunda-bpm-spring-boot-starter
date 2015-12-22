@@ -1,11 +1,9 @@
 package org.camunda.bpm.spring.boot.starter.configuration.condition;
 
-import org.camunda.bpm.engine.ProcessEngineConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionOutcome;
 import org.springframework.boot.autoconfigure.condition.SpringBootCondition;
 import org.springframework.context.annotation.ConditionContext;
 import org.springframework.core.type.AnnotatedTypeMetadata;
-import org.springframework.util.ReflectionUtils;
 
 public class NeedsHistoryAutoConfigurationCondition extends SpringBootCondition {
 
@@ -28,6 +26,10 @@ public class NeedsHistoryAutoConfigurationCondition extends SpringBootCondition 
   }
 
   protected boolean isHistoryAutoSupported() {
-    return ReflectionUtils.findField(ProcessEngineConfiguration.class, historyAutoFieldName) != null;
+    // FIXME see
+    // https://github.com/camunda/camunda-bpm-spring-boot-starter/issues/30
+    return false;
+    // return ReflectionUtils.findField(ProcessEngineConfiguration.class,
+    // historyAutoFieldName) != null;
   }
 }

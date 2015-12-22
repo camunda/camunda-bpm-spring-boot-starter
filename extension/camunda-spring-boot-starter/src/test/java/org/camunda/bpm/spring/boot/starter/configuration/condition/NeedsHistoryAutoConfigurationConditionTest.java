@@ -15,7 +15,7 @@ public class NeedsHistoryAutoConfigurationConditionTest {
   @Test
   public void isHistoryAutoSupportedTest() {
     NeedsHistoryAutoConfigurationCondition condition = new NeedsHistoryAutoConfigurationCondition();
-    assertTrue(condition.isHistoryAutoSupported());
+    assertFalse(condition.isHistoryAutoSupported());
     condition.historyAutoFieldName = "DB_SCHEMA_UPDATE_FALSE";
     assertTrue(condition.isHistoryAutoSupported());
   }
