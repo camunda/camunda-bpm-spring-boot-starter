@@ -13,6 +13,7 @@
   <modules>
     <module>camunda-spring-boot-starter-example-simple</module>
     <module>camunda-spring-boot-starter-example-web</module>
+    <module>camunda-spring-boot-starter-example-webapp</module>
   </modules>
 
   <!-- examples should be usable standalone, do not add common deps/buils here! -->
