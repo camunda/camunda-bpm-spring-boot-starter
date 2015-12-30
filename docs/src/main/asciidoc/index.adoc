@@ -265,4 +265,12 @@ IMPORTANT: This feature depends on camunda bpm version >= 7.4!
 |`camunda.bpm.rest.enabled`
 |enables camunda rest services
 |`true`
+
+|`{properties-prefix}.version`
+|version of the process engine
+|read only value e.g. 7.4.0
+
+|`{properties-prefix}.formatted-version`
+|formatted version of the process engine
+|read only value e.g. (v7.4.0)
 |===
