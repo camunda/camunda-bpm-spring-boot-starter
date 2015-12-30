@@ -12,7 +12,7 @@ public final class CamundaBpmVersion {
    * Return the full version string of the present Camunda codebase, or
    * {@code null} if it cannot be determined.
    * 
-   * @return the version of Spring Boot or {@code null}
+   * @return the version of Camunda or {@code null}
    * @see Package#getImplementationVersion()
    */
   public static String getVersion() {
