@@ -180,6 +180,23 @@ public class MyCustomConfiguration implements CamundaConfiguration {
 }
 ----
 
+== Web Applications
+
+To enable link:https://docs.camunda.org/manual/7.4/webapps/[Web Applications^]
+(Admin, Cockpit and Tasklist for now) you can use
+
+[source,xml,subs="verbatim,attributes"]
+.pom.xml
+----
+<dependency>
+  <groupId>org.camunda.bpm.extension</groupId>
+  <artifactId>camunda-bpm-spring-boot-starter-webapp</artifactId>
+  <version>{project-version}</version>
+</dependency>
+----
+
+IMPORTANT: This feature depends on camunda bpm version >= 7.4!
+
 [[properties]]
 == Camunda application properties
 [options="header"]
