@@ -19,7 +19,7 @@ public class PropertiesListener implements ApplicationListener<ApplicationEnviro
     String camundaVersion = getNullSafe(CamundaBpmVersion.getVersion());
     props.put("camunda.bpm.version", camundaVersion);
     props.put("camunda.bpm.formatted-version", formatVersion(camundaVersion));
-    environment.getPropertySources().addFirst(new PropertiesPropertySource("myProps", props));
+    environment.getPropertySources().addFirst(new PropertiesPropertySource("camunda-bpm-version-properties", props));
 
   }
 
