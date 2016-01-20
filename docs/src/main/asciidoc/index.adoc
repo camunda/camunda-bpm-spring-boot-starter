@@ -197,6 +197,19 @@ To enable link:https://docs.camunda.org/manual/7.4/webapps/[Web Applications^]
 
 IMPORTANT: This feature depends on camunda bpm version >= 7.4!
 
+By default the starter registers a controller to redirect `/` to camundas bundled `index.html`.
+To disable this you have to add `camunda.bpm.webapp.index-redirect-enabled=false` to your application properties.
+
+The default camunda URLs are:
+[options="header"]
+|===
+|Webapp|URL
+|default|http://localhost:8080
+|admin|http://localhost:8080/app/admin/index.html
+|tasklist|http://localhost:8080/app/tasklist/index.html
+|cockpit|http://localhost:8080/app/cockpit/index.html
+|===
+
 [[properties]]
 == Camunda application properties
 [options="header"]
@@ -273,4 +286,8 @@ IMPORTANT: This feature depends on camunda bpm version >= 7.4!
 |`{properties-prefix}.formatted-version`
 |formatted version of the process engine
 |read only value e.g. (v7.4.0)
+
+|`{properties-prefix}.webapp.index-redirect-enabled`
+|registers a redirect from `/` to camundas bundled `index.html`
+|`true`
 |===
