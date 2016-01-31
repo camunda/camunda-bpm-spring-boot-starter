@@ -40,7 +40,8 @@ abstract class AbstractFinishedWithNoExceptionRunListener implements SpringAppli
   public final void finished(ConfigurableApplicationContext context, Throwable exception) {
     if (exception == null) {
       CamundaBpmProperties camundaBpmProperties = getBean(context, CamundaBpmProperties.class);
-      finishedWithNoException(context, camundaBpmProperties);
+      if (camundaBpmProperties != null)
+    	  finishedWithNoException(context, camundaBpmProperties);
     } else {
       getLogger().warn("skipping because of failed context initialization");
     }
