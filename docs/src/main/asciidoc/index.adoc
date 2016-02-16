@@ -32,7 +32,7 @@ This will add the camunda version `{camunda-version}` to your dependencies. If y
       <!-- Import dependency management from camunda -->
       <groupId>org.camunda.bpm</groupId>
       <artifactId>camunda-bom</artifactId>
-      <version>${camunda.version}</version
+      <version>${camunda.version}</version>
       <scope>import</scope>
       <type>pom</type>
     </dependency>
