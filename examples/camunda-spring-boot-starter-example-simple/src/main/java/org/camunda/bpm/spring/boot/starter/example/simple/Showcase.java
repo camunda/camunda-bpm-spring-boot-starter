@@ -2,22 +2,19 @@ package org.camunda.bpm.spring.boot.starter.example.simple;
 
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
-import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.task.Task;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.ExitCodeGenerator;
-import org.springframework.boot.SpringApplication;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-@Component
-public class Showcase implements ApplicationContextAware {
+import static org.slf4j.LoggerFactory.getLogger;
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(Showcase.class);
+@Component
+public class Showcase {
+
+  private final Logger logger = getLogger(this.getClass());
 
   @Autowired
   private RuntimeService runtimeService;
@@ -25,43 +22,21 @@ public class Showcase implements ApplicationContextAware {
   @Autowired
   private TaskService taskService;
 
-  private ApplicationContext context;
+  private String processInstanceId;
 
-  protected boolean finished = false;
+  @EventListener
+  public void notify(final ContextRefreshedEvent unused) {
+    processInstanceId = runtimeService.startProcessInstanceByKey("Sample").getProcessInstanceId();
+    logger.info("started instance: {}", processInstanceId);
 
-  public void show() {
-    ProcessInstance processInstance = runtimeService
-      .startProcessInstanceByKey("Sample");
-    LOGGER.info("started {}", processInstance);
-    Task task = taskService.createTaskQuery()
-      .processInstanceId(processInstance.getId()).singleResult();
-    runtimeService.signal(task.getExecutionId());
-    LOGGER.info("signaled {}", task);
-    waitForProcessFinished(processInstance);
+    Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
+    taskService.complete(task.getId());
+    logger.info("completed task: {}", task);
+
+    // now jobExecutor should execute the async job
   }
 
-  private void waitForProcessFinished(ProcessInstance processInstance) {
-    while (runtimeService.createProcessInstanceQuery()
-      .processInstanceId(processInstance.getId()).singleResult() != null) {
-      try {
-        Thread.sleep(500);
-      } catch (InterruptedException e) {
-        LOGGER.error("", e);
-      }
-    }
-    finished = true;
-    SpringApplication.exit(context, new ExitCodeGenerator() {
-
-      @Override
-      public int getExitCode() {
-        return 0;
-      }
-    });
-  }
-
-  @Override
-  public void setApplicationContext(ApplicationContext applicationContext)
-    throws BeansException {
-    this.context = applicationContext;
+  public String getProcessInstanceId() {
+    return processInstanceId;
   }
 }

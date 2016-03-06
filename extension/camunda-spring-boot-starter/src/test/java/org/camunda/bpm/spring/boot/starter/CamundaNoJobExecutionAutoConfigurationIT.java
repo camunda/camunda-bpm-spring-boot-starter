@@ -13,8 +13,7 @@ import static org.junit.Assert.assertNull;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = {TestNoJobExecutionApplication.class})
 @Transactional
-public class CamundaNoJobExecutionAutoConfigurationIT extends
-  AbstractCamundaAutoConfigurationIT {
+public class CamundaNoJobExecutionAutoConfigurationIT extends AbstractCamundaAutoConfigurationIT {
 
   @Test
   public void jobConfigurationTest() {

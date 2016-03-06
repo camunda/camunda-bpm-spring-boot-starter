@@ -52,6 +52,11 @@
         <artifactId>camunda-bpm-spring-boot-starter-rest</artifactId>
         <version>${project.version}</version>
       </dependency>
+      <dependency>
+        <groupId>org.assertj</groupId>
+        <artifactId>assertj-core</artifactId>
+        <version>1.7.1</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
