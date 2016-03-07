@@ -1,15 +1,16 @@
 package org.camunda.bpm.spring.boot.starter;
 
-import javax.annotation.PostConstruct;
-
 import org.camunda.bpm.engine.AuthorizationService;
 import org.camunda.bpm.engine.CaseService;
+import org.camunda.bpm.engine.DecisionService;
+import org.camunda.bpm.engine.ExternalTaskService;
 import org.camunda.bpm.engine.FilterService;
 import org.camunda.bpm.engine.FormService;
 import org.camunda.bpm.engine.HistoryService;
 import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.ManagementService;
 import org.camunda.bpm.engine.ProcessEngine;
+import org.camunda.bpm.engine.ProcessEngineServices;
 import org.camunda.bpm.engine.RepositoryService;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
@@ -22,75 +23,90 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 
-@EnableConfigurationProperties({ CamundaBpmProperties.class, CamundaBpmManagementProperties.class })
-@Import({ CamundaBpmConfiguration.class, CamundaBpmActuatorConfiguration.class, CamundaBpmPluginsConfiguration.class })
+@EnableConfigurationProperties({CamundaBpmProperties.class, CamundaBpmManagementProperties.class})
+@Import({CamundaBpmConfiguration.class, CamundaBpmActuatorConfiguration.class, CamundaBpmPluginsConfiguration.class})
 @AutoConfigureAfter(HibernateJpaAutoConfiguration.class)
-public class CamundaBpmAutoConfiguration {
-
-  @Autowired
-  private ProcessEngineConfigurationImpl processEngineConfigurationImpl;
-
-  @Autowired
-  private ProcessEngineFactoryBean processEngineFactoryBean;
-
-  @PostConstruct
-  public void init() {
-    processEngineFactoryBean.setProcessEngineConfiguration(processEngineConfigurationImpl);
-  }
+public class CamundaBpmAutoConfiguration implements ProcessEngineServices {
 
   @Bean
-  public static ProcessEngineFactoryBean processEngineFactoryBean() {
-    return new ProcessEngineFactoryBean();
+  public static ProcessEngineFactoryBean processEngineFactoryBean(final ProcessEngineConfigurationImpl processEngineConfigurationImpl) {
+    final ProcessEngineFactoryBean factoryBean = new ProcessEngineFactoryBean();
+    factoryBean.setProcessEngineConfiguration(processEngineConfigurationImpl);
+    return factoryBean;
   }
 
-  @Bean
-  public RuntimeService runtimeService(ProcessEngine processEngine) {
+  @Autowired
+  private ProcessEngine processEngine;
+
+  @Bean(name = "runtimeService")
+  @Override
+  public RuntimeService getRuntimeService() {
     return processEngine.getRuntimeService();
   }
 
-  @Bean
-  public RepositoryService getRepositoryService(ProcessEngine processEngine) {
+  @Bean(name = "repositoryService")
+  @Override
+  public RepositoryService getRepositoryService() {
     return processEngine.getRepositoryService();
   }
 
-  @Bean
-  public FormService getFormService(ProcessEngine processEngine) {
+  @Bean(name = "formService")
+  @Override
+  public FormService getFormService() {
     return processEngine.getFormService();
   }
 
-  @Bean
-  public TaskService getTaskService(ProcessEngine processEngine) {
+  @Bean(name = "taskService")
+  @Override
+  public TaskService getTaskService() {
     return processEngine.getTaskService();
   }
 
-  @Bean
-  public HistoryService getHistoryService(ProcessEngine processEngine) {
+  @Bean(name = "historyService")
+  @Override
+  public HistoryService getHistoryService() {
     return processEngine.getHistoryService();
   }
 
-  @Bean
-  public IdentityService getIdentityService(ProcessEngine processEngine) {
+  @Bean(name = "identityService")
+  @Override
+  public IdentityService getIdentityService() {
     return processEngine.getIdentityService();
   }
 
-  @Bean
-  public ManagementService getManagementService(ProcessEngine processEngine) {
+  @Bean(name = "managementService")
+  @Override
+  public ManagementService getManagementService() {
     return processEngine.getManagementService();
   }
 
-  @Bean
-  public AuthorizationService getAuthorizationService(ProcessEngine processEngine) {
+  @Bean(name = "authorizationService")
+  @Override
+  public AuthorizationService getAuthorizationService() {
     return processEngine.getAuthorizationService();
   }
 
-  @Bean
-  public CaseService getCaseService(ProcessEngine processEngine) {
+  @Bean(name = "caseService")
+  @Override
+  public CaseService getCaseService() {
     return processEngine.getCaseService();
   }
 
-  @Bean
-  public FilterService getFilterService(ProcessEngine processEngine) {
+  @Bean(name = "filterService")
+  @Override
+  public FilterService getFilterService() {
     return processEngine.getFilterService();
   }
 
+  @Bean(name = "externalTaskService")
+  @Override
+  public ExternalTaskService getExternalTaskService() {
+    return processEngine.getExternalTaskService();
+  }
+
+  @Bean(name = "decisionService")
+  @Override
+  public DecisionService getDecisionService() {
+    return processEngine.getDecisionService();
+  }
 }
