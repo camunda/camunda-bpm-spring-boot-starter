@@ -1,8 +1,5 @@
 package org.camunda.bpm.spring.boot.starter;
 
-import java.util.List;
-import java.util.logging.Logger;
-
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaConfiguration;
@@ -24,6 +21,8 @@ import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultJpaConfigur
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.jdbc.HistoryLevelDeterminator;
 import org.camunda.bpm.spring.boot.starter.jdbc.HistoryLevelDeterminatorJdbcTemplateImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -34,10 +33,12 @@ import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.util.List;
+
 @Import(JobConfiguration.class)
 public class CamundaBpmConfiguration {
 
-  private static final Logger LOGGER = Logger.getLogger(CamundaBpmConfiguration.class.getName());
+  private final Logger logger = LoggerFactory.getLogger(CamundaBpmConfiguration.class);
 
   @Autowired
   protected List<CamundaConfiguration> camundaConfigurations;
@@ -48,7 +49,7 @@ public class CamundaBpmConfiguration {
     SpringProcessEngineConfiguration configuration = new SpringProcessEngineConfiguration();
 
     for (CamundaConfiguration camundaConfiguration : camundaConfigurations) {
-      LOGGER.fine("applying " + camundaConfiguration.getClass());
+      logger.debug("applying {}", camundaConfiguration.getClass());
       camundaConfiguration.apply(configuration);
     }
 
@@ -112,7 +113,7 @@ public class CamundaBpmConfiguration {
   }
 
   private static HistoryLevelDeterminator createHistoryLevelDeterminator(CamundaBpmProperties camundaBpmProperties, JdbcTemplate jdbcTemplate) {
-    HistoryLevelDeterminatorJdbcTemplateImpl determinator = new HistoryLevelDeterminatorJdbcTemplateImpl();
+    final HistoryLevelDeterminatorJdbcTemplateImpl determinator = new HistoryLevelDeterminatorJdbcTemplateImpl();
     determinator.setCamundaBpmProperties(camundaBpmProperties);
     determinator.setJdbcTemplate(jdbcTemplate);
     return determinator;

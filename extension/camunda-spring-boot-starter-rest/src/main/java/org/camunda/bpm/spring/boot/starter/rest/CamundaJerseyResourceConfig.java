@@ -3,8 +3,8 @@ package org.camunda.bpm.spring.boot.starter.rest;
 import org.camunda.bpm.engine.rest.impl.CamundaRestResources;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
-
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.ws.rs.ApplicationPath;
@@ -12,7 +12,7 @@ import javax.ws.rs.ApplicationPath;
 @ApplicationPath("/rest")
 public class CamundaJerseyResourceConfig extends ResourceConfig {
 
-  protected final Logger logger = Logger.getLogger(this.getClass().getName());
+  protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
   @PostConstruct
   public void registerCamundaRestResources() {
