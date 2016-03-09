@@ -7,13 +7,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.ResourceArrayPropertyEditor;
 
-import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
-public class DefaultDeploymentConfiguration extends AbstractCamundaConfiguration implements
-  CamundaDeploymentConfiguration {
+public class DefaultDeploymentConfiguration extends AbstractCamundaConfiguration implements CamundaDeploymentConfiguration {
 
-  private static final Logger LOGGER = LoggerFactory
-    .getLogger(DefaultDeploymentConfiguration.class);
+  private final Logger logger = LoggerFactory.getLogger(DefaultDeploymentConfiguration.class);
 
   @Override
   public void apply(SpringProcessEngineConfiguration configuration) {
@@ -23,20 +22,26 @@ public class DefaultDeploymentConfiguration extends AbstractCamundaConfiguration
   }
 
   protected Resource[] getDeploymentResources() {
-    Resource[] resources = null;
+    final Set<Resource> resources = new HashSet<Resource>();
+    final ResourceArrayPropertyEditor resolver = new ResourceArrayPropertyEditor();
 
-
-    ResourceArrayPropertyEditor resolver = new ResourceArrayPropertyEditor();
     try {
-      String[] resourcePattern = camundaBpmProperties.getDeploymentResourcePattern();
-      LOGGER.debug("resolving deployment resources for pattern {}", resourcePattern);
+      final String[] resourcePattern = camundaBpmProperties.getDeploymentResourcePattern();
+      logger.debug("resolving deployment resources for pattern {}", resourcePattern);
       resolver.setValue(resourcePattern);
-      resources = (Resource[]) resolver.getValue();
-      LOGGER.debug("resolved {}", Arrays.asList(resources));
+
+      for (Resource resource : (Resource[]) resolver.getValue()) {
+        if ("org.camunda.bpm.dmn".equals(resource.getFilename())) {
+          continue;
+        }
+        resources.add(resource);
+      }
+
+      logger.debug("resolved {}", resources);
     } catch (RuntimeException e) {
-      LOGGER.error("unable to resolve resources", e);
+      logger.error("unable to resolve resources", e);
     }
-    return resources;
+    return resources.toArray(new Resource[resources.size()]);
   }
 
 }
