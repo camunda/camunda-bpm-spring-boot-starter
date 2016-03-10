@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.ResourceArrayPropertyEditor;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,10 +32,9 @@ public class DefaultDeploymentConfiguration extends AbstractCamundaConfiguration
       resolver.setValue(resourcePattern);
 
       for (Resource resource : (Resource[]) resolver.getValue()) {
-        if ("org.camunda.bpm.dmn".equals(resource.getFilename())) {
-          continue;
+        if (isFile(resource)) {
+          resources.add(resource);
         }
-        resources.add(resource);
       }
 
       logger.debug("resolved {}", resources);
@@ -44,4 +44,11 @@ public class DefaultDeploymentConfiguration extends AbstractCamundaConfiguration
     return resources.toArray(new Resource[resources.size()]);
   }
 
+  private boolean isFile(Resource resource) {
+    try {
+      return !resource.getFile().isDirectory();
+    } catch (IOException e) {
+      return false;
+    }
+  }
 }
