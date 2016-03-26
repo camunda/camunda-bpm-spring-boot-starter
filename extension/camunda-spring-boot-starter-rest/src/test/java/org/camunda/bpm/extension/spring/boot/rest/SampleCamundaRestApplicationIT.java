@@ -1,10 +1,13 @@
 package org.camunda.bpm.extension.spring.boot.rest;
 
+import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.rest.dto.runtime.ProcessInstanceDto;
 import my.own.custom.spring.boot.project.SampleCamundaRestApplication;
+import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.TestRestTemplate;
@@ -29,6 +32,9 @@ public class SampleCamundaRestApplicationIT {
   @Value("${local.server.port}")
   private int port;
 
+  @Autowired
+  private RuntimeService runtimeService;
+
   @Test
   public void restApiIsAvailable() throws Exception {
     ResponseEntity<String> entity = restTemplate.getForEntity(
@@ -45,6 +51,13 @@ public class SampleCamundaRestApplicationIT {
       ProcessInstanceDto.class);
     assertEquals(HttpStatus.OK, entity.getStatusCode());
     assertNotNull(entity.getBody());
+
+    // find the process instance
+    final ProcessInstance processInstance = runtimeService.createProcessInstanceQuery()
+      .processInstanceId(entity.getBody().getId())
+      .singleResult();
+    assertEquals(processInstance.getProcessInstanceId(),
+      entity.getBody().getId());
   }
 
   @Ignore
@@ -56,6 +69,7 @@ public class SampleCamundaRestApplicationIT {
       String.class);
     assertEquals(HttpStatus.OK, entity.getStatusCode());
     assertEquals("1", entity);
+
   }
 
 }
