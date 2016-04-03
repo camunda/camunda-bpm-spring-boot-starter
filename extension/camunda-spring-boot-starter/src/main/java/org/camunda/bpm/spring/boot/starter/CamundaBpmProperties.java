@@ -1,5 +1,8 @@
 package org.camunda.bpm.spring.boot.starter;
 
+import org.camunda.bpm.engine.impl.metrics.MetricsRegistry;
+import org.camunda.bpm.engine.impl.metrics.MetricsReporterIdProvider;
+import org.camunda.bpm.engine.impl.metrics.reporter.DbMetricsReporter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties("camunda.bpm")
@@ -45,6 +48,11 @@ public class CamundaBpmProperties {
    * job execution configuration
    */
   private JobExecution jobExecution = new JobExecution();
+
+  /**
+   * metrics configuration
+   */
+  private Metrics metrics = new Metrics();
 
   /**
    * rest configuration
@@ -183,6 +191,16 @@ public class CamundaBpmProperties {
   public void setRest(Rest rest) {
     this.rest = rest;
   }
+
+
+  public Metrics getMetrics() {
+    return metrics;
+  }
+
+  public void setMetrics(Metrics metrics) {
+    this.metrics = metrics;
+  }
+
 
   public static class Database {
     /**
@@ -347,6 +365,55 @@ public class CamundaBpmProperties {
       }
 
       this.mappedUrl = mappedUrl;
+    }
+  }
+
+  public static class Metrics {
+
+    private boolean enabled = true;
+    private MetricsRegistry metricsRegistry;
+    private MetricsReporterIdProvider metricsReporterIdProvider;
+    private DbMetricsReporter dbMetricsReporter;
+    private boolean dbMetricsReporterActivate = true;
+
+    public boolean isEnabled() {
+      return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+      this.enabled = enabled;
+    }
+
+    public DbMetricsReporter getDbMetricsReporter() {
+      return dbMetricsReporter;
+    }
+
+    public void setDbMetricsReporter(DbMetricsReporter dbMetricsReporter) {
+      this.dbMetricsReporter = dbMetricsReporter;
+    }
+
+    public boolean isDbMetricsReporterActivate() {
+      return dbMetricsReporterActivate;
+    }
+
+    public void setDbMetricsReporterActivate(boolean dbMetricsReporterActivate) {
+      this.dbMetricsReporterActivate = dbMetricsReporterActivate;
+    }
+
+    public MetricsRegistry getMetricsRegistry() {
+      return metricsRegistry;
+    }
+
+    public void setMetricsRegistry(MetricsRegistry metricsRegistry) {
+      this.metricsRegistry = metricsRegistry;
+    }
+
+    public MetricsReporterIdProvider getMetricsReporterIdProvider() {
+      return metricsReporterIdProvider;
+    }
+
+    public void setMetricsReporterIdProvider(MetricsReporterIdProvider metricsReporterIdProvider) {
+      this.metricsReporterIdProvider = metricsReporterIdProvider;
     }
   }
 

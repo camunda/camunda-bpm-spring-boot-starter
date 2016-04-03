@@ -9,11 +9,9 @@ import org.springframework.core.io.support.ResourceArrayPropertyEditor;
 
 import java.util.Arrays;
 
-public class DefaultDeploymentConfiguration extends AbstractCamundaConfiguration implements
-  CamundaDeploymentConfiguration {
+public class DefaultDeploymentConfiguration extends AbstractCamundaConfiguration implements CamundaDeploymentConfiguration {
 
-  private static final Logger LOGGER = LoggerFactory
-    .getLogger(DefaultDeploymentConfiguration.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(DefaultDeploymentConfiguration.class);
 
   @Override
   public void apply(SpringProcessEngineConfiguration configuration) {
@@ -25,11 +23,10 @@ public class DefaultDeploymentConfiguration extends AbstractCamundaConfiguration
   protected Resource[] getDeploymentResources() {
     Resource[] resources = null;
 
-
     ResourceArrayPropertyEditor resolver = new ResourceArrayPropertyEditor();
     try {
       String[] resourcePattern = camundaBpmProperties.getDeploymentResourcePattern();
-      LOGGER.debug("resolving deployment resources for pattern {}", resourcePattern);
+      LOGGER.debug("resolving deployment resources for pattern {}", (String[])resourcePattern);
       resolver.setValue(resourcePattern);
       resources = (Resource[]) resolver.getValue();
       LOGGER.debug("resolved {}", Arrays.asList(resources));
