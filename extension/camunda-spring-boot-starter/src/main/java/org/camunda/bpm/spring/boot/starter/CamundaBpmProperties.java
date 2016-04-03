@@ -28,8 +28,8 @@ public class CamundaBpmProperties {
   /**
    * resource pattern for locating process sources
    */
-  private String[] deploymentResourcePattern = new String[] { "classpath*:**/*.bpmn", "classpath*:**/*.bpmn20.xml", "classpath*:**/*.cmmn",
-      "classpath*:**/*.cmmn10.xml" };
+  private String[] deploymentResourcePattern = new String[]{"classpath*:**/*.bpmn", "classpath*:**/*.bpmn20.xml", "classpath*:**/*.cmmn",
+    "classpath*:**/*.cmmn10.xml"};
 
   /**
    * database configuration
@@ -52,6 +52,11 @@ public class CamundaBpmProperties {
   private Rest rest = new Rest();
 
   /**
+   * webapp configuration
+   */
+  private Webapp webapp = new Webapp();
+
+  /**
    * @return the database
    */
   public Database getDatabase() {
@@ -59,8 +64,7 @@ public class CamundaBpmProperties {
   }
 
   /**
-   * @param database
-   *          the database to set
+   * @param database the database to set
    */
   public void setDatabase(Database database) {
     this.database = database;
@@ -74,8 +78,7 @@ public class CamundaBpmProperties {
   }
 
   /**
-   * @param jpa
-   *          the jpa to set
+   * @param jpa the jpa to set
    */
   public void setJpa(Jpa jpa) {
     this.jpa = jpa;
@@ -89,11 +92,18 @@ public class CamundaBpmProperties {
   }
 
   /**
-   * @param jobExecution
-   *          the jobExecution to set
+   * @param jobExecution the jobExecution to set
    */
   public void setJobExecution(JobExecution jobExecution) {
     this.jobExecution = jobExecution;
+  }
+
+  public Webapp getWebapp() {
+    return webapp;
+  }
+
+  public void setWebapp(Webapp webapp) {
+    this.webapp = webapp;
   }
 
   /**
@@ -104,8 +114,7 @@ public class CamundaBpmProperties {
   }
 
   /**
-   * @param processEngineName
-   *          the processEngineName to set
+   * @param processEngineName the processEngineName to set
    */
   public void setProcessEngineName(String processEngineName) {
     this.processEngineName = processEngineName;
@@ -127,8 +136,7 @@ public class CamundaBpmProperties {
   }
 
   /**
-   * @param historyLevelDefault
-   *          the historyLevelDefault to set
+   * @param historyLevelDefault the historyLevelDefault to set
    */
   public void setHistoryLevelDefault(String historyLevelDefault) {
     this.historyLevelDefault = historyLevelDefault;
@@ -142,8 +150,7 @@ public class CamundaBpmProperties {
   }
 
   /**
-   * @param autoDeploymentEnabled
-   *          the autoDeploymentEnabled to set
+   * @param autoDeploymentEnabled the autoDeploymentEnabled to set
    */
   public void setAutoDeploymentEnabled(boolean autoDeploymentEnabled) {
     this.autoDeploymentEnabled = autoDeploymentEnabled;
@@ -157,8 +164,7 @@ public class CamundaBpmProperties {
   }
 
   /**
-   * @param deploymentResourcePattern
-   *          the deploymentResourcePattern to set
+   * @param deploymentResourcePattern the deploymentResourcePattern to set
    */
   public void setDeploymentResourcePattern(String[] deploymentResourcePattern) {
     this.deploymentResourcePattern = deploymentResourcePattern;
@@ -172,14 +178,13 @@ public class CamundaBpmProperties {
   }
 
   /**
-   * @param rest
-   *          the rest to set
+   * @param rest the rest to set
    */
   public void setRest(Rest rest) {
     this.rest = rest;
   }
 
-  public class Database {
+  public static class Database {
     /**
      * enables automatic schema update
      */
@@ -203,8 +208,7 @@ public class CamundaBpmProperties {
     }
 
     /**
-     * @param schemaUpdate
-     *          the schemaUpdate to set
+     * @param schemaUpdate the schemaUpdate to set
      */
     public void setSchemaUpdate(boolean schemaUpdate) {
       this.schemaUpdate = schemaUpdate;
@@ -218,8 +222,7 @@ public class CamundaBpmProperties {
     }
 
     /**
-     * @param type
-     *          the type to set
+     * @param type the type to set
      */
     public void setType(String type) {
       this.type = type;
@@ -233,8 +236,7 @@ public class CamundaBpmProperties {
     }
 
     /**
-     * @param tablePrefix
-     *          the tablePrefix to set
+     * @param tablePrefix the tablePrefix to set
      */
     public void setTablePrefix(String tablePrefix) {
       this.tablePrefix = tablePrefix;
@@ -267,8 +269,7 @@ public class CamundaBpmProperties {
     }
 
     /**
-     * @param enabled
-     *          the enabled to set
+     * @param enabled the enabled to set
      */
     public void setEnabled(boolean enabled) {
       this.enabled = enabled;
@@ -282,8 +283,7 @@ public class CamundaBpmProperties {
     }
 
     /**
-     * @param active
-     *          the active to set
+     * @param active the active to set
      */
     public void setActive(boolean active) {
       this.active = active;
@@ -297,8 +297,7 @@ public class CamundaBpmProperties {
     }
 
     /**
-     * @param deploymentAware
-     *          the deploymentAware to set
+     * @param deploymentAware the deploymentAware to set
      */
     public void setDeploymentAware(boolean deploymentAware) {
       this.deploymentAware = deploymentAware;
@@ -322,8 +321,7 @@ public class CamundaBpmProperties {
     }
 
     /**
-     * @param enabled
-     *          the enabled to set
+     * @param enabled the enabled to set
      */
     public void setEnabled(boolean enabled) {
       this.enabled = enabled;
@@ -381,8 +379,7 @@ public class CamundaBpmProperties {
     }
 
     /**
-     * @param enabled
-     *          the enabled to set
+     * @param enabled the enabled to set
      */
     public void setEnabled(boolean enabled) {
       this.enabled = enabled;
@@ -396,8 +393,7 @@ public class CamundaBpmProperties {
     }
 
     /**
-     * @param persistenceUnitName
-     *          the persistenceUnitName to set
+     * @param persistenceUnitName the persistenceUnitName to set
      */
     public void setPersistenceUnitName(String persistenceUnitName) {
       this.persistenceUnitName = persistenceUnitName;
@@ -411,8 +407,7 @@ public class CamundaBpmProperties {
     }
 
     /**
-     * @param closeEntityManager
-     *          the closeEntityManager to set
+     * @param closeEntityManager the closeEntityManager to set
      */
     public void setCloseEntityManager(boolean closeEntityManager) {
       this.closeEntityManager = closeEntityManager;
@@ -426,11 +421,23 @@ public class CamundaBpmProperties {
     }
 
     /**
-     * @param handleTransaction
-     *          the handleTransaction to set
+     * @param handleTransaction the handleTransaction to set
      */
     public void setHandleTransaction(boolean handleTransaction) {
       this.handleTransaction = handleTransaction;
+    }
+
+  }
+
+  public static class Webapp {
+    private boolean indexRedirectEnabled = true;
+
+    public boolean isIndexRedirectEnabled() {
+      return indexRedirectEnabled;
+    }
+
+    public void setIndexRedirectEnabled(boolean indexRedirectEnabled) {
+      this.indexRedirectEnabled = indexRedirectEnabled;
     }
 
   }
