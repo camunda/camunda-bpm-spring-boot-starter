@@ -2,6 +2,8 @@ package org.camunda.bpm.spring.boot.starter;
 
 import org.camunda.bpm.engine.AuthorizationService;
 import org.camunda.bpm.engine.CaseService;
+import org.camunda.bpm.engine.DecisionService;
+import org.camunda.bpm.engine.ExternalTaskService;
 import org.camunda.bpm.engine.FilterService;
 import org.camunda.bpm.engine.FormService;
 import org.camunda.bpm.engine.HistoryService;
@@ -46,6 +48,12 @@ public abstract class AbstractCamundaAutoConfigurationIT {
 
   @Autowired
   protected FilterService filterService;
+
+  @Autowired
+  protected ExternalTaskService externalTaskService;
+
+  @Autowired
+  protected DecisionService decisionService;
 
   @Autowired(required = false)
   protected JobExecutor jobExecutor;
