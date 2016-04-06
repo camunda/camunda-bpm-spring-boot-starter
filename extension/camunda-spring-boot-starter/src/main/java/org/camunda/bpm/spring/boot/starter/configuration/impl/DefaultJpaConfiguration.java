@@ -3,6 +3,7 @@ package org.camunda.bpm.spring.boot.starter.configuration.impl;
 import javax.persistence.EntityManagerFactory;
 
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
+import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaJpaConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -13,11 +14,13 @@ public class DefaultJpaConfiguration extends AbstractCamundaConfiguration implem
 
   @Override
   public void apply(SpringProcessEngineConfiguration configuration) {
-    configuration.setJpaPersistenceUnitName(camundaBpmProperties.getJpa().getPersistenceUnitName());
+    final CamundaBpmProperties.Jpa jpa = camundaBpmProperties.getJpa();
+
+    configuration.setJpaPersistenceUnitName(jpa.getPersistenceUnitName());
     if (jpaEntityManagerFactory != null) {
       configuration.setJpaEntityManagerFactory(jpaEntityManagerFactory);
     }
-    configuration.setJpaCloseEntityManager(camundaBpmProperties.getJpa().isCloseEntityManager());
-    configuration.setJpaHandleTransaction(camundaBpmProperties.getJpa().isHandleTransaction());
+    configuration.setJpaCloseEntityManager(jpa.isCloseEntityManager());
+    configuration.setJpaHandleTransaction(jpa.isHandleTransaction());
   }
 }

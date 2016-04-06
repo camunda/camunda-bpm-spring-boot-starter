@@ -46,7 +46,7 @@ public class CamundaBpmConfiguration {
   @Bean
   @ConditionalOnMissingBean(ProcessEngineConfigurationImpl.class)
   public ProcessEngineConfigurationImpl processEngineConfigurationImpl() {
-    SpringProcessEngineConfiguration configuration = new SpringProcessEngineConfiguration();
+    final SpringProcessEngineConfiguration configuration = new SpringProcessEngineConfiguration();
 
     for (CamundaConfiguration camundaConfiguration : camundaConfigurations) {
       logger.debug("applying {}", camundaConfiguration.getClass());

@@ -11,8 +11,6 @@ import java.util.Arrays;
 
 public class DefaultDeploymentConfiguration extends AbstractCamundaConfiguration implements CamundaDeploymentConfiguration {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(DefaultDeploymentConfiguration.class);
-
   @Override
   public void apply(SpringProcessEngineConfiguration configuration) {
     if (camundaBpmProperties.isAutoDeploymentEnabled()) {
@@ -26,12 +24,12 @@ public class DefaultDeploymentConfiguration extends AbstractCamundaConfiguration
     ResourceArrayPropertyEditor resolver = new ResourceArrayPropertyEditor();
     try {
       String[] resourcePattern = camundaBpmProperties.getDeploymentResourcePattern();
-      LOGGER.debug("resolving deployment resources for pattern {}", (String[])resourcePattern);
+      logger.debug("resolving deployment resources for pattern {}", (String[])resourcePattern);
       resolver.setValue(resourcePattern);
       resources = (Resource[]) resolver.getValue();
-      LOGGER.debug("resolved {}", Arrays.asList(resources));
+      logger.debug("resolved {}", Arrays.asList(resources));
     } catch (RuntimeException e) {
-      LOGGER.error("unable to resolve resources", e);
+      logger.error("unable to resolve resources", e);
     }
     return resources;
   }
