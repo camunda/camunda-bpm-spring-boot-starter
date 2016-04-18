@@ -120,9 +120,9 @@ public class HistoryLevelDeterminatorJdbcTemplateImplTest {
   public void getSqlTest() {
     HistoryLevelDeterminatorJdbcTemplateImpl determinator = new HistoryLevelDeterminatorJdbcTemplateImpl();
     determinator.setCamundaBpmProperties(camundaBpmProperties);
-    assertEquals("SELECT VALUE_ FROM ACT_GE_PROPERTY WHERE NAME_='schema.history'", determinator.getSql());
+    assertEquals("SELECT VALUE_ FROM ACT_GE_PROPERTY WHERE NAME_='historyLevel'", determinator.getSql());
     camundaBpmProperties.getDatabase().setTablePrefix("TEST_");
-    assertEquals("SELECT VALUE_ FROM TEST_ACT_GE_PROPERTY WHERE NAME_='schema.history'", determinator.getSql());
+    assertEquals("SELECT VALUE_ FROM TEST_ACT_GE_PROPERTY WHERE NAME_='historyLevel'", determinator.getSql());
   }
 
   @Test

@@ -18,11 +18,18 @@ import org.springframework.util.StringUtils;
 
 public class HistoryLevelDeterminatorJdbcTemplateImpl implements HistoryLevelDeterminator, InitializingBean {
 
+  public static HistoryLevelDeterminator createHistoryLevelDeterminator(CamundaBpmProperties camundaBpmProperties, JdbcTemplate jdbcTemplate) {
+    final HistoryLevelDeterminatorJdbcTemplateImpl determinator = new HistoryLevelDeterminatorJdbcTemplateImpl();
+    determinator.setCamundaBpmProperties(camundaBpmProperties);
+    determinator.setJdbcTemplate(jdbcTemplate);
+    return determinator;
+  }
+
   private static final Logger LOGGER = LoggerFactory.getLogger(HistoryLevelDeterminatorJdbcTemplateImpl.class);
 
   private static final String TABLE_PREFIX_PLACEHOLDER = "{TABLE_PREFIX}";
 
-  protected static final String SQL_TEMPLATE = "SELECT VALUE_ FROM " + TABLE_PREFIX_PLACEHOLDER + "ACT_GE_PROPERTY WHERE NAME_='schema.history'";
+  protected static final String SQL_TEMPLATE = "SELECT VALUE_ FROM " + TABLE_PREFIX_PLACEHOLDER + "ACT_GE_PROPERTY WHERE NAME_='historyLevel'";
 
   protected final List<HistoryLevel> historyLevels = new ArrayList<HistoryLevel>(Arrays.asList(new HistoryLevel[] { HistoryLevel.HISTORY_LEVEL_ACTIVITY,
       HistoryLevel.HISTORY_LEVEL_AUDIT, HistoryLevel.HISTORY_LEVEL_FULL, HistoryLevel.HISTORY_LEVEL_NONE }));

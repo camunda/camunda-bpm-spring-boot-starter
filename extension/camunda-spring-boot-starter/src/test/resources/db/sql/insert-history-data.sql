@@ -1,1 +1,1 @@
-update ACT_GE_PROPERTY set value_='1' where name_='schema.history';
+insert into ACT_GE_PROPERTY values ('historyLevel', '3', 1);
