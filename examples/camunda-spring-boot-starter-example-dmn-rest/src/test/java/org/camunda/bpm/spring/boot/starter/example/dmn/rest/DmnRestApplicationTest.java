@@ -61,10 +61,6 @@ public class DmnRestApplicationTest {
       camundaBpmProperties.getProcessEngineName(),
       CHECK_ORDER);
 
-    while (ProcessEngines.getDefaultProcessEngine() == null) {
-      logger.error("waiting for process engine");
-      Thread.sleep(1000L);
-    }
 
     logger.info("url: {}", url);
 

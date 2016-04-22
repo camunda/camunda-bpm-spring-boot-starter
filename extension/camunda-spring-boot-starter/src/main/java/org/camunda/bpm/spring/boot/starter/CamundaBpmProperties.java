@@ -3,6 +3,7 @@ package org.camunda.bpm.spring.boot.starter;
 import org.camunda.bpm.engine.impl.bpmn.deployer.BpmnDeployer;
 import org.camunda.bpm.engine.impl.cmmn.deployer.CmmnDeployer;
 import org.camunda.bpm.engine.impl.dmn.deployer.DmnDeployer;
+import org.camunda.bpm.engine.ProcessEngines;
 import org.camunda.bpm.engine.impl.metrics.MetricsRegistry;
 import org.camunda.bpm.engine.impl.metrics.MetricsReporterIdProvider;
 import org.camunda.bpm.engine.impl.metrics.reporter.DbMetricsReporter;
@@ -34,7 +35,7 @@ public class CamundaBpmProperties {
   /**
    * name of the process engine
    */
-  private String processEngineName;
+  private String processEngineName = ProcessEngines.NAME_DEFAULT;
 
   /**
    * the history level to use

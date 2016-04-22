@@ -1,7 +1,11 @@
 package org.camunda.bpm.spring.boot.starter.example.dmn.rest;
 
 import org.camunda.bpm.engine.HistoryService;
+import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.history.HistoricProcessInstance;
+import org.camunda.bpm.engine.impl.cfg.AbstractProcessEnginePlugin;
+import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
+import org.camunda.bpm.engine.impl.cfg.ProcessEnginePlugin;
 import org.camunda.bpm.spring.boot.starter.rest.CamundaJerseyResourceConfig;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.slf4j.Logger;
@@ -29,6 +33,26 @@ public class DmnRestApplication {
   @Bean
   public ResourceConfig jerseyConfig() {
     return new CamundaJerseyResourceConfig();
+  }
+
+  @Bean
+  public ProcessEnginePlugin statusPlugin() {
+    return new AbstractProcessEnginePlugin(){
+      @Override
+      public void postInit(ProcessEngineConfigurationImpl processEngineConfiguration) {
+        logger.warn("post init");
+      }
+
+      @Override
+      public void postProcessEngineBuild(ProcessEngine processEngine) {
+        logger.warn("post build");
+      }
+
+      @Override
+      public void preInit(ProcessEngineConfigurationImpl processEngineConfiguration) {
+        logger.warn("pre init");
+      }
+    };
   }
 
 }
