@@ -43,7 +43,7 @@ public class CamundaBpmWebappAutoConfiguration extends WebMvcAutoConfigurationAd
 
   @Override
   public void addResourceHandlers(ResourceHandlerRegistry registry) {
-    registry.addResourceHandler("/**").addResourceLocations("classpath:/");
+    registry.addResourceHandler("/**").addResourceLocations("classpath:/", "classpath:/static/");
     super.addResourceHandlers(registry);
   }
 
