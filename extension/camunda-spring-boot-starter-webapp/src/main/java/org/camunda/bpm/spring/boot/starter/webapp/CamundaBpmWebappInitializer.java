@@ -37,8 +37,6 @@ import static org.glassfish.jersey.servlet.ServletProperties.JAXRS_APPLICATION_C
  */
 public class CamundaBpmWebappInitializer implements ServletContextInitializer {
 
-  public static String APP = "app";
-  public static String API = "api";
   private final Logger logger = LoggerFactory.getLogger(CamundaBpmWebappInitializer.class);
 
   private static final EnumSet<DispatcherType> DISPATCHER_TYPES = EnumSet.of(DispatcherType.REQUEST);
@@ -57,13 +55,13 @@ public class CamundaBpmWebappInitializer implements ServletContextInitializer {
 
     registerFilter("Security Filter", LazySecurityFilter.class, singletonMap("configFile", "/securityFilterRules.json"), "/*");
 
-    registerFilter("Engines Filter", LazyProcessEnginesFilter.class, format("/%s/*", APP));
-    registerFilter("CacheControlFilter", CacheControlFilter.class, format("/%s/*", API));
+    registerFilter("Engines Filter", LazyProcessEnginesFilter.class, "/app/*");
+    registerFilter("CacheControlFilter", CacheControlFilter.class, "/api/*");
 
-    registerServlet("Cockpit Api", CockpitApplication.class, format("/%s/cockpit/*", API));
-    registerServlet("Admin Api", AdminApplication.class, format("/%s/admin/*", API));
-    registerServlet("Tasklist Api", TasklistApplication.class, format("/%s/tasklist/*", API));
-    registerServlet("Engine Api", EngineRestApplication.class, format("/%s/engine/*", API));
+    registerServlet("Cockpit Api", CockpitApplication.class, "/api/cockpit/*");
+    registerServlet("Admin Api", AdminApplication.class, "/api/admin/*");
+    registerServlet("Tasklist Api", TasklistApplication.class, "/api/tasklist/*");
+    registerServlet("Engine Api", EngineRestApplication.class, "/api/engine/*");
   }
 
   private FilterRegistration registerFilter(final String filterName, final Class<? extends Filter> filterClass, final String... urlPatterns) {
