@@ -3,6 +3,9 @@ package org.camunda.bpm.spring.boot.starter;
 import org.camunda.bpm.engine.impl.bpmn.deployer.BpmnDeployer;
 import org.camunda.bpm.engine.impl.cmmn.deployer.CmmnDeployer;
 import org.camunda.bpm.engine.impl.dmn.deployer.DmnDeployer;
+import org.camunda.bpm.engine.impl.metrics.MetricsRegistry;
+import org.camunda.bpm.engine.impl.metrics.MetricsReporterIdProvider;
+import org.camunda.bpm.engine.impl.metrics.reporter.DbMetricsReporter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.Arrays;
@@ -69,9 +72,19 @@ public class CamundaBpmProperties {
   private JobExecution jobExecution = new JobExecution();
 
   /**
+   * metrics configuration
+   */
+  private Metrics metrics = new Metrics();
+
+  /**
    * rest configuration
    */
   private Rest rest = new Rest();
+
+  /**
+   * webapp configuration
+   */
+  private Webapp webapp = new Webapp();
 
   /**
    * @return the database
@@ -113,6 +126,14 @@ public class CamundaBpmProperties {
    */
   public void setJobExecution(JobExecution jobExecution) {
     this.jobExecution = jobExecution;
+  }
+
+  public Webapp getWebapp() {
+    return webapp;
+  }
+
+  public void setWebapp(Webapp webapp) {
+    this.webapp = webapp;
   }
 
   /**
@@ -193,7 +214,17 @@ public class CamundaBpmProperties {
     this.rest = rest;
   }
 
-  public class Database {
+
+  public Metrics getMetrics() {
+    return metrics;
+  }
+
+  public void setMetrics(Metrics metrics) {
+    this.metrics = metrics;
+  }
+
+
+  public static class Database {
     /**
      * enables automatic schema update
      */
@@ -359,6 +390,55 @@ public class CamundaBpmProperties {
     }
   }
 
+  public static class Metrics {
+
+    private boolean enabled = true;
+    private MetricsRegistry metricsRegistry;
+    private MetricsReporterIdProvider metricsReporterIdProvider;
+    private DbMetricsReporter dbMetricsReporter;
+    private boolean dbMetricsReporterActivate = true;
+
+    public boolean isEnabled() {
+      return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+      this.enabled = enabled;
+    }
+
+    public DbMetricsReporter getDbMetricsReporter() {
+      return dbMetricsReporter;
+    }
+
+    public void setDbMetricsReporter(DbMetricsReporter dbMetricsReporter) {
+      this.dbMetricsReporter = dbMetricsReporter;
+    }
+
+    public boolean isDbMetricsReporterActivate() {
+      return dbMetricsReporterActivate;
+    }
+
+    public void setDbMetricsReporterActivate(boolean dbMetricsReporterActivate) {
+      this.dbMetricsReporterActivate = dbMetricsReporterActivate;
+    }
+
+    public MetricsRegistry getMetricsRegistry() {
+      return metricsRegistry;
+    }
+
+    public void setMetricsRegistry(MetricsRegistry metricsRegistry) {
+      this.metricsRegistry = metricsRegistry;
+    }
+
+    public MetricsReporterIdProvider getMetricsReporterIdProvider() {
+      return metricsReporterIdProvider;
+    }
+
+    public void setMetricsReporterIdProvider(MetricsReporterIdProvider metricsReporterIdProvider) {
+      this.metricsReporterIdProvider = metricsReporterIdProvider;
+    }
+  }
+
   public static class Jpa {
     /**
      * enables JPA
@@ -434,6 +514,19 @@ public class CamundaBpmProperties {
      */
     public void setHandleTransaction(boolean handleTransaction) {
       this.handleTransaction = handleTransaction;
+    }
+
+  }
+
+  public static class Webapp {
+    private boolean indexRedirectEnabled = true;
+
+    public boolean isIndexRedirectEnabled() {
+      return indexRedirectEnabled;
+    }
+
+    public void setIndexRedirectEnabled(boolean indexRedirectEnabled) {
+      this.indexRedirectEnabled = indexRedirectEnabled;
     }
 
   }

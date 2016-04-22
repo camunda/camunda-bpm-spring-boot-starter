@@ -1,13 +1,11 @@
 package org.camunda.bpm.spring.boot.starter.webapp;
 
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
 import javax.servlet.FilterRegistration;
-import javax.servlet.Servlet;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
@@ -24,19 +22,22 @@ import org.camunda.bpm.tasklist.impl.web.bootstrap.TasklistContainerBootstrap;
 import org.camunda.bpm.webapp.impl.engine.EngineRestApplication;
 import org.camunda.bpm.webapp.impl.security.auth.AuthenticationFilter;
 import org.glassfish.jersey.servlet.ServletContainer;
-import org.glassfish.jersey.servlet.ServletProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.embedded.ServletContextInitializer;
+
+import static java.lang.String.format;
+import static java.util.Collections.singletonMap;
+import static org.glassfish.jersey.servlet.ServletProperties.JAXRS_APPLICATION_CLASS;
 
 /**
  * Inspired by:
  * https://groups.google.com/forum/#!msg/camunda-bpm-users/BQHdcLIivzs
  * /iNVix8GkhYAJ (Christoph Berg)
  */
-
 public class CamundaBpmWebappInitializer implements ServletContextInitializer {
-  public static final Logger LOGGER = LoggerFactory.getLogger(CamundaBpmWebappInitializer.class);
+
+  private final Logger logger = LoggerFactory.getLogger(CamundaBpmWebappInitializer.class);
 
   private static final EnumSet<DispatcherType> DISPATCHER_TYPES = EnumSet.of(DispatcherType.REQUEST);
 
@@ -52,29 +53,15 @@ public class CamundaBpmWebappInitializer implements ServletContextInitializer {
 
     registerFilter("Authentication Filter", AuthenticationFilter.class, "/*");
 
-    HashMap<String, String> securityFilterParameters = new HashMap<String, String>();
-    securityFilterParameters.put("configFile", "/securityFilterRules.json");
-    registerFilter("Security Filter", LazySecurityFilter.class, securityFilterParameters, "/*");
+    registerFilter("Security Filter", LazySecurityFilter.class, singletonMap("configFile", "/securityFilterRules.json"), "/*");
 
     registerFilter("Engines Filter", LazyProcessEnginesFilter.class, "/app/*");
-
     registerFilter("CacheControlFilter", CacheControlFilter.class, "/api/*");
 
-    HashMap<String, String> cockpitApiParameters = new HashMap<String, String>();
-    cockpitApiParameters.put(ServletProperties.JAXRS_APPLICATION_CLASS, CockpitApplication.class.getName());
-    registerServlet("Cockpit Api", ServletContainer.class, cockpitApiParameters, "/api/cockpit/*");
-
-    HashMap<String, String> adminApiParameters = new HashMap<String, String>();
-    adminApiParameters.put(ServletProperties.JAXRS_APPLICATION_CLASS, AdminApplication.class.getName());
-    registerServlet("Admin Api", ServletContainer.class, adminApiParameters, "/api/admin/*");
-
-    HashMap<String, String> tasklistApiParameters = new HashMap<String, String>();
-    tasklistApiParameters.put(ServletProperties.JAXRS_APPLICATION_CLASS, TasklistApplication.class.getName());
-    registerServlet("Tasklist Api", ServletContainer.class, tasklistApiParameters, "/api/tasklist/*");
-
-    HashMap<String, String> engineApiParameters = new HashMap<String, String>();
-    engineApiParameters.put(ServletProperties.JAXRS_APPLICATION_CLASS, EngineRestApplication.class.getName());
-    registerServlet("Engine Api", ServletContainer.class, engineApiParameters, "/api/engine/*");
+    registerServlet("Cockpit Api", CockpitApplication.class, "/api/cockpit/*");
+    registerServlet("Admin Api", AdminApplication.class, "/api/admin/*");
+    registerServlet("Tasklist Api", TasklistApplication.class, "/api/tasklist/*");
+    registerServlet("Engine Api", EngineRestApplication.class, "/api/engine/*");
   }
 
   private FilterRegistration registerFilter(final String filterName, final Class<? extends Filter> filterClass, final String... urlPatterns) {
@@ -82,7 +69,7 @@ public class CamundaBpmWebappInitializer implements ServletContextInitializer {
   }
 
   private FilterRegistration registerFilter(final String filterName, final Class<? extends Filter> filterClass, final Map<String, String> initParameters,
-      final String... urlPatterns) {
+                                            final String... urlPatterns) {
     FilterRegistration filterRegistration = servletContext.getFilterRegistration(filterName);
 
     if (filterRegistration == null) {
@@ -93,22 +80,22 @@ public class CamundaBpmWebappInitializer implements ServletContextInitializer {
         filterRegistration.setInitParameters(initParameters);
       }
 
-      LOGGER.debug("Filter {} for URL {} registered.", filterName, urlPatterns);
+      logger.debug("Filter {} for URL {} registered.", filterName, urlPatterns);
     }
 
     return filterRegistration;
   }
 
-  private ServletRegistration registerServlet(final String servletName, final Class<? extends Servlet> servletClass, final Map<String, String> initParameters,
-      final String... urlPatterns) {
+  private ServletRegistration registerServlet(final String servletName, final Class<?> applicationClass,
+                                              final String... urlPatterns) {
     ServletRegistration servletRegistration = servletContext.getServletRegistration(servletName);
 
     if (servletRegistration == null) {
-      servletRegistration = servletContext.addServlet(servletName, servletClass);
+      servletRegistration = servletContext.addServlet(servletName, ServletContainer.class);
       servletRegistration.addMapping(urlPatterns);
-      servletRegistration.setInitParameters(initParameters);
+      servletRegistration.setInitParameters(singletonMap(JAXRS_APPLICATION_CLASS, applicationClass.getName()));
 
-      LOGGER.debug("Servlet {} for URL {} registered.", servletName, urlPatterns);
+      logger.debug("Servlet {} for URL {} registered.", servletName, urlPatterns);
     }
 
     return servletRegistration;

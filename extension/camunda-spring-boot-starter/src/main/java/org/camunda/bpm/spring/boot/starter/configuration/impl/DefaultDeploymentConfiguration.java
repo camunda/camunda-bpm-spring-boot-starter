@@ -12,7 +12,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class DefaultDeploymentConfiguration extends AbstractCamundaConfiguration implements CamundaDeploymentConfiguration {
-
   private final Logger logger = LoggerFactory.getLogger(DefaultDeploymentConfiguration.class);
 
   @Override

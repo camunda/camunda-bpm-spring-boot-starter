@@ -14,6 +14,7 @@
       <groupId>org.camunda.bpm.extension</groupId>
       <artifactId>camunda-bpm-spring-boot-starter</artifactId>
     </dependency>
+
     <dependency>
       <groupId>org.camunda.bpm.webapp</groupId>
       <artifactId>camunda-webapp-webjar</artifactId>
@@ -37,14 +38,13 @@
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-configuration-processor</artifactId>
-      <optional>true</optional>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
     </dependency>
 
     <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-test</artifactId>
-      <scope>test</scope>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
     </dependency>
 
     <dependency>
@@ -54,5 +54,4 @@
     </dependency>
 
   </dependencies>
-
 </project>

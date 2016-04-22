@@ -6,6 +6,7 @@ import org.camunda.bpm.spring.boot.starter.configuration.CamundaHistoryLevelAuto
 import org.camunda.bpm.spring.boot.starter.jdbc.HistoryLevelDeterminator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
+import org.springframework.util.StringUtils;
 
 @Order(CamundaConfiguration.DEFAULT_ORDER + 1)
 public class DefaultHistoryLevelAutoHandlingConfiguration extends AbstractCamundaConfiguration implements CamundaHistoryLevelAutoHandlingConfiguration {
@@ -15,8 +16,8 @@ public class DefaultHistoryLevelAutoHandlingConfiguration extends AbstractCamund
 
   @Override
   public void apply(SpringProcessEngineConfiguration configuration) {
-    String determineHistoryLevel = historyLevelDeterminator.determineHistoryLevel();
-    if (determineHistoryLevel != null) {
+    final String determineHistoryLevel = historyLevelDeterminator.determineHistoryLevel();
+    if (!StringUtils.isEmpty(determineHistoryLevel)) {
       configuration.setHistory(determineHistoryLevel);
     }
   }

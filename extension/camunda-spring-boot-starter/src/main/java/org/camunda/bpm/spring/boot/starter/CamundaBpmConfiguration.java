@@ -20,7 +20,6 @@ import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultJobConfigur
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultJpaConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.jdbc.HistoryLevelDeterminator;
-import org.camunda.bpm.spring.boot.starter.jdbc.HistoryLevelDeterminatorJdbcTemplateImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +34,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
 
+import static org.camunda.bpm.spring.boot.starter.jdbc.HistoryLevelDeterminatorJdbcTemplateImpl.createHistoryLevelDeterminator;
+
 @Import(JobConfiguration.class)
 public class CamundaBpmConfiguration {
 
@@ -46,7 +47,7 @@ public class CamundaBpmConfiguration {
   @Bean
   @ConditionalOnMissingBean(ProcessEngineConfigurationImpl.class)
   public ProcessEngineConfigurationImpl processEngineConfigurationImpl() {
-    SpringProcessEngineConfiguration configuration = new SpringProcessEngineConfiguration();
+    final SpringProcessEngineConfiguration configuration = new SpringProcessEngineConfiguration();
 
     for (CamundaConfiguration camundaConfiguration : camundaConfigurations) {
       logger.debug("applying {}", camundaConfiguration.getClass());
@@ -112,12 +113,7 @@ public class CamundaBpmConfiguration {
     return createHistoryLevelDeterminator(camundaBpmProperties, jdbcTemplate);
   }
 
-  private static HistoryLevelDeterminator createHistoryLevelDeterminator(CamundaBpmProperties camundaBpmProperties, JdbcTemplate jdbcTemplate) {
-    final HistoryLevelDeterminatorJdbcTemplateImpl determinator = new HistoryLevelDeterminatorJdbcTemplateImpl();
-    determinator.setCamundaBpmProperties(camundaBpmProperties);
-    determinator.setJdbcTemplate(jdbcTemplate);
-    return determinator;
-  }
+
 
   @Bean
   @ConditionalOnMissingBean(CamundaDeploymentConfiguration.class)

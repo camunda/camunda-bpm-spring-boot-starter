@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class DefaultHistoryConfiguration extends AbstractCamundaConfiguration implements CamundaHistoryConfiguration {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(DefaultHistoryConfiguration.class);
-
   @Autowired(required = false)
   protected HistoryEventHandler historyEventHandler;
 
@@ -21,7 +19,7 @@ public class DefaultHistoryConfiguration extends AbstractCamundaConfiguration im
       configuration.setHistory(historyLevel);
     }
     if (historyEventHandler != null) {
-      LOGGER.debug("registered history event handler: {}", historyEventHandler.getClass());
+      logger.debug("registered history event handler: {}", historyEventHandler.getClass());
       configuration.setHistoryEventHandler(historyEventHandler);
     }
   }
