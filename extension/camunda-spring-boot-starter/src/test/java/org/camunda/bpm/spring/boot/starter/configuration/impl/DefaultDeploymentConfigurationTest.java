@@ -1,38 +1,59 @@
 package org.camunda.bpm.spring.boot.starter.configuration.impl;
 
+
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.core.io.Resource;
 
-import static org.junit.Assert.assertEquals;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class DefaultDeploymentConfigurationTest {
 
-  private DefaultDeploymentConfiguration defaultDeploymentConfiguration;
-  private CamundaBpmProperties camundaBpmProperties;
-  private SpringProcessEngineConfiguration configuration;
+  private final DefaultDeploymentConfiguration defaultDeploymentConfiguration = new DefaultDeploymentConfiguration();
+  private final CamundaBpmProperties camundaBpmProperties = new CamundaBpmProperties();
+  private final SpringProcessEngineConfiguration configuration = new SpringProcessEngineConfiguration();
 
   @Before
   public void before() {
-    defaultDeploymentConfiguration = new DefaultDeploymentConfiguration();
-    camundaBpmProperties = new CamundaBpmProperties();
     defaultDeploymentConfiguration.camundaBpmProperties = camundaBpmProperties;
-    configuration = new SpringProcessEngineConfiguration();
   }
 
   @Test
   public void noDeploymentTest() {
     camundaBpmProperties.setAutoDeploymentEnabled(false);
     defaultDeploymentConfiguration.apply(configuration);
-    assertEquals(0, configuration.getDeploymentResources().length);
+
+    assertThat(configuration.getDeploymentResources()).isEmpty();
   }
 
   @Test
-  public void deploymentTest() {
+  public void deploymentTest() throws IOException {
     camundaBpmProperties.setAutoDeploymentEnabled(true);
     defaultDeploymentConfiguration.apply(configuration);
-    assertEquals(5, configuration.getDeploymentResources().length);
+
+    final Resource[] resources = configuration.getDeploymentResources();
+    assertThat(resources).hasSize(6);
+
+    assertThat(filenames(resources)).containsOnly("async-service-task.bpmn",
+      "test.cmmn10.xml",
+      "test.bpmn",
+      "test.cmmn",
+      "test.bpmn20.xml",
+      "check-order.dmn"
+    );
   }
 
+  private Set<String> filenames(Resource[] resources) {
+    Set<String> filenames = new HashSet<String>();
+    for (Resource resource : resources) {
+      filenames.add(resource.getFilename());
+    }
+    return filenames;
+  }
 }

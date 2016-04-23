@@ -7,9 +7,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.ResourceArrayPropertyEditor;
 
-import java.util.Arrays;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 public class DefaultDeploymentConfiguration extends AbstractCamundaConfiguration implements CamundaDeploymentConfiguration {
+  private final Logger logger = LoggerFactory.getLogger(DefaultDeploymentConfiguration.class);
 
   @Override
   public void apply(SpringProcessEngineConfiguration configuration) {
@@ -19,19 +22,32 @@ public class DefaultDeploymentConfiguration extends AbstractCamundaConfiguration
   }
 
   protected Resource[] getDeploymentResources() {
-    Resource[] resources = null;
+    final Set<Resource> resources = new HashSet<Resource>();
+    final ResourceArrayPropertyEditor resolver = new ResourceArrayPropertyEditor();
 
-    ResourceArrayPropertyEditor resolver = new ResourceArrayPropertyEditor();
     try {
-      String[] resourcePattern = camundaBpmProperties.getDeploymentResourcePattern();
-      logger.debug("resolving deployment resources for pattern {}", (String[])resourcePattern);
+      final String[] resourcePattern = camundaBpmProperties.getDeploymentResourcePattern();
+      logger.debug("resolving deployment resources for pattern {}", resourcePattern);
       resolver.setValue(resourcePattern);
-      resources = (Resource[]) resolver.getValue();
-      logger.debug("resolved {}", Arrays.asList(resources));
+
+      for (Resource resource : (Resource[]) resolver.getValue()) {
+        if (isFile(resource)) {
+          resources.add(resource);
+        }
+      }
+
+      logger.debug("resolved {}", resources);
     } catch (RuntimeException e) {
       logger.error("unable to resolve resources", e);
     }
-    return resources;
+    return resources.toArray(new Resource[resources.size()]);
   }
 
+  private boolean isFile(Resource resource) {
+    try {
+      return !resource.getFile().isDirectory();
+    } catch (IOException e) {
+      return false;
+    }
+  }
 }

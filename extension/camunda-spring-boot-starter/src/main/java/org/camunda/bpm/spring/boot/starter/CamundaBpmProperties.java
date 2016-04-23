@@ -1,13 +1,36 @@
 package org.camunda.bpm.spring.boot.starter;
 
+import org.camunda.bpm.engine.impl.bpmn.deployer.BpmnDeployer;
+import org.camunda.bpm.engine.impl.cmmn.deployer.CmmnDeployer;
+import org.camunda.bpm.engine.impl.dmn.deployer.DmnDeployer;
 import org.camunda.bpm.engine.ProcessEngines;
 import org.camunda.bpm.engine.impl.metrics.MetricsRegistry;
 import org.camunda.bpm.engine.impl.metrics.MetricsReporterIdProvider;
 import org.camunda.bpm.engine.impl.metrics.reporter.DbMetricsReporter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
+import static org.springframework.core.io.support.ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX;
+
 @ConfigurationProperties("camunda.bpm")
 public class CamundaBpmProperties {
+
+  static String[] initDeploymentResourcePattern() {
+    final Set<String> suffixes = new HashSet<String>();
+    suffixes.addAll(Arrays.asList(DmnDeployer.DMN_RESOURCE_SUFFIXES));
+    suffixes.addAll(Arrays.asList(BpmnDeployer.BPMN_RESOURCE_SUFFIXES));
+    suffixes.addAll(Arrays.asList(CmmnDeployer.CMMN_RESOURCE_SUFFIXES));
+
+    final Set<String> patterns = new HashSet<String>();
+    for (String suffix : suffixes) {
+      patterns.add(String.format("%s**/*.%s", CLASSPATH_ALL_URL_PREFIX, suffix));
+    }
+
+    return patterns.toArray(new String[patterns.size()]);
+  }
 
   /**
    * name of the process engine
@@ -32,8 +55,7 @@ public class CamundaBpmProperties {
   /**
    * resource pattern for locating process sources
    */
-  private String[] deploymentResourcePattern = new String[]{"classpath*:**/*.bpmn", "classpath*:**/*.bpmn20.xml", "classpath*:**/*.cmmn",
-    "classpath*:**/*.cmmn10.xml"};
+  private String[] deploymentResourcePattern = initDeploymentResourcePattern();
 
   /**
    * database configuration
