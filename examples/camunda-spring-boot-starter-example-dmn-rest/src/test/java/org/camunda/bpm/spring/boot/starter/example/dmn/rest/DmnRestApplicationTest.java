@@ -1,29 +1,33 @@
 package org.camunda.bpm.spring.boot.starter.example.dmn.rest;
 
-import org.camunda.bpm.engine.ProcessEngines;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.camunda.bpm.engine.RepositoryService;
+import org.camunda.bpm.engine.impl.util.json.JSONArray;
+import org.camunda.bpm.engine.impl.util.json.JSONObject;
 import org.camunda.bpm.engine.repository.DecisionDefinition;
-import org.camunda.bpm.engine.rest.dto.repository.ProcessDefinitionDto;
 import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.Timeout;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.json.JacksonJsonParser;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.TestRestTemplate;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import java.util.Map;
+
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
 import static org.slf4j.LoggerFactory.getLogger;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -32,6 +36,22 @@ import static org.slf4j.LoggerFactory.getLogger;
 @IntegrationTest({"server.port=0"})
 @DirtiesContext
 public class DmnRestApplicationTest {
+
+  @JsonIgnoreProperties(ignoreUnknown = true)
+  public static class Result {
+    public String type;
+    public String value;
+  }
+
+  @JsonIgnoreProperties(ignoreUnknown = true)
+  public static class Check {
+    public Result result;
+    public Result reason;
+  }
+
+
+
+
 
   private static final String CHECK_ORDER = "checkOrder";
 
@@ -61,17 +81,24 @@ public class DmnRestApplicationTest {
       camundaBpmProperties.getProcessEngineName(),
       CHECK_ORDER);
 
-
-    logger.info("url: {}", url);
-
-    final ResponseEntity<String> responseEntity = new TestRestTemplate().postForEntity(url, "{\n" +
+    String JSONInput = "{\n" +
       "  \"variables\" : {\n" +
       "    \"status\" : { \"value\" : \"silver\", \"type\" : \"String\" },\n" +
       "    \"sum\" : { \"value\" : 900, \"type\" : \"Integer\" }\n" +
       "  }\n" +
-      "}\n", String.class);
+      "}\n";
 
-    logger.info(responseEntity.getBody());
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_JSON);
+
+    HttpEntity request= new HttpEntity(JSONInput, headers);
+
+    final String check = new TestRestTemplate().postForObject(url, request, String.class);
+
+    assertThat(new JSONArray(check).getJSONObject(0)
+      .getJSONObject("result")
+      .getString("value")).isEqualTo("ok");
+
   }
 
 }
