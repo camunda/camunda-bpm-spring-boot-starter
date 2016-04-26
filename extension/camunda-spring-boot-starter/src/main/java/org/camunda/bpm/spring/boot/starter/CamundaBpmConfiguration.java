@@ -115,7 +115,7 @@ public class CamundaBpmConfiguration {
 
 
 
-  @Bean
+ // @Bean
   @ConditionalOnMissingBean(CamundaDeploymentConfiguration.class)
   public static CamundaDeploymentConfiguration camundaDeploymentConfiguration() {
     return new DefaultDeploymentConfiguration();
