@@ -20,4 +20,8 @@ public class CamundaBpmPropertiesTest {
       "classpath*:**/*.cmmn11.xml");
   }
 
+  @Test
+  public void application_defaults() throws Exception {
+      assertThat(new CamundaBpmProperties().getApplication().isDeleteUponUndeploy()).isFalse();
+  }
 }

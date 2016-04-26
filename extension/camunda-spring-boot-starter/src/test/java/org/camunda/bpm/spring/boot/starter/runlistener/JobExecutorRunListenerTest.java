@@ -1,12 +1,7 @@
 package org.camunda.bpm.spring.boot.starter.runlistener;
 
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import org.camunda.bpm.engine.impl.jobexecutor.JobExecutor;
 import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties;
-import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties.JobExecution;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +9,10 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ConfigurableApplicationContext;
+
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class JobExecutorRunListenerTest {
@@ -28,7 +27,7 @@ public class JobExecutorRunListenerTest {
   private CamundaBpmProperties camundaBpmProperties;
 
   @Mock
-  private JobExecution jobExecution;
+  private CamundaBpmProperties.JobExecution jobExecution;
 
   @Before
   public void init() {
