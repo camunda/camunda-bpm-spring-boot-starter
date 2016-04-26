@@ -113,9 +113,7 @@ public class CamundaBpmConfiguration {
     return createHistoryLevelDeterminator(camundaBpmProperties, jdbcTemplate);
   }
 
-
-
- // @Bean
+  @Bean
   @ConditionalOnMissingBean(CamundaDeploymentConfiguration.class)
   public static CamundaDeploymentConfiguration camundaDeploymentConfiguration() {
     return new DefaultDeploymentConfiguration();

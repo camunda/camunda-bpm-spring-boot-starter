@@ -29,13 +29,6 @@ public class CamundaBpmAutoConfiguration implements ProcessEngineServices {
     return factoryBean;
   }
 
-  @PostConstruct
-  public void init() {
-    RuntimeContainerDelegate delegate = RuntimeContainerDelegate.INSTANCE.get();
-    ProcessEngines.registerProcessEngine(processEngine);
-    delegate.registerProcessEngine(processEngine);
-  }
-
   @Autowired
   private ProcessEngine processEngine;
 
