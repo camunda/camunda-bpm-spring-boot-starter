@@ -19,7 +19,6 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 
 @Configuration
 @ConditionalOnWebApplication
-@EnableConfigurationProperties(CamundaBpmProperties.class)
 @AutoConfigureAfter(CamundaBpmAutoConfiguration.class)
 public class CamundaBpmWebappAutoConfiguration extends WebMvcAutoConfigurationAdapter {
 
@@ -27,6 +26,7 @@ public class CamundaBpmWebappAutoConfiguration extends WebMvcAutoConfigurationAd
   private ResourceLoader resourceLoader;
 
   @Autowired
+  @Qualifier("camundaBpmProperties")
   private CamundaBpmProperties properties;
 
   @Bean
