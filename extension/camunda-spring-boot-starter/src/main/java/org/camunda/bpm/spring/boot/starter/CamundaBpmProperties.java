@@ -1,5 +1,9 @@
 package org.camunda.bpm.spring.boot.starter;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+import org.camunda.bpm.application.impl.metadata.ProcessArchiveXmlImpl;
+import org.camunda.bpm.application.impl.metadata.spi.ProcessArchiveXml;
 import org.camunda.bpm.engine.impl.bpmn.deployer.BpmnDeployer;
 import org.camunda.bpm.engine.impl.cmmn.deployer.CmmnDeployer;
 import org.camunda.bpm.engine.impl.dmn.deployer.DmnDeployer;
@@ -7,11 +11,10 @@ import org.camunda.bpm.engine.ProcessEngines;
 import org.camunda.bpm.engine.impl.metrics.MetricsRegistry;
 import org.camunda.bpm.engine.impl.metrics.MetricsReporterIdProvider;
 import org.camunda.bpm.engine.impl.metrics.reporter.DbMetricsReporter;
+import org.camunda.bpm.engine.repository.ResumePreviousBy;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static org.springframework.core.io.support.ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX;
 
@@ -36,196 +39,142 @@ public class CamundaBpmProperties {
    * name of the process engine
    */
   private String processEngineName = ProcessEngines.NAME_DEFAULT;
+  public String getProcessEngineName() {
+    return processEngineName;
+  }
+  public void setProcessEngineName(String processEngineName) {
+    this.processEngineName = processEngineName;
+  }
 
   /**
    * the history level to use
    */
   private String historyLevel;
+  public String getHistoryLevel() {
+    return historyLevel;
+  }
+  public void setHistoryLevel(String historyLevel) {
+    this.historyLevel = historyLevel;
+  }
 
   /**
    * the default history level to use when 'historyLevel' is 'auto'
    */
   private String historyLevelDefault;
-
-  /**
-   * enables auto deployment of processes
-   */
-  private boolean autoDeploymentEnabled = true;
-
-  /**
-   * resource pattern for locating process sources
-   */
-  private String[] deploymentResourcePattern = initDeploymentResourcePattern();
-
-  /**
-   * database configuration
-   */
-  private Database database = new Database();
-
-  /**
-   * JPA configuration
-   */
-  private Jpa jpa = new Jpa();
-
-  /**
-   * job execution configuration
-   */
-  private JobExecution jobExecution = new JobExecution();
-
-  /**
-   * metrics configuration
-   */
-  private Metrics metrics = new Metrics();
-
-  /**
-   * rest configuration
-   */
-  private Rest rest = new Rest();
-
-  /**
-   * webapp configuration
-   */
-  private Webapp webapp = new Webapp();
-
-  /**
-   * @return the database
-   */
-  public Database getDatabase() {
-    return database;
-  }
-
-  /**
-   * @param database the database to set
-   */
-  public void setDatabase(Database database) {
-    this.database = database;
-  }
-
-  /**
-   * @return the jpa
-   */
-  public Jpa getJpa() {
-    return jpa;
-  }
-
-  /**
-   * @param jpa the jpa to set
-   */
-  public void setJpa(Jpa jpa) {
-    this.jpa = jpa;
-  }
-
-  /**
-   * @return the jobExecution
-   */
-  public JobExecution getJobExecution() {
-    return jobExecution;
-  }
-
-  /**
-   * @param jobExecution the jobExecution to set
-   */
-  public void setJobExecution(JobExecution jobExecution) {
-    this.jobExecution = jobExecution;
-  }
-
-  public Webapp getWebapp() {
-    return webapp;
-  }
-
-  public void setWebapp(Webapp webapp) {
-    this.webapp = webapp;
-  }
-
-  /**
-   * @return the processEngineName
-   */
-  public String getProcessEngineName() {
-    return processEngineName;
-  }
-
-  /**
-   * @param processEngineName the processEngineName to set
-   */
-  public void setProcessEngineName(String processEngineName) {
-    this.processEngineName = processEngineName;
-  }
-
-  public void setHistoryLevel(String historyLevel) {
-    this.historyLevel = historyLevel;
-  }
-
-  public String getHistoryLevel() {
-    return historyLevel;
-  }
-
-  /**
-   * @return the historyLevelDefault
-   */
   public String getHistoryLevelDefault() {
     return historyLevelDefault;
   }
-
-  /**
-   * @param historyLevelDefault the historyLevelDefault to set
-   */
   public void setHistoryLevelDefault(String historyLevelDefault) {
     this.historyLevelDefault = historyLevelDefault;
   }
 
   /**
-   * @return the autoDeploymentEnabled
+   * enables auto deployment of processes
    */
+  private boolean autoDeploymentEnabled = true;
   public boolean isAutoDeploymentEnabled() {
     return autoDeploymentEnabled;
   }
-
-  /**
-   * @param autoDeploymentEnabled the autoDeploymentEnabled to set
-   */
   public void setAutoDeploymentEnabled(boolean autoDeploymentEnabled) {
     this.autoDeploymentEnabled = autoDeploymentEnabled;
   }
 
   /**
-   * @return the deploymentResourcePattern
+   * resource pattern for locating process sources
    */
+  private String[] deploymentResourcePattern = initDeploymentResourcePattern();
   public String[] getDeploymentResourcePattern() {
     return deploymentResourcePattern;
   }
-
-  /**
-   * @param deploymentResourcePattern the deploymentResourcePattern to set
-   */
   public void setDeploymentResourcePattern(String[] deploymentResourcePattern) {
     this.deploymentResourcePattern = deploymentResourcePattern;
   }
 
   /**
-   * @return the rest
+   * metrics configuration
    */
-  public Rest getRest() {
-    return rest;
-  }
-
-  /**
-   * @param rest the rest to set
-   */
-  public void setRest(Rest rest) {
-    this.rest = rest;
-  }
-
-
+  private Metrics metrics = new Metrics();
   public Metrics getMetrics() {
     return metrics;
   }
-
   public void setMetrics(Metrics metrics) {
     this.metrics = metrics;
   }
 
+  /**
+   * rest configuration
+   */
+  private Rest rest = new Rest();
+  public Rest getRest() {
+    return rest;
+  }
+  public void setRest(Rest rest) {
+    this.rest = rest;
+  }
 
-  public static class Database {
+  /**
+   * database configuration
+   */
+  private Database database = new Database();
+  public Database getDatabase() {
+    return database;
+  }
+  public void setDatabase(Database database) {
+    this.database = database;
+  }
+
+  /**
+   * JPA configuration
+   */
+  private Jpa jpa = new Jpa();
+  public Jpa getJpa() {
+    return jpa;
+  }
+  public void setJpa(Jpa jpa) {
+    this.jpa = jpa;
+  }
+
+  /**
+   * job execution configuration
+   */
+  private JobExecution jobExecution = new JobExecution();
+  public JobExecution getJobExecution() {
+    return jobExecution;
+  }
+  public void setJobExecution(JobExecution jobExecution) {
+    this.jobExecution = jobExecution;
+  }
+
+  /**
+   * webapp configuration
+   */
+  private Webapp webapp = new Webapp();
+  public Webapp getWebapp() {
+    return webapp;
+  }
+  public void setWebapp(Webapp webapp) {
+    this.webapp = webapp;
+  }
+
+  /**
+   * process application/processes.xml configuration
+   */
+  private Application application = new Application();
+  public Application getApplication() {
+    return application;
+  }
+  public void setApplication(Application application) {
+    this.application = application;
+  }
+
+  static class NestedProperty {
+    @Override
+    public String toString() {
+      return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    }
+  }
+
+  public static class Database extends NestedProperty {
     /**
      * enables automatic schema update
      */
@@ -285,7 +234,7 @@ public class CamundaBpmProperties {
 
   }
 
-  public static class JobExecution {
+  public static class JobExecution extends NestedProperty{
 
     /**
      * enables job execution
@@ -346,7 +295,7 @@ public class CamundaBpmProperties {
 
   }
 
-  public static class Rest {
+  public static class Rest extends NestedProperty{
 
     /**
      * enables rest services
@@ -391,7 +340,7 @@ public class CamundaBpmProperties {
     }
   }
 
-  public static class Metrics {
+  public static class Metrics extends NestedProperty {
 
     private boolean enabled = true;
     private MetricsRegistry metricsRegistry;
@@ -440,7 +389,7 @@ public class CamundaBpmProperties {
     }
   }
 
-  public static class Jpa {
+  public static class Jpa extends NestedProperty {
     /**
      * enables JPA
      */
@@ -519,7 +468,7 @@ public class CamundaBpmProperties {
 
   }
 
-  public static class Webapp {
+  public static class Webapp extends NestedProperty {
     private boolean indexRedirectEnabled = true;
 
     public boolean isIndexRedirectEnabled() {
@@ -529,6 +478,105 @@ public class CamundaBpmProperties {
     public void setIndexRedirectEnabled(boolean indexRedirectEnabled) {
       this.indexRedirectEnabled = indexRedirectEnabled;
     }
+  }
 
+  public static class Application extends NestedProperty {
+    /**
+     * Indicates whether the undeployment of the process archive should trigger deleting the process engine deployment.
+     * If the process engine deployment is deleted, all running and historic process instances are removed as well.
+     */
+    private boolean isDeleteUponUndeploy = false;
+
+    /**
+     * Indicates whether the classloader should be scanned for process definitions.
+     */
+    private boolean isScanForProcessDefinitions = true;
+
+    /**
+     * Indicates whether only changed resources should be part of the deployment.
+     * This is independent of the setting that if no resources change, no deployment
+     * takes place but the previous deployment is resumed.
+     */
+    private boolean isDeployChangedOnly = false;
+
+    /**
+     * Indicates whether old versions of the deployment should be resumed.
+     * If this property is not set, the default value is used: true.
+     */
+    private boolean isResumePreviousVersions = false;
+
+    /**
+     * Indicates which previous deployments should be resumed by this deployment.
+     * Can be any of the options in {@link ResumePreviousBy}.
+     */
+    private String resumePreviousBy = ResumePreviousBy.RESUME_BY_PROCESS_DEFINITION_KEY;
+
+
+    public boolean isDeleteUponUndeploy() {
+      return isDeleteUponUndeploy;
+    }
+
+    public void setDeleteUponUndeploy(boolean deleteUponUndeploy) {
+      isDeleteUponUndeploy = deleteUponUndeploy;
+    }
+
+    public boolean isScanForProcessDefinitions() {
+      return isScanForProcessDefinitions;
+    }
+
+    public void setScanForProcessDefinitions(boolean scanForProcessDefinitions) {
+      isScanForProcessDefinitions = scanForProcessDefinitions;
+    }
+
+    public boolean isDeployChangedOnly() {
+      return isDeployChangedOnly;
+    }
+
+    public void setDeployChangedOnly(boolean deployChangedOnly) {
+      isDeployChangedOnly = deployChangedOnly;
+    }
+
+    public boolean isResumePreviousVersions() {
+      return isResumePreviousVersions;
+    }
+
+    public void setResumePreviousVersions(boolean resumePreviousVersions) {
+      isResumePreviousVersions = resumePreviousVersions;
+    }
+
+    public String getResumePreviousBy() {
+      return resumePreviousBy;
+    }
+
+    public void setResumePreviousBy(String resumePreviousBy) {
+      this.resumePreviousBy = resumePreviousBy;
+    }
+
+    public List<ProcessArchiveXml> getProcessArchives() {
+      List<ProcessArchiveXml> processArchives = new ArrayList<ProcessArchiveXml>();
+
+      // add single PA
+      ProcessArchiveXmlImpl pa = new ProcessArchiveXmlImpl();
+      processArchives.add(pa);
+
+      pa.setProcessResourceNames(Collections.<String>emptyList());
+
+      // with default properties
+      final HashMap<String, String> properties = new HashMap<String, String>();
+      pa.setProperties(properties);
+      properties.put(ProcessArchiveXml.PROP_IS_DELETE_UPON_UNDEPLOY, String.valueOf(isDeleteUponUndeploy));
+      properties.put(ProcessArchiveXml.PROP_IS_SCAN_FOR_PROCESS_DEFINITIONS, String.valueOf(isScanForProcessDefinitions));
+      properties.put(ProcessArchiveXml.PROP_IS_DEPLOY_CHANGED_ONLY, String.valueOf(isDeployChangedOnly));
+      properties.put(ProcessArchiveXml.PROP_RESUME_PREVIOUS_BY, resumePreviousBy);
+
+      return processArchives;
+    }
+
+  }
+
+
+  @Override
+  public String toString() {
+    return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
   }
 }
