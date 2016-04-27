@@ -6,6 +6,7 @@ import org.camunda.bpm.spring.boot.starter.webapp.filter.LazyDelegateFilter.Init
 import org.camunda.bpm.spring.boot.starter.webapp.filter.ResourceLoaderDependingFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter;
@@ -25,9 +26,8 @@ public class CamundaBpmWebappAutoConfiguration extends WebMvcAutoConfigurationAd
   @Autowired
   private ResourceLoader resourceLoader;
 
-  @Autowired
-  @Qualifier("camundaBpmProperties")
-  private CamundaBpmProperties properties;
+  @Value("${camunda.bpm.webapp.isIndexRedirectEnabled:true}")
+  private boolean isIndexRedirectEnabled;
 
   @Bean
   public CamundaBpmWebappInitializer camundaBpmWebappInitializer() {
@@ -53,7 +53,7 @@ public class CamundaBpmWebappAutoConfiguration extends WebMvcAutoConfigurationAd
 
   @Override
   public void addViewControllers(ViewControllerRegistry registry) {
-    if (properties.getWebapp().isIndexRedirectEnabled()) {
+    if (isIndexRedirectEnabled) {
       registry.addViewController("/").setViewName("index.html");
     }
     super.addViewControllers(registry);
