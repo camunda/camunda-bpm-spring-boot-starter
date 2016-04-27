@@ -5,6 +5,7 @@ import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties;
 import org.camunda.bpm.spring.boot.starter.webapp.filter.LazyDelegateFilter.InitHook;
 import org.camunda.bpm.spring.boot.starter.webapp.filter.ResourceLoaderDependingFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter;
@@ -23,6 +24,7 @@ public class CamundaBpmWebappAutoConfiguration extends WebMvcAutoConfigurationAd
   private ResourceLoader resourceLoader;
 
   @Autowired
+  @Qualifier("camundaBpmProperties")
   private CamundaBpmProperties properties;
 
   @Bean
