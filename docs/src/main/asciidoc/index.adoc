@@ -248,7 +248,7 @@ public class MyApplication extends SpringBootProcessApplication{
 |`false`
 
 |`{properties-prefix}.database.schema-update`
-|if automatic schema update should be applied
+|if automatic schema update should be applied, use one of [true, false, create, create-drop, drop-create]
 |`true`
 
 |`{properties-prefix}.database.type`
@@ -268,12 +268,12 @@ public class MyApplication extends SpringBootProcessApplication{
 |default value from `history-level`
 
 |`{properties-prefix}.auto-deployment-enabled`
-|if processes should be auto deployed
+|if processes should be auto deployed. This is disabled when using the SpringBootProcessApplication
 |`true`
 
 |`{properties-prefix}.deployment-resource-pattern`
 |location for auto deployment
-|`classpath*:**/*.bpmn`
+|`classpath*:**/*.bpmn, classpath*:**/*.bpmn20.xml, classpath*:**/*.dmn, classpath*:**/*.dmn11.xml, classpath*:**/*.cmmn, classpath*:**/*.cmmn10.xml, classpath*:**/*.cmmn11.xml`
 
 |`{properties-prefix}.jpa.enabled`
 |enables jpa configuration

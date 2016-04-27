@@ -4,17 +4,26 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.camunda.bpm.application.impl.metadata.ProcessArchiveXmlImpl;
 import org.camunda.bpm.application.impl.metadata.spi.ProcessArchiveXml;
+import org.camunda.bpm.engine.ProcessEngineConfiguration;
+import org.camunda.bpm.engine.ProcessEngines;
 import org.camunda.bpm.engine.impl.bpmn.deployer.BpmnDeployer;
+import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.camunda.bpm.engine.impl.cmmn.deployer.CmmnDeployer;
 import org.camunda.bpm.engine.impl.dmn.deployer.DmnDeployer;
-import org.camunda.bpm.engine.ProcessEngines;
 import org.camunda.bpm.engine.impl.metrics.MetricsRegistry;
 import org.camunda.bpm.engine.impl.metrics.MetricsReporterIdProvider;
 import org.camunda.bpm.engine.impl.metrics.reporter.DbMetricsReporter;
 import org.camunda.bpm.engine.repository.ResumePreviousBy;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.util.Assert;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static org.springframework.core.io.support.ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX;
 
@@ -175,10 +184,18 @@ public class CamundaBpmProperties {
   }
 
   public static class Database extends NestedProperty {
+    public static final List<String> SCHEMA_UPDATE_VALUES = Arrays.asList(
+      ProcessEngineConfiguration.DB_SCHEMA_UPDATE_TRUE,
+      ProcessEngineConfiguration.DB_SCHEMA_UPDATE_FALSE,
+      ProcessEngineConfigurationImpl.DB_SCHEMA_UPDATE_CREATE,
+      ProcessEngineConfiguration.DB_SCHEMA_UPDATE_CREATE_DROP,
+      ProcessEngineConfigurationImpl.DB_SCHEMA_UPDATE_DROP_CREATE
+    );
+
     /**
      * enables automatic schema update
      */
-    private boolean schemaUpdate = true;
+    private String schemaUpdate = ProcessEngineConfiguration.DB_SCHEMA_UPDATE_TRUE;
 
     /**
      * the database type
@@ -193,14 +210,15 @@ public class CamundaBpmProperties {
     /**
      * @return the schemaUpdate
      */
-    public boolean isSchemaUpdate() {
+    public String getSchemaUpdate() {
       return schemaUpdate;
     }
 
     /**
      * @param schemaUpdate the schemaUpdate to set
      */
-    public void setSchemaUpdate(boolean schemaUpdate) {
+    public void setSchemaUpdate(String schemaUpdate) {
+      Assert.isTrue(SCHEMA_UPDATE_VALUES.contains(schemaUpdate), String.format("schemaUpdate: '%s' is not valid (%s)", schemaUpdate, SCHEMA_UPDATE_VALUES));
       this.schemaUpdate = schemaUpdate;
     }
 
