@@ -36,9 +36,9 @@ public class DefaultJobConfigurationTest {
     setField(jobConfiguration, "configureJobExecutor", p);
     setField(jobConfiguration, "registerCustomJobHandlers", r);
 
-    jobConfiguration.apply(processEngineConfiguration);
-    verify(p).apply(processEngineConfiguration);
-    verify(r).apply(processEngineConfiguration);
+    jobConfiguration.accept(processEngineConfiguration);
+    verify(p).accept(processEngineConfiguration);
+    verify(r).accept(processEngineConfiguration);
   }
 
   @Test
@@ -48,7 +48,7 @@ public class DefaultJobConfigurationTest {
     setField(jobConfiguration, "customJobHandlers", Arrays.asList(jobHandler));
 
     assertThat(processEngineConfiguration.getCustomJobHandlers()).isNull();
-    jobConfiguration.registerCustomJobHandlers.apply(processEngineConfiguration);
+    jobConfiguration.registerCustomJobHandlers.accept(processEngineConfiguration);
 
     assertThat(processEngineConfiguration.getCustomJobHandlers()).containsOnly(jobHandler);
   }

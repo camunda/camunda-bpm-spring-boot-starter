@@ -28,7 +28,7 @@ public class AdditionalCammundaBpmConfigurations {
     static boolean PROCESSED = false;
 
     @Override
-    public void apply(SpringProcessEngineConfiguration configuration) {
+    public void accept(SpringProcessEngineConfiguration configuration) {
       assertNull(configuration.getDataSource());
       PROCESSED = true;
     }
@@ -41,7 +41,7 @@ public class AdditionalCammundaBpmConfigurations {
     static boolean PROCESSED = false;
 
     @Override
-    public void apply(SpringProcessEngineConfiguration configuration) {
+    public void accept(SpringProcessEngineConfiguration configuration) {
       assertNotNull(configuration.getDataSource());
       PROCESSED = true;
     }

@@ -1,5 +1,9 @@
 package org.camunda.bpm.spring.boot.starter;
 
+import static org.camunda.bpm.spring.boot.starter.jdbc.HistoryLevelDeterminatorJdbcTemplateImpl.createHistoryLevelDeterminator;
+
+import java.util.List;
+
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaConfiguration;
@@ -32,10 +36,6 @@ import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.util.List;
-
-import static org.camunda.bpm.spring.boot.starter.jdbc.HistoryLevelDeterminatorJdbcTemplateImpl.createHistoryLevelDeterminator;
-
 @Import(JobConfiguration.class)
 public class CamundaBpmConfiguration {
 
@@ -50,8 +50,8 @@ public class CamundaBpmConfiguration {
     final SpringProcessEngineConfiguration configuration = new SpringProcessEngineConfiguration();
 
     for (CamundaConfiguration camundaConfiguration : camundaConfigurations) {
-      logger.debug("applying {}", camundaConfiguration.getClass());
-      camundaConfiguration.apply(configuration);
+      logger.debug("accepting {}", camundaConfiguration.getClass());
+      camundaConfiguration.accept(configuration);
     }
 
     return configuration;

@@ -34,20 +34,20 @@ public class DefaultHistoryConfigurationTest {
 
   @Test
   public void noHistoryLevelTest() {
-    defaultHistoryConfiguration.apply(springProcessEngineConfiguration);
+    defaultHistoryConfiguration.accept(springProcessEngineConfiguration);
     verify(springProcessEngineConfiguration, times(0)).setHistory(Mockito.anyString());
   }
 
   @Test
   public void historyLevelTest() {
     camundaBpmProperties.setHistoryLevel(HistoryLevel.HISTORY_LEVEL_FULL.getName());
-    defaultHistoryConfiguration.apply(springProcessEngineConfiguration);
+    defaultHistoryConfiguration.accept(springProcessEngineConfiguration);
     verify(springProcessEngineConfiguration).setHistory(HistoryLevel.HISTORY_LEVEL_FULL.getName());
   }
 
   @Test
   public void noHistoryEventHandlerTest() {
-    defaultHistoryConfiguration.apply(springProcessEngineConfiguration);
+    defaultHistoryConfiguration.accept(springProcessEngineConfiguration);
     verify(springProcessEngineConfiguration, times(0)).setHistoryEventHandler(Mockito.any(HistoryEventHandler.class));
   }
 
@@ -55,7 +55,7 @@ public class DefaultHistoryConfigurationTest {
   public void historyEventHandlerTest() {
     HistoryEventHandler historyEventHandlerMock = mock(HistoryEventHandler.class);
     defaultHistoryConfiguration.historyEventHandler = historyEventHandlerMock;
-    defaultHistoryConfiguration.apply(springProcessEngineConfiguration);
+    defaultHistoryConfiguration.accept(springProcessEngineConfiguration);
     verify(springProcessEngineConfiguration).setHistoryEventHandler(historyEventHandlerMock);
   }
 }

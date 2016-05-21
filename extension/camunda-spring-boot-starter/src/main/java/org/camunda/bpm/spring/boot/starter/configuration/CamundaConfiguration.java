@@ -6,6 +6,6 @@ public interface CamundaConfiguration {
 
   static final int DEFAULT_ORDER = 0;
 
-  void apply(SpringProcessEngineConfiguration configuration);
+  void accept(SpringProcessEngineConfiguration configuration);
 
 }
