@@ -23,7 +23,7 @@ public class DefaultDatasourceConfiguration extends AbstractCamundaConfiguration
   protected DataSource camundaDataSource;
 
   @Override
-  public void alter(SpringProcessEngineConfiguration configuration) {
+  public void apply(SpringProcessEngineConfiguration configuration) {
     final CamundaBpmProperties.Database database = camundaBpmProperties.getDatabase();
 
     configuration.setTransactionManager(transactionManager);

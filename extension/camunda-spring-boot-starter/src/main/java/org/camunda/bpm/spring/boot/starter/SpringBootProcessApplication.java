@@ -26,7 +26,7 @@ public class SpringBootProcessApplication extends SpringProcessApplication {
   public static CamundaDeploymentConfiguration deploymentConfiguration() {
     return new CamundaDeploymentConfiguration() {
       @Override
-      public void alter(SpringProcessEngineConfiguration configuration) {
+      public void apply(SpringProcessEngineConfiguration configuration) {
         LOGGER.info("Using ProcessApplication: autoDeployment via springConfiguration is disabled");
       }
     };

@@ -15,7 +15,7 @@ public class DefaultHistoryLevelAutoHandlingConfiguration extends AbstractCamund
   protected HistoryLevelDeterminator historyLevelDeterminator;
 
   @Override
-  public void alter(SpringProcessEngineConfiguration configuration) {
+  public void apply(SpringProcessEngineConfiguration configuration) {
     final String determineHistoryLevel = historyLevelDeterminator.determineHistoryLevel();
     if (!StringUtils.isEmpty(determineHistoryLevel)) {
       configuration.setHistory(determineHistoryLevel);

@@ -20,7 +20,7 @@ public class CamundaBpmConfigurationTest {
     camundaBpmConfiguration.camundaConfigurations = camundaConfigurations;
     ProcessEngineConfigurationImpl processEngineConfigurationImpl = camundaBpmConfiguration.processEngineConfigurationImpl();
     for (CamundaConfiguration camundaConfiguration : camundaConfigurations) {
-      verify(camundaConfiguration).alter((SpringProcessEngineConfiguration) processEngineConfigurationImpl);
+      verify(camundaConfiguration).apply((SpringProcessEngineConfiguration) processEngineConfigurationImpl);
     }
   }
 

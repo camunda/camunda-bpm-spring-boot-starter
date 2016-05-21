@@ -27,7 +27,7 @@ public class DefaultDeploymentConfigurationTest {
   @Test
   public void noDeploymentTest() {
     camundaBpmProperties.setAutoDeploymentEnabled(false);
-    defaultDeploymentConfiguration.alter(configuration);
+    defaultDeploymentConfiguration.apply(configuration);
 
     assertThat(configuration.getDeploymentResources()).isEmpty();
   }
@@ -35,7 +35,7 @@ public class DefaultDeploymentConfigurationTest {
   @Test
   public void deploymentTest() throws IOException {
     camundaBpmProperties.setAutoDeploymentEnabled(true);
-    defaultDeploymentConfiguration.alter(configuration);
+    defaultDeploymentConfiguration.apply(configuration);
 
     final Resource[] resources = configuration.getDeploymentResources();
     assertThat(resources).hasSize(6);

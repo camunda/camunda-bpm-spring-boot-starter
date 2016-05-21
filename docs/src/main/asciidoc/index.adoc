@@ -173,7 +173,7 @@ Or if you have component scan enabled:
 public class MyCustomConfiguration implements CamundaConfiguration {
 
 	@Override
-	public void alter(SpringProcessEngineConfiguration configuration) {
+	public void apply(SpringProcessEngineConfiguration configuration) {
 		//...
 	}
 
