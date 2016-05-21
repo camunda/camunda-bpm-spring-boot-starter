@@ -39,7 +39,7 @@ public class DefaultDatasourceConfigurationTest {
   @Test
   public void transactionManagerTest() {
     defaultDatasourceConfiguration.dataSource = mock(DataSource.class);
-    defaultDatasourceConfiguration.apply(configuration);
+    defaultDatasourceConfiguration.alter(configuration);
     assertSame(platformTransactionManager, configuration.getTransactionManager());
   }
 
@@ -47,7 +47,7 @@ public class DefaultDatasourceConfigurationTest {
   public void defaultDataSourceTest() {
     DataSource datasourceMock = mock(DataSource.class);
     defaultDatasourceConfiguration.dataSource = datasourceMock;
-    defaultDatasourceConfiguration.apply(configuration);
+    defaultDatasourceConfiguration.alter(configuration);
     assertSame(datasourceMock, getDataSourceFromConfiguration());
   }
 
@@ -56,7 +56,7 @@ public class DefaultDatasourceConfigurationTest {
     DataSource camundaDatasourceMock = mock(DataSource.class);
     defaultDatasourceConfiguration.camundaDataSource = camundaDatasourceMock;
     defaultDatasourceConfiguration.dataSource = mock(DataSource.class);
-    defaultDatasourceConfiguration.apply(configuration);
+    defaultDatasourceConfiguration.alter(configuration);
     assertSame(camundaDatasourceMock, getDataSourceFromConfiguration());
   }
 

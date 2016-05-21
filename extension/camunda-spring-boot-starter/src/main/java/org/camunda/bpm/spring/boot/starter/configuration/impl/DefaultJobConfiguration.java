@@ -28,7 +28,7 @@ public class DefaultJobConfiguration extends AbstractCamundaConfiguration implem
 
   CamundaJobConfiguration configureJobExecutor = new CamundaJobConfiguration() {
     @Override
-    public void apply(SpringProcessEngineConfiguration configuration) {
+    public void alter(SpringProcessEngineConfiguration configuration) {
       // note: the job executor will be activated in
       // org.camunda.bpm.spring.boot.starter.runlistener.JobExecutorRunListener
       configuration.setJobExecutorActivate(false);
@@ -39,7 +39,7 @@ public class DefaultJobConfiguration extends AbstractCamundaConfiguration implem
 
   CamundaJobConfiguration registerCustomJobHandlers = new CamundaJobConfiguration() {
     @Override
-    public void apply(SpringProcessEngineConfiguration configuration) {
+    public void alter(SpringProcessEngineConfiguration configuration) {
       configuration.setCustomJobHandlers(join(configuration.getCustomJobHandlers(), customJobHandlers));
       for (JobHandler jobHandler : configuration.getCustomJobHandlers()) {
         logger.info("Register Custom JobHandler: '{}'", jobHandler.getType());
@@ -48,9 +48,9 @@ public class DefaultJobConfiguration extends AbstractCamundaConfiguration implem
   };
 
   @Override
-  public void apply(final SpringProcessEngineConfiguration configuration) {
-    configureJobExecutor.apply(configuration);
-    registerCustomJobHandlers.apply(configuration);
+  public void alter(final SpringProcessEngineConfiguration configuration) {
+    configureJobExecutor.alter(configuration);
+    registerCustomJobHandlers.alter(configuration);
   }
 
   public static class JobConfiguration {
