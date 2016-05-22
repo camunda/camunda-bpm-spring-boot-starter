@@ -40,14 +40,12 @@ public class CamundaBpmConfiguration {
 
   @Bean
   @ConditionalOnMissingBean(ProcessEngineConfigurationImpl.class)
-  public ProcessEngineConfigurationImpl processEngineConfigurationImpl() {
-    return new SpringProcessEngineConfiguration();
-  }
+  public ProcessEngineConfigurationImpl processEngineConfigurationImpl(List<ProcessEnginePlugin> processEnginePlugins) {
+    final SpringProcessEngineConfiguration configuration = new SpringProcessEngineConfiguration();
 
-  @Bean
-  @ConditionalOnMissingBean(ProcessEngineConfigurationImplBeanPostProcessor.class)
-  public ProcessEngineConfigurationImplBeanPostProcessor processEngineConfigurationImplBeanPostProcessor(List<ProcessEnginePlugin> processEnginePlugins) {
-    return new ProcessEngineConfigurationImplBeanPostProcessor(processEnginePlugins);
+    configuration.setProcessEnginePlugins(processEnginePlugins);
+
+    return configuration;
   }
 
   @Bean
@@ -88,7 +86,6 @@ public class CamundaBpmConfiguration {
   public static CamundaMetricsConfiguration camundaMetricsConfiguration() {
     return new DefaultMetricsConfiguration();
   }
-
 
   @Bean(name = "historyLevelAutoConfiguration")
   @ConditionalOnMissingBean(CamundaHistoryLevelAutoHandlingConfiguration.class)
