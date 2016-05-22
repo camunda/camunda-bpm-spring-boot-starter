@@ -1,5 +1,7 @@
 package org.camunda.bpm.spring.boot.starter.configuration;
 
-public interface CamundaHistoryLevelAutoHandlingConfiguration extends CamundaConfiguration {
+import org.camunda.bpm.engine.impl.cfg.ProcessEnginePlugin;
+
+public interface CamundaHistoryLevelAutoHandlingConfiguration extends ProcessEnginePlugin {
 
 }

@@ -1,5 +1,10 @@
 package org.camunda.bpm.spring.boot.starter.configuration.impl;
 
+import static org.junit.Assert.assertSame;
+import static org.mockito.Mockito.mock;
+
+import javax.sql.DataSource;
+
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties;
 import org.junit.Before;
@@ -10,11 +15,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 import org.springframework.transaction.PlatformTransactionManager;
-
-import javax.sql.DataSource;
-
-import static org.junit.Assert.assertSame;
-import static org.mockito.Mockito.mock;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DefaultDatasourceConfigurationTest {
@@ -39,7 +39,7 @@ public class DefaultDatasourceConfigurationTest {
   @Test
   public void transactionManagerTest() {
     defaultDatasourceConfiguration.dataSource = mock(DataSource.class);
-    defaultDatasourceConfiguration.accept(configuration);
+    defaultDatasourceConfiguration.preInit(configuration);
     assertSame(platformTransactionManager, configuration.getTransactionManager());
   }
 
@@ -47,7 +47,7 @@ public class DefaultDatasourceConfigurationTest {
   public void defaultDataSourceTest() {
     DataSource datasourceMock = mock(DataSource.class);
     defaultDatasourceConfiguration.dataSource = datasourceMock;
-    defaultDatasourceConfiguration.accept(configuration);
+    defaultDatasourceConfiguration.preInit(configuration);
     assertSame(datasourceMock, getDataSourceFromConfiguration());
   }
 
@@ -56,12 +56,11 @@ public class DefaultDatasourceConfigurationTest {
     DataSource camundaDatasourceMock = mock(DataSource.class);
     defaultDatasourceConfiguration.camundaDataSource = camundaDatasourceMock;
     defaultDatasourceConfiguration.dataSource = mock(DataSource.class);
-    defaultDatasourceConfiguration.accept(configuration);
+    defaultDatasourceConfiguration.preInit(configuration);
     assertSame(camundaDatasourceMock, getDataSourceFromConfiguration());
   }
 
   private DataSource getDataSourceFromConfiguration() {
-    return ((TransactionAwareDataSourceProxy) configuration.getDataSource())
-      .getTargetDataSource();
+    return ((TransactionAwareDataSourceProxy) configuration.getDataSource()).getTargetDataSource();
   }
 }

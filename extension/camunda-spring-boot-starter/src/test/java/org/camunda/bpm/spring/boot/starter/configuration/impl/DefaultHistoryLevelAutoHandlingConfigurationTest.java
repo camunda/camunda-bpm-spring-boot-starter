@@ -38,7 +38,7 @@ public class DefaultHistoryLevelAutoHandlingConfigurationTest {
   @Test
   public void acceptTest() {
     when(historyLevelDeterminator.determineHistoryLevel()).thenReturn("audit");
-    historyLevelAutoHandlingConfiguration.accept(springProcessEngineConfiguration);
+    historyLevelAutoHandlingConfiguration.preInit(springProcessEngineConfiguration);
     verify(historyLevelDeterminator).determineHistoryLevel();
     verify(springProcessEngineConfiguration).setHistory(Mockito.anyString());
   }
@@ -46,7 +46,7 @@ public class DefaultHistoryLevelAutoHandlingConfigurationTest {
   @Test
   public void notAcceptTest() {
     when(historyLevelDeterminator.determineHistoryLevel()).thenReturn(null);
-    historyLevelAutoHandlingConfiguration.accept(springProcessEngineConfiguration);
+    historyLevelAutoHandlingConfiguration.preInit(springProcessEngineConfiguration);
     verify(historyLevelDeterminator).determineHistoryLevel();
     verify(springProcessEngineConfiguration, times(0)).setHistory(Mockito.anyString());
   }

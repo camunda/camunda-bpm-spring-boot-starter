@@ -3,8 +3,10 @@ package org.camunda.bpm.spring.boot.starter;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
-import org.camunda.bpm.spring.boot.starter.configuration.CamundaConfiguration;
+import org.camunda.bpm.engine.ProcessEngine;
+import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
+import org.camunda.bpm.engine.impl.cfg.ProcessEnginePlugin;
+import org.camunda.bpm.spring.boot.starter.configuration.Ordering;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -13,37 +15,87 @@ import org.springframework.core.annotation.Order;
 public class AdditionalCammundaBpmConfigurations {
 
   @Bean
-  public CamundaConfiguration beforeStandardConfiguration() {
+  public ProcessEnginePlugin beforeStandardConfiguration() {
     return new BeforeStandardConfiguration();
   }
 
   @Bean
-  public CamundaConfiguration afterStandardConfiguration() {
+  public ProcessEnginePlugin afterStandardConfiguration() {
     return new AfterStandardConfiguration();
   }
 
-  @Order(CamundaConfiguration.DEFAULT_ORDER - 1)
-  public static class BeforeStandardConfiguration implements CamundaConfiguration {
+  @Order(Ordering.DEFAULT_ORDER - 1)
+  public static class BeforeStandardConfiguration implements ProcessEnginePlugin {
 
     static boolean PROCESSED = false;
 
     @Override
-    public void accept(SpringProcessEngineConfiguration configuration) {
+    public void preInit(ProcessEngineConfigurationImpl configuration) {
       assertNull(configuration.getDataSource());
       PROCESSED = true;
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.camunda.bpm.engine.impl.cfg.ProcessEnginePlugin#postInit(org.camunda.
+     * bpm.engine.impl.cfg.ProcessEngineConfigurationImpl)
+     */
+    @Override
+    public void postInit(ProcessEngineConfigurationImpl processEngineConfiguration) {
+      // TODO Auto-generated method stub
+
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.camunda.bpm.engine.impl.cfg.ProcessEnginePlugin#
+     * postProcessEngineBuild(org.camunda.bpm.engine.ProcessEngine)
+     */
+    @Override
+    public void postProcessEngineBuild(ProcessEngine processEngine) {
+      // TODO Auto-generated method stub
+
+    }
+
   }
 
-  @Order(CamundaConfiguration.DEFAULT_ORDER + 1)
-  public static class AfterStandardConfiguration implements CamundaConfiguration {
+  @Order(Ordering.DEFAULT_ORDER + 1)
+  public static class AfterStandardConfiguration implements ProcessEnginePlugin {
 
     static boolean PROCESSED = false;
 
     @Override
-    public void accept(SpringProcessEngineConfiguration configuration) {
+    public void preInit(ProcessEngineConfigurationImpl configuration) {
       assertNotNull(configuration.getDataSource());
       PROCESSED = true;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.camunda.bpm.engine.impl.cfg.ProcessEnginePlugin#postInit(org.camunda.
+     * bpm.engine.impl.cfg.ProcessEngineConfigurationImpl)
+     */
+    @Override
+    public void postInit(ProcessEngineConfigurationImpl processEngineConfiguration) {
+      // TODO Auto-generated method stub
+
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.camunda.bpm.engine.impl.cfg.ProcessEnginePlugin#
+     * postProcessEngineBuild(org.camunda.bpm.engine.ProcessEngine)
+     */
+    @Override
+    public void postProcessEngineBuild(ProcessEngine processEngine) {
+      // TODO Auto-generated method stub
+
     }
 
   }

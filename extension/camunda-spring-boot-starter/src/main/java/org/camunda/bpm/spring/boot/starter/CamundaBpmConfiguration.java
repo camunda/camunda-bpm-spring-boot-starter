@@ -5,8 +5,8 @@ import static org.camunda.bpm.spring.boot.starter.jdbc.HistoryLevelDeterminatorJ
 import java.util.List;
 
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
+import org.camunda.bpm.engine.impl.cfg.ProcessEnginePlugin;
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
-import org.camunda.bpm.spring.boot.starter.configuration.CamundaConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaDatasourceConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaDeploymentConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaHistoryConfiguration;
@@ -24,8 +24,6 @@ import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultJobConfigur
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultJpaConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.jdbc.HistoryLevelDeterminator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -39,20 +37,15 @@ import org.springframework.jdbc.core.JdbcTemplate;
 @Import(JobConfiguration.class)
 public class CamundaBpmConfiguration {
 
-  private final Logger logger = LoggerFactory.getLogger(CamundaBpmConfiguration.class);
-
   @Autowired
-  protected List<CamundaConfiguration> camundaConfigurations;
+  protected List<ProcessEnginePlugin> processEnginePlugins;
 
   @Bean
   @ConditionalOnMissingBean(ProcessEngineConfigurationImpl.class)
   public ProcessEngineConfigurationImpl processEngineConfigurationImpl() {
     final SpringProcessEngineConfiguration configuration = new SpringProcessEngineConfiguration();
 
-    for (CamundaConfiguration camundaConfiguration : camundaConfigurations) {
-      logger.debug("accepting {}", camundaConfiguration.getClass());
-      camundaConfiguration.accept(configuration);
-    }
+    configuration.setProcessEnginePlugins(processEnginePlugins);
 
     return configuration;
   }

@@ -1,5 +1,7 @@
 package org.camunda.bpm.spring.boot.starter.configuration.impl;
 
+import java.util.List;
+
 import org.camunda.bpm.engine.impl.jobexecutor.CallerRunsRejectedJobsHandler;
 import org.camunda.bpm.engine.impl.jobexecutor.JobExecutor;
 import org.camunda.bpm.engine.impl.jobexecutor.JobHandler;
@@ -13,8 +15,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import java.util.List;
-
 /**
  * Prepares JobExecutor and registeres all known custom JobHandlers.
  */
@@ -26,31 +26,26 @@ public class DefaultJobConfiguration extends AbstractCamundaConfiguration implem
   @Autowired(required = false)
   protected List<JobHandler> customJobHandlers;
 
-  CamundaJobConfiguration configureJobExecutor = new CamundaJobConfiguration() {
-    @Override
-    public void accept(SpringProcessEngineConfiguration configuration) {
-      // note: the job executor will be activated in
-      // org.camunda.bpm.spring.boot.starter.runlistener.JobExecutorRunListener
-      configuration.setJobExecutorActivate(false);
-      configuration.setJobExecutorDeploymentAware(camundaBpmProperties.getJobExecution().isDeploymentAware());
-      configuration.setJobExecutor(jobExecutor);
-    }
-  };
-
-  CamundaJobConfiguration registerCustomJobHandlers = new CamundaJobConfiguration() {
-    @Override
-    public void accept(SpringProcessEngineConfiguration configuration) {
-      configuration.setCustomJobHandlers(join(configuration.getCustomJobHandlers(), customJobHandlers));
-      for (JobHandler jobHandler : configuration.getCustomJobHandlers()) {
-        logger.info("Register Custom JobHandler: '{}'", jobHandler.getType());
-      }
-    }
-  };
-
   @Override
-  public void accept(final SpringProcessEngineConfiguration configuration) {
-    configureJobExecutor.accept(configuration);
-    registerCustomJobHandlers.accept(configuration);
+  public void preInit(final SpringProcessEngineConfiguration configuration) {
+    configureJobExecutor(configuration);
+    registerCustomJobHandlers(configuration);
+  }
+
+  protected void registerCustomJobHandlers(SpringProcessEngineConfiguration configuration) {
+    configuration.setCustomJobHandlers(join(configuration.getCustomJobHandlers(), customJobHandlers));
+    for (JobHandler jobHandler : configuration.getCustomJobHandlers()) {
+      logger.info("Register Custom JobHandler: '{}'", jobHandler.getType());
+    }
+  }
+
+  protected void configureJobExecutor(SpringProcessEngineConfiguration configuration) {
+    // note: the job executor will be activated in
+    // org.camunda.bpm.spring.boot.starter.runlistener.JobExecutorRunListener
+    configuration.setJobExecutorActivate(false);
+    configuration.setJobExecutorDeploymentAware(camundaBpmProperties.getJobExecution().isDeploymentAware());
+    configuration.setJobExecutor(jobExecutor);
+
   }
 
   public static class JobConfiguration {

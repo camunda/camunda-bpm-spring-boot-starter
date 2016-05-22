@@ -13,7 +13,7 @@ public class DefaultJpaConfiguration extends AbstractCamundaConfiguration implem
   private EntityManagerFactory jpaEntityManagerFactory;
 
   @Override
-  public void accept(SpringProcessEngineConfiguration configuration) {
+  public void preInit(SpringProcessEngineConfiguration configuration) {
     final CamundaBpmProperties.Jpa jpa = camundaBpmProperties.getJpa();
 
     configuration.setJpaPersistenceUnitName(jpa.getPersistenceUnitName());
