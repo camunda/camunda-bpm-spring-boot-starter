@@ -58,7 +58,7 @@ public abstract class AbstractCamundaConfiguration implements ProcessEnginePlugi
     }
   }
 
-  abstract protected void preInit(SpringProcessEngineConfiguration x);
+  abstract protected void preInit(SpringProcessEngineConfiguration springProcessEngineConfiguration);
 
   /*
    * (non-Javadoc)
