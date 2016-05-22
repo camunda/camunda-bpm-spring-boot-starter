@@ -15,7 +15,7 @@ public class DefaultProcessEngineConfiguration extends AbstractCamundaConfigurat
   private List<ProcessEnginePlugin> processEnginePlugins;
 
   @Override
-  public void accept(SpringProcessEngineConfiguration configuration) {
+  public void preInit(SpringProcessEngineConfiguration configuration) {
     String processEngineName = StringUtils.trimAllWhitespace(camundaBpmProperties.getProcessEngineName());
     if (!StringUtils.isEmpty(processEngineName) && !processEngineName.contains("-")) {
       configuration.setProcessEngineName(processEngineName);

@@ -29,25 +29,25 @@ public class DefaultProcessEngineConfigurationTest {
   @Test
   public void setName_if_not_empty() throws Exception {
     properties.setProcessEngineName("foo");
-    instance.accept(configuration);
+    instance.preInit(configuration);
     assertThat(configuration.getProcessEngineName()).isEqualTo("foo");
   }
 
   @Test
   public void setName_ignore_empty() throws Exception {
     properties.setProcessEngineName(null);
-    instance.accept(configuration);
+    instance.preInit(configuration);
     assertThat(configuration.getProcessEngineName()).isEqualTo(ProcessEngines.NAME_DEFAULT);
 
     properties.setProcessEngineName(" ");
-    instance.accept(configuration);
+    instance.preInit(configuration);
     assertThat(configuration.getProcessEngineName()).isEqualTo(ProcessEngines.NAME_DEFAULT);
   }
 
   @Test
   public void setName_ignore_hyphen() throws Exception {
     properties.setProcessEngineName("foo-bar");
-    instance.accept(configuration);
+    instance.preInit(configuration);
     assertThat(configuration.getProcessEngineName()).isEqualTo(ProcessEngines.NAME_DEFAULT);
   }
 
@@ -57,12 +57,12 @@ public class DefaultProcessEngineConfigurationTest {
     configuration.getProcessEnginePlugins().add(a);
 
     // injectedPlugins = null
-    instance.accept(configuration);
+    instance.preInit(configuration);
     assertThat(configuration.getProcessEnginePlugins()).containsOnly(a);
 
     // injected plugins = empty collection
     ReflectionTestUtils.setField(instance, "processEnginePlugins", Arrays.asList());
-    instance.accept(configuration);
+    instance.preInit(configuration);
     assertThat(configuration.getProcessEnginePlugins()).containsExactly(a);
   }
 
@@ -74,7 +74,7 @@ public class DefaultProcessEngineConfigurationTest {
     ProcessEnginePlugin b = new AbstractProcessEnginePlugin();
     ReflectionTestUtils.setField(instance, "processEnginePlugins", Arrays.asList(b));
 
-    instance.accept(configuration);
+    instance.preInit(configuration);
     assertThat(configuration.getProcessEnginePlugins()).containsExactly(a, b);
   }
 }

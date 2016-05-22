@@ -5,7 +5,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 import org.camunda.bpm.application.ProcessApplicationInfo;
 import org.camunda.bpm.container.RuntimeContainerDelegate;
 import org.camunda.bpm.engine.ProcessEngine;
-import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
+import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.camunda.bpm.engine.spring.application.SpringProcessApplication;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaDeploymentConfiguration;
 import org.slf4j.Logger;
@@ -23,8 +23,16 @@ public class SpringBootProcessApplication extends SpringProcessApplication {
   public static CamundaDeploymentConfiguration deploymentConfiguration() {
     return new CamundaDeploymentConfiguration() {
       @Override
-      public void accept(SpringProcessEngineConfiguration configuration) {
+      public void preInit(ProcessEngineConfigurationImpl configuration) {
         LOGGER.info("Using ProcessApplication: autoDeployment via springConfiguration is disabled");
+      }
+
+      @Override
+      public void postInit(ProcessEngineConfigurationImpl processEngineConfiguration) {
+      }
+
+      @Override
+      public void postProcessEngineBuild(ProcessEngine processEngine) {
       }
     };
   }

@@ -5,15 +5,19 @@ import static org.slf4j.LoggerFactory.getLogger;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.camunda.bpm.engine.ProcessEngine;
+import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
+import org.camunda.bpm.engine.impl.cfg.ProcessEnginePlugin;
+import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties;
-import org.camunda.bpm.spring.boot.starter.configuration.CamundaConfiguration;
+import org.camunda.bpm.spring.boot.starter.configuration.Ordering;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.util.CollectionUtils;
 
-@Order(CamundaConfiguration.DEFAULT_ORDER)
-public abstract class AbstractCamundaConfiguration implements CamundaConfiguration {
+@Order(Ordering.DEFAULT_ORDER)
+public abstract class AbstractCamundaConfiguration implements ProcessEnginePlugin {
 
   /**
    * @param existing
@@ -39,5 +43,43 @@ public abstract class AbstractCamundaConfiguration implements CamundaConfigurati
 
   @Autowired
   protected CamundaBpmProperties camundaBpmProperties;
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.camunda.bpm.engine.impl.cfg.ProcessEnginePlugin#preInit(org.camunda.bpm
+   * .engine.impl.cfg.ProcessEngineConfigurationImpl)
+   */
+  @Override
+  public void preInit(ProcessEngineConfigurationImpl processEngineConfiguration) {
+    if (processEngineConfiguration instanceof SpringProcessEngineConfiguration) {
+      preInit((SpringProcessEngineConfiguration) processEngineConfiguration);
+    }
+  }
+
+  abstract protected void preInit(SpringProcessEngineConfiguration x);
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.camunda.bpm.engine.impl.cfg.ProcessEnginePlugin#postInit(org.camunda.
+   * bpm.engine.impl.cfg.ProcessEngineConfigurationImpl)
+   */
+  @Override
+  public void postInit(ProcessEngineConfigurationImpl processEngineConfiguration) {
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see
+   * org.camunda.bpm.engine.impl.cfg.ProcessEnginePlugin#postProcessEngineBuild(
+   * org.camunda.bpm.engine.ProcessEngine)
+   */
+  @Override
+  public void postProcessEngineBuild(ProcessEngine processEngine) {
+  }
 
 }

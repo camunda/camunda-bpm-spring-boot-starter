@@ -1,4 +1,6 @@
 package org.camunda.bpm.spring.boot.starter.configuration;
 
-public interface CamundaMetricsConfiguration extends CamundaConfiguration {
+import org.camunda.bpm.engine.impl.cfg.ProcessEnginePlugin;
+
+public interface CamundaMetricsConfiguration extends ProcessEnginePlugin {
 }

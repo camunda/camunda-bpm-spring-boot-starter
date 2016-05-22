@@ -31,11 +31,11 @@ public class DefaultMetricsConfigurationTest {
     assertThat(camundaBpmProperties.getMetrics().isEnabled()).isTrue();
 
     camundaBpmProperties.getMetrics().setEnabled(false);
-    defaultMetricsConfiguration.accept(configuration);
+    defaultMetricsConfiguration.preInit(configuration);
     assertThat(configuration.isMetricsEnabled()).isFalse();
 
     camundaBpmProperties.getMetrics().setEnabled(true);
-    defaultMetricsConfiguration.accept(configuration);
+    defaultMetricsConfiguration.preInit(configuration);
     assertThat(configuration.isMetricsEnabled()).isTrue();
   }
 
@@ -47,12 +47,12 @@ public class DefaultMetricsConfigurationTest {
     MetricsRegistry registry = mock(MetricsRegistry.class);
     camundaBpmProperties.getMetrics().setMetricsRegistry(registry);
 
-    defaultMetricsConfiguration.accept(configuration);
+    defaultMetricsConfiguration.preInit(configuration);
 
     assertThat(configuration.getMetricsRegistry()).isEqualTo(registry);
 
     camundaBpmProperties.getMetrics().setMetricsRegistry(null);
-    defaultMetricsConfiguration.accept(configuration);
+    defaultMetricsConfiguration.preInit(configuration);
 
     assertThat(configuration.getMetricsRegistry()).isEqualTo(registry);
   }
@@ -66,12 +66,12 @@ public class DefaultMetricsConfigurationTest {
     MetricsReporterIdProvider provider = mock(MetricsReporterIdProvider.class);
     camundaBpmProperties.getMetrics().setMetricsReporterIdProvider(provider);
 
-    defaultMetricsConfiguration.accept(configuration);
+    defaultMetricsConfiguration.preInit(configuration);
 
     assertThat(configuration.getMetricsReporterIdProvider()).isEqualTo(provider);
 
     camundaBpmProperties.getMetrics().setMetricsReporterIdProvider(null);
-    defaultMetricsConfiguration.accept(configuration);
+    defaultMetricsConfiguration.preInit(configuration);
 
     assertThat(configuration.getMetricsReporterIdProvider()).isEqualTo(provider);
   }
@@ -85,12 +85,12 @@ public class DefaultMetricsConfigurationTest {
     DbMetricsReporter reporter = mock(DbMetricsReporter.class);
     camundaBpmProperties.getMetrics().setDbMetricsReporter(reporter);
 
-    defaultMetricsConfiguration.accept(configuration);
+    defaultMetricsConfiguration.preInit(configuration);
 
     assertThat(configuration.getDbMetricsReporter()).isEqualTo(reporter);
 
     camundaBpmProperties.getMetrics().setDbMetricsReporter(null);
-    defaultMetricsConfiguration.accept(configuration);
+    defaultMetricsConfiguration.preInit(configuration);
 
     assertThat(configuration.getDbMetricsReporter()).isEqualTo(reporter);
   }
@@ -101,11 +101,11 @@ public class DefaultMetricsConfigurationTest {
     assertThat(camundaBpmProperties.getMetrics().isDbMetricsReporterActivate()).isTrue();
 
     camundaBpmProperties.getMetrics().setDbMetricsReporterActivate(false);
-    defaultMetricsConfiguration.accept(configuration);
+    defaultMetricsConfiguration.preInit(configuration);
     assertThat(configuration.isDbMetricsReporterActivate()).isFalse();
 
     camundaBpmProperties.getMetrics().setDbMetricsReporterActivate(true);
-    defaultMetricsConfiguration.accept(configuration);
+    defaultMetricsConfiguration.preInit(configuration);
     assertThat(configuration.isDbMetricsReporterActivate()).isTrue();
   }
 }

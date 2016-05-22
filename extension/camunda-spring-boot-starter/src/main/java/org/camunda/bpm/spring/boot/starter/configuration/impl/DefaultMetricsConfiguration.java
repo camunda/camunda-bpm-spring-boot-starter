@@ -16,7 +16,7 @@ public class DefaultMetricsConfiguration extends AbstractCamundaConfiguration im
   }
 
   @Override
-  public void accept(final SpringProcessEngineConfiguration configuration) {
+  public void preInit(final SpringProcessEngineConfiguration configuration) {
     configuration.setMetricsEnabled(metrics.isEnabled());
     if (metrics.getMetricsRegistry() != null) {
       configuration.setMetricsRegistry(metrics.getMetricsRegistry());
