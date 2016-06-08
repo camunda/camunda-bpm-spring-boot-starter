@@ -19,6 +19,7 @@
       <artifactId>camunda-engine-plugin-spin</artifactId>
       <optional>true</optional>
     </dependency>
+
     <dependency>
       <groupId>org.camunda.bpm</groupId>
       <artifactId>camunda-engine-plugin-connect</artifactId>
