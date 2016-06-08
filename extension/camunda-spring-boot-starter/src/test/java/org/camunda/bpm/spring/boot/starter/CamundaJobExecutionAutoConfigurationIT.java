@@ -26,7 +26,6 @@ public class CamundaJobExecutionAutoConfigurationIT extends AbstractCamundaAutoC
 
   }
 
-
   @Test
   public void jobConfigurationTest() {
     assertNotNull(jobExecutor);
