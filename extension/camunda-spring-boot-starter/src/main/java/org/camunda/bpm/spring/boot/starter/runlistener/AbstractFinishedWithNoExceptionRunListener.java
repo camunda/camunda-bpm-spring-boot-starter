@@ -73,8 +73,7 @@ abstract class AbstractFinishedWithNoExceptionRunListener implements SpringAppli
    *                     {@link org.springframework.beans.factory.BeanFactory#getBean(Class)}
    * @return see
    * {@link org.springframework.beans.factory.BeanFactory#getBean(Class)}
-   * @throws Exception see
-   *                   {@link org.springframework.beans.factory.BeanFactory#getBean(Class)}
+   *
    * @see org.springframework.beans.factory.BeanFactory#getBean(Class)
    */
   protected <T> T getBean(ConfigurableApplicationContext context, Class<T> requiredType) {
