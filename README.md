@@ -2,6 +2,8 @@
 
 <a href="https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension/camunda-bpm-spring-boot-starter"><img align="right" src="https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension/camunda-bpm-spring-boot-starter/badge.svg"/></a>
 
+[![Project Stats](https://www.openhub.net/p/camunda-bpm-spring-boot-starter/widgets/project_thin_badge.gif)](https://www.openhub.net/p/camunda-bpm-spring-boot-starter)
+
 ## Get started
 
 See [Documentation](https://camunda.github.io/camunda-bpm-spring-boot-starter)
