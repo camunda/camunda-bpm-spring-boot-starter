@@ -6,7 +6,31 @@
 
 ## Get started
 
-See [Documentation](https://camunda.github.io/camunda-bpm-spring-boot-starter)
+The extension is published on maven central, so if you are using maven, just add the dependency:
+
+```xml
+<dependency>
+  <groupId>org.camunda.bpm.extension</groupId>
+  <artifactId>camunda-bpm-spring-boot-starter([-rest|-webapp])</artifactId>
+  <version>1.2.0</version>
+</dependency>
+```
+
+and then create a simple process application like this one:
+
+```java
+@SpringBootApplication
+@ProcessApplication
+public class WebappExampleProcessApplication extends SpringBootProcessApplication {
+
+  public static void main(String[] args) {
+    SpringApplication.run(WebappExampleProcessApplication.class, args);
+  }
+
+}
+```
+
+Check out the [Documentation](https://camunda.github.io/camunda-bpm-spring-boot-starter) and the [Examples](https://github.com/camunda/camunda-bpm-spring-boot-starter/tree/master/examples)
 
 
 ## Resources
@@ -17,7 +41,7 @@ See [Documentation](https://camunda.github.io/camunda-bpm-spring-boot-starter)
 
 ## Roadmap
 
-- to be done
+* ["Release Notes" 1.2.0](https://blog.camunda.org/post/2016/06/camunda-spring-boot-1.2.0-released/)
 
 
 ## Maintainer
