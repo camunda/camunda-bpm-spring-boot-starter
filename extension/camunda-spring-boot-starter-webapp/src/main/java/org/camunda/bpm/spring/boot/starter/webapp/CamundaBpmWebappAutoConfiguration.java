@@ -47,14 +47,16 @@ public class CamundaBpmWebappAutoConfiguration extends WebMvcAutoConfigurationAd
 
   @Override
   public void addResourceHandlers(ResourceHandlerRegistry registry) {
-    registry.addResourceHandler("/**").addResourceLocations("classpath:/", "classpath:/static/");
+    registry.addResourceHandler("/lib/**").addResourceLocations("classpath:/lib/");
+    registry.addResourceHandler("/api/**").addResourceLocations("classpath:/api/");
+    registry.addResourceHandler("/app/**").addResourceLocations("classpath:/app/");
     super.addResourceHandlers(registry);
   }
 
   @Override
   public void addViewControllers(ViewControllerRegistry registry) {
     if (isIndexRedirectEnabled) {
-      registry.addViewController("/").setViewName("index.html");
+      registry.addRedirectViewController("/","/app/");
     }
     super.addViewControllers(registry);
   }

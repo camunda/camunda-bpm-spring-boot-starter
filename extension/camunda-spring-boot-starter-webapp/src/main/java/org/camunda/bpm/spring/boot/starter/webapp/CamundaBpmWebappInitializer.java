@@ -1,5 +1,6 @@
 package org.camunda.bpm.spring.boot.starter.webapp;
 
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Map;
 
@@ -9,6 +10,7 @@ import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
+import javax.servlet.SessionTrackingMode;
 
 import org.camunda.bpm.admin.impl.web.AdminApplication;
 import org.camunda.bpm.admin.impl.web.bootstrap.AdminContainerBootstrap;
@@ -46,7 +48,7 @@ public class CamundaBpmWebappInitializer implements ServletContextInitializer {
   @Override
   public void onStartup(ServletContext servletContext) throws ServletException {
     this.servletContext = servletContext;
-
+    servletContext.setSessionTrackingModes(Collections.singleton(SessionTrackingMode.COOKIE));
     servletContext.addListener(new CockpitContainerBootstrap());
     servletContext.addListener(new AdminContainerBootstrap());
     servletContext.addListener(new TasklistContainerBootstrap());
