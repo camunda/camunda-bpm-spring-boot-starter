@@ -23,6 +23,20 @@ To build the project by yourself, g oto our cmd line and enter ```mvn clean inst
 
 *Hint for eclipse users:* clone the repo as `camunda-spring-boot-starter-root`
 
+### Maven wrapper
+
+We had some troubles with running the build under newer (3.3.9) maven versions. That's why we now offer the [maven wrapper](https://github.com/takari/maven-wrapper/blob/master/README.md).
+
+just run
+
+    ./mvnw clean package
+
+instead of
+
+    mvn clean package
+
+and the wrapper will automatically download and use a fixed maven version (3.1.1).
+
 ## Creating pull requests
 
 We use pull requests for feature discussion and bug fixes. If you are not yet familiar on how to create a pull request, [read this great guide](https://gun.io/blog/how-to-github-fork-branch-and-pull-request).
