@@ -26,7 +26,7 @@ public class CamundaBpmWebappAutoConfiguration extends WebMvcAutoConfigurationAd
   @Autowired
   private ResourceLoader resourceLoader;
 
-  @Value("${camunda.bpm.webapp.isIndexRedirectEnabled:true}")
+  @Value("${camunda.bpm.webapp.index-redirect-enabled:true}")
   private boolean isIndexRedirectEnabled;
 
   @Bean
