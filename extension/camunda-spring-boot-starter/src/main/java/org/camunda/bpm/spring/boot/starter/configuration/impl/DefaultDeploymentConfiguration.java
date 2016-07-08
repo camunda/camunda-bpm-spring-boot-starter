@@ -1,15 +1,17 @@
 package org.camunda.bpm.spring.boot.starter.configuration.impl;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaDeploymentConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.core.io.support.ResourceArrayPropertyEditor;
-
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
 
 public class DefaultDeploymentConfiguration extends AbstractCamundaConfiguration implements CamundaDeploymentConfiguration {
   private final Logger logger = LoggerFactory.getLogger(DefaultDeploymentConfiguration.class);
@@ -27,12 +29,14 @@ public class DefaultDeploymentConfiguration extends AbstractCamundaConfiguration
 
     try {
       final String[] resourcePattern = camundaBpmProperties.getDeploymentResourcePattern();
-      logger.debug("resolving deployment resources for pattern {}", resourcePattern);
+      logger.debug("resolving deployment resources for pattern {}", (Object[]) resourcePattern);
       resolver.setValue(resourcePattern);
 
       for (Resource resource : (Resource[]) resolver.getValue()) {
+        logger.debug("processing deployment resource {}", resource);
         if (isFile(resource)) {
           resources.add(resource);
+          logger.debug("added deployment resource {}", resource);
         }
       }
 
@@ -44,10 +48,24 @@ public class DefaultDeploymentConfiguration extends AbstractCamundaConfiguration
   }
 
   private boolean isFile(Resource resource) {
-    try {
-      return !resource.getFile().isDirectory();
-    } catch (IOException e) {
-      return false;
+    if (resource.isReadable()) {
+      if (resource instanceof UrlResource) {
+        try {
+          URL url = resource.getURL();
+          return !url.toString().endsWith("/");
+        } catch (IOException e) {
+          logger.debug("unable to handle " + resource + " as URL", e);
+        }
+      } else {
+        try {
+          return !resource.getFile().isDirectory();
+        } catch (IOException e) {
+          logger.debug("unable to handle " + resource + " as file", e);
+        }
+      }
     }
+    logger.warn("unable to determine if resource {} is a deployable resource", resource);
+    return false;
   }
+
 }
