@@ -42,7 +42,7 @@ Check out the [Documentation](https://camunda.github.io/camunda-bpm-spring-boot-
 ## Releases
 
 * [Release Notes 1.2.1](https://github.com/camunda/camunda-bpm-spring-boot-starter/milestone/5?closed=1)
-* ["Release Notes" 1.2.0](https://blog.camunda.org/post/2016/06/camunda-spring-boot-1.2.0-released/)
+* [Blog Article for release 1.2.0](https://blog.camunda.org/post/2016/06/camunda-spring-boot-1.2.0-released/)
 
 
 ## Maintainer
