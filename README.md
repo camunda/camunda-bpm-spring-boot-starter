@@ -12,7 +12,7 @@ The extension is published on maven central, so if you are using maven, just add
 <dependency>
   <groupId>org.camunda.bpm.extension</groupId>
   <artifactId>camunda-bpm-spring-boot-starter([-rest|-webapp])</artifactId>
-  <version>1.2.0</version>
+  <version>1.2.1</version>
 </dependency>
 ```
 
@@ -39,8 +39,9 @@ Check out the [Documentation](https://camunda.github.io/camunda-bpm-spring-boot-
 * [Contributing](https://github.com/camunda/camunda-bpm-spring-boot-starter/blob/master/CONTRIBUTE.md)
 
 
-## Roadmap
+## Releases
 
+* [Release Notes 1.2.1](https://github.com/camunda/camunda-bpm-spring-boot-starter/milestone/5?closed=1)
 * ["Release Notes" 1.2.0](https://blog.camunda.org/post/2016/06/camunda-spring-boot-1.2.0-released/)
 
 
