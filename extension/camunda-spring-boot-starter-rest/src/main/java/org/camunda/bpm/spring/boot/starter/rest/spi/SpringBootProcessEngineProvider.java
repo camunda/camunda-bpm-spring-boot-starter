@@ -1,10 +1,10 @@
 package org.camunda.bpm.spring.boot.starter.rest.spi;
 
+import java.util.Set;
+
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.ProcessEngines;
 import org.camunda.bpm.engine.rest.spi.ProcessEngineProvider;
-
-import java.util.Set;
 
 public class SpringBootProcessEngineProvider implements ProcessEngineProvider {
 

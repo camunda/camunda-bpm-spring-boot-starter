@@ -1,5 +1,7 @@
 package org.camunda.bpm.spring.boot.starter;
 
+import static org.junit.Assert.assertTrue;
+
 import org.camunda.bpm.spring.boot.starter.test.TestActuatorApplication;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,12 +14,10 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import static org.junit.Assert.assertTrue;
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = {TestActuatorApplication.class})
+@SpringApplicationConfiguration(classes = { TestActuatorApplication.class })
 @WebAppConfiguration
-@IntegrationTest({"server.port=0", "management.security.enabled:false"})
+@IntegrationTest({ "server.port=0", "management.security.enabled:false" })
 @DirtiesContext
 public class CamundaBpmActuatorConfigurationIT {
 
@@ -27,21 +27,17 @@ public class CamundaBpmActuatorConfigurationIT {
   @Test
   public void jobExecutorHealthIndicatorTest() {
     final String body = getHealthBody();
-    assertTrue("wrong body " + body,
-      body.contains("jobExecutor\":{\"status\":\"UP\""));
+    assertTrue("wrong body " + body, body.contains("jobExecutor\":{\"status\":\"UP\""));
   }
 
   @Test
   public void processEngineHealthIndicatorTest() {
     final String body = getHealthBody();
-    assertTrue(
-      "wrong body " + body,
-      body.contains("\"processEngine\":{\"status\":\"UP\",\"name\":\"testEngine\"}"));
+    assertTrue("wrong body " + body, body.contains("\"processEngine\":{\"status\":\"UP\",\"name\":\"testEngine\"}"));
   }
 
   private String getHealthBody() {
-    ResponseEntity<String> entity = new TestRestTemplate().getForEntity(
-      "http://localhost:{port}/health", String.class, port);
+    ResponseEntity<String> entity = new TestRestTemplate().getForEntity("http://localhost:{port}/health", String.class, port);
     final String body = entity.getBody();
     return body;
   }

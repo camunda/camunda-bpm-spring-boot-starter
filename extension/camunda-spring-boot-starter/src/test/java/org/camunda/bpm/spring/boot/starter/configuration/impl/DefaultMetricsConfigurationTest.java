@@ -1,5 +1,8 @@
 package org.camunda.bpm.spring.boot.starter.configuration.impl;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+
 import org.camunda.bpm.engine.impl.metrics.MetricsRegistry;
 import org.camunda.bpm.engine.impl.metrics.MetricsReporterIdProvider;
 import org.camunda.bpm.engine.impl.metrics.reporter.DbMetricsReporter;
@@ -8,10 +11,6 @@ import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
 
 public class DefaultMetricsConfigurationTest {
   private DefaultMetricsConfiguration defaultMetricsConfiguration = new DefaultMetricsConfiguration();
@@ -58,7 +57,6 @@ public class DefaultMetricsConfigurationTest {
     assertThat(configuration.getMetricsRegistry()).isEqualTo(registry);
   }
 
-
   @Test
   public void metricsReporterIdProvider() {
 
@@ -77,7 +75,6 @@ public class DefaultMetricsConfigurationTest {
 
     assertThat(configuration.getMetricsReporterIdProvider()).isEqualTo(provider);
   }
-
 
   @Test
   public void dbMetricsReporter() {

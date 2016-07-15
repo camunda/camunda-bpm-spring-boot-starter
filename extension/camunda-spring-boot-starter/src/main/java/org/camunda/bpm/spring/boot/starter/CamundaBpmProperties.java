@@ -1,5 +1,15 @@
 package org.camunda.bpm.spring.boot.starter;
 
+import static org.springframework.core.io.support.ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.camunda.bpm.application.impl.metadata.ProcessArchiveXmlImpl;
@@ -16,16 +26,6 @@ import org.camunda.bpm.engine.impl.metrics.reporter.DbMetricsReporter;
 import org.camunda.bpm.engine.repository.ResumePreviousBy;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.util.Assert;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import static org.springframework.core.io.support.ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX;
 
 @ConfigurationProperties("camunda.bpm")
 public class CamundaBpmProperties {
@@ -48,9 +48,11 @@ public class CamundaBpmProperties {
    * name of the process engine
    */
   private String processEngineName = ProcessEngines.NAME_DEFAULT;
+
   public String getProcessEngineName() {
     return processEngineName;
   }
+
   public void setProcessEngineName(String processEngineName) {
     this.processEngineName = processEngineName;
   }
@@ -59,9 +61,11 @@ public class CamundaBpmProperties {
    * the history level to use
    */
   private String historyLevel;
+
   public String getHistoryLevel() {
     return historyLevel;
   }
+
   public void setHistoryLevel(String historyLevel) {
     this.historyLevel = historyLevel;
   }
@@ -70,9 +74,11 @@ public class CamundaBpmProperties {
    * the default history level to use when 'historyLevel' is 'auto'
    */
   private String historyLevelDefault;
+
   public String getHistoryLevelDefault() {
     return historyLevelDefault;
   }
+
   public void setHistoryLevelDefault(String historyLevelDefault) {
     this.historyLevelDefault = historyLevelDefault;
   }
@@ -81,9 +87,11 @@ public class CamundaBpmProperties {
    * enables auto deployment of processes
    */
   private boolean autoDeploymentEnabled = true;
+
   public boolean isAutoDeploymentEnabled() {
     return autoDeploymentEnabled;
   }
+
   public void setAutoDeploymentEnabled(boolean autoDeploymentEnabled) {
     this.autoDeploymentEnabled = autoDeploymentEnabled;
   }
@@ -92,9 +100,11 @@ public class CamundaBpmProperties {
    * resource pattern for locating process sources
    */
   private String[] deploymentResourcePattern = initDeploymentResourcePattern();
+
   public String[] getDeploymentResourcePattern() {
     return deploymentResourcePattern;
   }
+
   public void setDeploymentResourcePattern(String[] deploymentResourcePattern) {
     this.deploymentResourcePattern = deploymentResourcePattern;
   }
@@ -103,9 +113,11 @@ public class CamundaBpmProperties {
    * metrics configuration
    */
   private Metrics metrics = new Metrics();
+
   public Metrics getMetrics() {
     return metrics;
   }
+
   public void setMetrics(Metrics metrics) {
     this.metrics = metrics;
   }
@@ -114,9 +126,11 @@ public class CamundaBpmProperties {
    * rest configuration
    */
   private Rest rest = new Rest();
+
   public Rest getRest() {
     return rest;
   }
+
   public void setRest(Rest rest) {
     this.rest = rest;
   }
@@ -125,9 +139,11 @@ public class CamundaBpmProperties {
    * database configuration
    */
   private Database database = new Database();
+
   public Database getDatabase() {
     return database;
   }
+
   public void setDatabase(Database database) {
     this.database = database;
   }
@@ -136,9 +152,11 @@ public class CamundaBpmProperties {
    * JPA configuration
    */
   private Jpa jpa = new Jpa();
+
   public Jpa getJpa() {
     return jpa;
   }
+
   public void setJpa(Jpa jpa) {
     this.jpa = jpa;
   }
@@ -147,9 +165,11 @@ public class CamundaBpmProperties {
    * job execution configuration
    */
   private JobExecution jobExecution = new JobExecution();
+
   public JobExecution getJobExecution() {
     return jobExecution;
   }
+
   public void setJobExecution(JobExecution jobExecution) {
     this.jobExecution = jobExecution;
   }
@@ -158,9 +178,11 @@ public class CamundaBpmProperties {
    * webapp configuration
    */
   private Webapp webapp = new Webapp();
+
   public Webapp getWebapp() {
     return webapp;
   }
+
   public void setWebapp(Webapp webapp) {
     this.webapp = webapp;
   }
@@ -169,9 +191,11 @@ public class CamundaBpmProperties {
    * process application/processes.xml configuration
    */
   private Application application = new Application();
+
   public Application getApplication() {
     return application;
   }
+
   public void setApplication(Application application) {
     this.application = application;
   }
@@ -184,13 +208,9 @@ public class CamundaBpmProperties {
   }
 
   public static class Database extends NestedProperty {
-    public static final List<String> SCHEMA_UPDATE_VALUES = Arrays.asList(
-      ProcessEngineConfiguration.DB_SCHEMA_UPDATE_TRUE,
-      ProcessEngineConfiguration.DB_SCHEMA_UPDATE_FALSE,
-      ProcessEngineConfigurationImpl.DB_SCHEMA_UPDATE_CREATE,
-      ProcessEngineConfiguration.DB_SCHEMA_UPDATE_CREATE_DROP,
-      ProcessEngineConfigurationImpl.DB_SCHEMA_UPDATE_DROP_CREATE
-    );
+    public static final List<String> SCHEMA_UPDATE_VALUES = Arrays.asList(ProcessEngineConfiguration.DB_SCHEMA_UPDATE_TRUE,
+        ProcessEngineConfiguration.DB_SCHEMA_UPDATE_FALSE, ProcessEngineConfigurationImpl.DB_SCHEMA_UPDATE_CREATE,
+        ProcessEngineConfiguration.DB_SCHEMA_UPDATE_CREATE_DROP, ProcessEngineConfigurationImpl.DB_SCHEMA_UPDATE_DROP_CREATE);
 
     /**
      * enables automatic schema update
@@ -215,7 +235,8 @@ public class CamundaBpmProperties {
     }
 
     /**
-     * @param schemaUpdate the schemaUpdate to set
+     * @param schemaUpdate
+     *          the schemaUpdate to set
      */
     public void setSchemaUpdate(String schemaUpdate) {
       Assert.isTrue(SCHEMA_UPDATE_VALUES.contains(schemaUpdate), String.format("schemaUpdate: '%s' is not valid (%s)", schemaUpdate, SCHEMA_UPDATE_VALUES));
@@ -230,7 +251,8 @@ public class CamundaBpmProperties {
     }
 
     /**
-     * @param type the type to set
+     * @param type
+     *          the type to set
      */
     public void setType(String type) {
       this.type = type;
@@ -244,7 +266,8 @@ public class CamundaBpmProperties {
     }
 
     /**
-     * @param tablePrefix the tablePrefix to set
+     * @param tablePrefix
+     *          the tablePrefix to set
      */
     public void setTablePrefix(String tablePrefix) {
       this.tablePrefix = tablePrefix;
@@ -252,7 +275,7 @@ public class CamundaBpmProperties {
 
   }
 
-  public static class JobExecution extends NestedProperty{
+  public static class JobExecution extends NestedProperty {
 
     /**
      * enables job execution
@@ -277,7 +300,8 @@ public class CamundaBpmProperties {
     }
 
     /**
-     * @param enabled the enabled to set
+     * @param enabled
+     *          the enabled to set
      */
     public void setEnabled(boolean enabled) {
       this.enabled = enabled;
@@ -291,7 +315,8 @@ public class CamundaBpmProperties {
     }
 
     /**
-     * @param active the active to set
+     * @param active
+     *          the active to set
      */
     public void setActive(boolean active) {
       this.active = active;
@@ -305,7 +330,8 @@ public class CamundaBpmProperties {
     }
 
     /**
-     * @param deploymentAware the deploymentAware to set
+     * @param deploymentAware
+     *          the deploymentAware to set
      */
     public void setDeploymentAware(boolean deploymentAware) {
       this.deploymentAware = deploymentAware;
@@ -313,7 +339,7 @@ public class CamundaBpmProperties {
 
   }
 
-  public static class Rest extends NestedProperty{
+  public static class Rest extends NestedProperty {
 
     /**
      * enables rest services
@@ -329,7 +355,8 @@ public class CamundaBpmProperties {
     }
 
     /**
-     * @param enabled the enabled to set
+     * @param enabled
+     *          the enabled to set
      */
     public void setEnabled(boolean enabled) {
       this.enabled = enabled;
@@ -436,7 +463,8 @@ public class CamundaBpmProperties {
     }
 
     /**
-     * @param enabled the enabled to set
+     * @param enabled
+     *          the enabled to set
      */
     public void setEnabled(boolean enabled) {
       this.enabled = enabled;
@@ -450,7 +478,8 @@ public class CamundaBpmProperties {
     }
 
     /**
-     * @param persistenceUnitName the persistenceUnitName to set
+     * @param persistenceUnitName
+     *          the persistenceUnitName to set
      */
     public void setPersistenceUnitName(String persistenceUnitName) {
       this.persistenceUnitName = persistenceUnitName;
@@ -464,7 +493,8 @@ public class CamundaBpmProperties {
     }
 
     /**
-     * @param closeEntityManager the closeEntityManager to set
+     * @param closeEntityManager
+     *          the closeEntityManager to set
      */
     public void setCloseEntityManager(boolean closeEntityManager) {
       this.closeEntityManager = closeEntityManager;
@@ -478,7 +508,8 @@ public class CamundaBpmProperties {
     }
 
     /**
-     * @param handleTransaction the handleTransaction to set
+     * @param handleTransaction
+     *          the handleTransaction to set
      */
     public void setHandleTransaction(boolean handleTransaction) {
       this.handleTransaction = handleTransaction;
@@ -500,35 +531,37 @@ public class CamundaBpmProperties {
 
   public static class Application extends NestedProperty {
     /**
-     * Indicates whether the undeployment of the process archive should trigger deleting the process engine deployment.
-     * If the process engine deployment is deleted, all running and historic process instances are removed as well.
+     * Indicates whether the undeployment of the process archive should trigger
+     * deleting the process engine deployment. If the process engine deployment
+     * is deleted, all running and historic process instances are removed as
+     * well.
      */
     private boolean isDeleteUponUndeploy = false;
 
     /**
-     * Indicates whether the classloader should be scanned for process definitions.
+     * Indicates whether the classloader should be scanned for process
+     * definitions.
      */
     private boolean isScanForProcessDefinitions = true;
 
     /**
-     * Indicates whether only changed resources should be part of the deployment.
-     * This is independent of the setting that if no resources change, no deployment
-     * takes place but the previous deployment is resumed.
+     * Indicates whether only changed resources should be part of the
+     * deployment. This is independent of the setting that if no resources
+     * change, no deployment takes place but the previous deployment is resumed.
      */
     private boolean isDeployChangedOnly = false;
 
     /**
-     * Indicates whether old versions of the deployment should be resumed.
-     * If this property is not set, the default value is used: true.
+     * Indicates whether old versions of the deployment should be resumed. If
+     * this property is not set, the default value is used: true.
      */
     private boolean isResumePreviousVersions = false;
 
     /**
-     * Indicates which previous deployments should be resumed by this deployment.
-     * Can be any of the options in {@link ResumePreviousBy}.
+     * Indicates which previous deployments should be resumed by this
+     * deployment. Can be any of the options in {@link ResumePreviousBy}.
      */
     private String resumePreviousBy = ResumePreviousBy.RESUME_BY_PROCESS_DEFINITION_KEY;
-
 
     public boolean isDeleteUponUndeploy() {
       return isDeleteUponUndeploy;
@@ -577,7 +610,7 @@ public class CamundaBpmProperties {
       ProcessArchiveXmlImpl pa = new ProcessArchiveXmlImpl();
       processArchives.add(pa);
 
-      pa.setProcessResourceNames(Collections.<String>emptyList());
+      pa.setProcessResourceNames(Collections.<String> emptyList());
 
       // with default properties
       final HashMap<String, String> properties = new HashMap<String, String>();
@@ -591,7 +624,6 @@ public class CamundaBpmProperties {
     }
 
   }
-
 
   @Override
   public String toString() {

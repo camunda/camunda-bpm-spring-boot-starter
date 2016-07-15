@@ -14,10 +14,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import static org.mockito.Matchers.anyList;
-
-import static org.camunda.bpm.engine.impl.metrics.parser.MetricsCmmnTransformListener.listener;
-
 @RunWith(MockitoJUnitRunner.class)
 public class LazyFilterRuntimeListenerTest {
   @Mock

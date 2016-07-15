@@ -1,21 +1,17 @@
 package org.camunda.bpm.spring.boot.starter.configuration.impl;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Arrays;
+
 import org.camunda.bpm.engine.ProcessEngines;
 import org.camunda.bpm.engine.impl.cfg.AbstractProcessEnginePlugin;
 import org.camunda.bpm.engine.impl.cfg.ProcessEnginePlugin;
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.junit.MockitoRule;
 import org.springframework.test.util.ReflectionTestUtils;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class DefaultProcessEngineConfigurationTest {
 
@@ -36,6 +32,7 @@ public class DefaultProcessEngineConfigurationTest {
     instance.accept(configuration);
     assertThat(configuration.getProcessEngineName()).isEqualTo("foo");
   }
+
   @Test
   public void setName_ignore_empty() throws Exception {
     properties.setProcessEngineName(null);
@@ -78,6 +75,6 @@ public class DefaultProcessEngineConfigurationTest {
     ReflectionTestUtils.setField(instance, "processEnginePlugins", Arrays.asList(b));
 
     instance.accept(configuration);
-    assertThat(configuration.getProcessEnginePlugins()).containsExactly(a,b);
+    assertThat(configuration.getProcessEnginePlugins()).containsExactly(a, b);
   }
 }

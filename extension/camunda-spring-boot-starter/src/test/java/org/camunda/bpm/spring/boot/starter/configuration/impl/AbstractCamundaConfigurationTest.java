@@ -1,13 +1,12 @@
 package org.camunda.bpm.spring.boot.starter.configuration.impl;
 
-import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.camunda.bpm.spring.boot.starter.configuration.impl.AbstractCamundaConfiguration.join;
+
+import java.util.ArrayList;
+
+import org.junit.Test;
 
 public class AbstractCamundaConfigurationTest {
 
@@ -18,7 +17,7 @@ public class AbstractCamundaConfigurationTest {
     assertThat(join(new ArrayList<String>(), asList("b"))).containsExactly("b");
     assertThat(join(asList("a"), null)).containsExactly("a");
     assertThat(join(asList("a"), new ArrayList<String>())).containsExactly("a");
-    assertThat(join(null,null)).isEmpty();
+    assertThat(join(null, null)).isEmpty();
   }
 
 }

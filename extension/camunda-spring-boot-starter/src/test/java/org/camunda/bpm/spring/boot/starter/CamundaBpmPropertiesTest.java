@@ -1,12 +1,12 @@
 package org.camunda.bpm.spring.boot.starter;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.camunda.bpm.engine.ProcessEngineConfiguration;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class CamundaBpmPropertiesTest {
 
@@ -18,13 +18,8 @@ public class CamundaBpmPropertiesTest {
     final String[] patterns = CamundaBpmProperties.initDeploymentResourcePattern();
 
     assertThat(patterns).hasSize(7);
-    assertThat(patterns).containsOnly("classpath*:**/*.bpmn",
-      "classpath*:**/*.bpmn20.xml",
-      "classpath*:**/*.dmn",
-      "classpath*:**/*.dmn11.xml",
-      "classpath*:**/*.cmmn",
-      "classpath*:**/*.cmmn10.xml",
-      "classpath*:**/*.cmmn11.xml");
+    assertThat(patterns).containsOnly("classpath*:**/*.bpmn", "classpath*:**/*.bpmn20.xml", "classpath*:**/*.dmn", "classpath*:**/*.dmn11.xml",
+        "classpath*:**/*.cmmn", "classpath*:**/*.cmmn10.xml", "classpath*:**/*.cmmn11.xml");
   }
 
   @Test
@@ -42,7 +37,6 @@ public class CamundaBpmPropertiesTest {
     new CamundaBpmProperties().getDatabase().setSchemaUpdate(ProcessEngineConfigurationImpl.DB_SCHEMA_UPDATE_CREATE);
     new CamundaBpmProperties().getDatabase().setSchemaUpdate(ProcessEngineConfiguration.DB_SCHEMA_UPDATE_CREATE_DROP);
     new CamundaBpmProperties().getDatabase().setSchemaUpdate(ProcessEngineConfigurationImpl.DB_SCHEMA_UPDATE_DROP_CREATE);
-
 
     new CamundaBpmProperties().getDatabase().setSchemaUpdate("foo");
   }

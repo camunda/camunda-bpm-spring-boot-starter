@@ -1,5 +1,14 @@
 package org.camunda.bpm.spring.boot.starter;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.transaction.Transactional;
+
 import org.camunda.bpm.engine.ProcessEngineException;
 import org.camunda.bpm.spring.boot.starter.test.TestNoJpaApplication;
 import org.camunda.bpm.spring.boot.starter.test.jpa.domain.TestEntity;
@@ -10,16 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import javax.transaction.Transactional;
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = {TestNoJpaApplication.class})
+@SpringApplicationConfiguration(classes = { TestNoJpaApplication.class })
 @Transactional
 public class CamundaNoJpaAutoConfigurationIT extends AbstractCamundaAutoConfigurationIT {
 

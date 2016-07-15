@@ -1,8 +1,10 @@
 package org.camunda.bpm.extension.spring.boot.rest;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.rest.dto.runtime.ProcessInstanceDto;
-import my.own.custom.spring.boot.project.SampleCamundaRestApplication;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -18,8 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import my.own.custom.spring.boot.project.SampleCamundaRestApplication;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = SampleCamundaRestApplication.class)
@@ -37,36 +38,27 @@ public class SampleCamundaRestApplicationIT {
 
   @Test
   public void restApiIsAvailable() throws Exception {
-    ResponseEntity<String> entity = restTemplate.getForEntity(
-      "http://localhost:" + port + "/rest/engine/", String.class);
+    ResponseEntity<String> entity = restTemplate.getForEntity("http://localhost:" + port + "/rest/engine/", String.class);
     assertEquals(HttpStatus.OK, entity.getStatusCode());
     assertEquals("[{\"name\":\"testEngine\"}]", entity.getBody());
   }
 
   @Test
   public void startProcessInstanceByCustomResource() throws Exception {
-    ResponseEntity<ProcessInstanceDto> entity = restTemplate.postForEntity(
-      "http://localhost:" + port + "/rest/process/start",
-      HttpEntity.EMPTY,
-      ProcessInstanceDto.class);
+    ResponseEntity<ProcessInstanceDto> entity = restTemplate.postForEntity("http://localhost:" + port + "/rest/process/start", HttpEntity.EMPTY,
+        ProcessInstanceDto.class);
     assertEquals(HttpStatus.OK, entity.getStatusCode());
     assertNotNull(entity.getBody());
 
     // find the process instance
-    final ProcessInstance processInstance = runtimeService.createProcessInstanceQuery()
-      .processInstanceId(entity.getBody().getId())
-      .singleResult();
-    assertEquals(processInstance.getProcessInstanceId(),
-      entity.getBody().getId());
+    final ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(entity.getBody().getId()).singleResult();
+    assertEquals(processInstance.getProcessInstanceId(), entity.getBody().getId());
   }
 
   @Ignore
   @Test
   public void multipartFileUploadCamundaRestIsWorking() throws Exception {
-    ResponseEntity<String> entity = restTemplate.postForEntity(
-      "http://localhost:" + port + "/rest/start/process",
-      HttpEntity.EMPTY,
-      String.class);
+    ResponseEntity<String> entity = restTemplate.postForEntity("http://localhost:" + port + "/rest/start/process", HttpEntity.EMPTY, String.class);
     assertEquals(HttpStatus.OK, entity.getStatusCode());
     assertEquals("1", entity);
 

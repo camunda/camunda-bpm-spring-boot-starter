@@ -1,5 +1,7 @@
 package org.camunda.bpm.spring.boot.starter;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 import org.camunda.bpm.application.ProcessApplicationInfo;
 import org.camunda.bpm.container.RuntimeContainerDelegate;
 import org.camunda.bpm.engine.ProcessEngine;
@@ -10,14 +12,9 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 
-import static org.slf4j.LoggerFactory.getLogger;
-
 public class SpringBootProcessApplication extends SpringProcessApplication {
 
   private static final Logger LOGGER = getLogger(SpringBootProcessApplication.class);
-
-  @Autowired
-  private CamundaBpmProperties camundaBpmProperties;
 
   @Autowired
   private ProcessEngine processEngine;

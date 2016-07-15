@@ -1,13 +1,13 @@
 package org.camunda.bpm.spring.boot.starter.actuator;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.camunda.bpm.engine.impl.ProcessEngineImpl;
 import org.camunda.bpm.engine.impl.jobexecutor.JobExecutor;
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health.Builder;
 import org.springframework.util.Assert;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class JobExecutorHealthIndicator extends AbstractHealthIndicator {
 
@@ -60,7 +60,8 @@ public class JobExecutorHealthIndicator extends AbstractHealthIndicator {
     }
 
     /**
-     * @param name the name to set
+     * @param name
+     *          the name to set
      */
     public void setName(String name) {
       this.name = name;
@@ -74,7 +75,8 @@ public class JobExecutorHealthIndicator extends AbstractHealthIndicator {
     }
 
     /**
-     * @param lockOwner the lockOwner to set
+     * @param lockOwner
+     *          the lockOwner to set
      */
     public void setLockOwner(String lockOwner) {
       this.lockOwner = lockOwner;
@@ -88,7 +90,8 @@ public class JobExecutorHealthIndicator extends AbstractHealthIndicator {
     }
 
     /**
-     * @param lockTimeInMillis the lockTimeInMillis to set
+     * @param lockTimeInMillis
+     *          the lockTimeInMillis to set
      */
     public void setLockTimeInMillis(int lockTimeInMillis) {
       this.lockTimeInMillis = lockTimeInMillis;
@@ -102,7 +105,8 @@ public class JobExecutorHealthIndicator extends AbstractHealthIndicator {
     }
 
     /**
-     * @param maxJobsPerAcquisition the maxJobsPerAcquisition to set
+     * @param maxJobsPerAcquisition
+     *          the maxJobsPerAcquisition to set
      */
     public void setMaxJobsPerAcquisition(int maxJobsPerAcquisition) {
       this.maxJobsPerAcquisition = maxJobsPerAcquisition;
@@ -116,7 +120,8 @@ public class JobExecutorHealthIndicator extends AbstractHealthIndicator {
     }
 
     /**
-     * @param waitTimeInMillis the waitTimeInMillis to set
+     * @param waitTimeInMillis
+     *          the waitTimeInMillis to set
      */
     public void setWaitTimeInMillis(int waitTimeInMillis) {
       this.waitTimeInMillis = waitTimeInMillis;
@@ -130,7 +135,8 @@ public class JobExecutorHealthIndicator extends AbstractHealthIndicator {
     }
 
     /**
-     * @param processEngineNames the processEngineNames to set
+     * @param processEngineNames
+     *          the processEngineNames to set
      */
     public void setProcessEngineNames(Set<String> processEngineNames) {
       this.processEngineNames = processEngineNames;

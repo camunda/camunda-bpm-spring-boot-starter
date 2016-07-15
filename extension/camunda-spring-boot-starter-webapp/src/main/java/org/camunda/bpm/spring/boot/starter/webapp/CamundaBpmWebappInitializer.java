@@ -70,7 +70,7 @@ public class CamundaBpmWebappInitializer implements ServletContextInitializer {
   }
 
   private FilterRegistration registerFilter(final String filterName, final Class<? extends Filter> filterClass, final Map<String, String> initParameters,
-                                            final String... urlPatterns) {
+      final String... urlPatterns) {
     FilterRegistration filterRegistration = servletContext.getFilterRegistration(filterName);
 
     if (filterRegistration == null) {
@@ -87,8 +87,7 @@ public class CamundaBpmWebappInitializer implements ServletContextInitializer {
     return filterRegistration;
   }
 
-  private ServletRegistration registerServlet(final String servletName, final Class<?> applicationClass,
-                                              final String... urlPatterns) {
+  private ServletRegistration registerServlet(final String servletName, final Class<?> applicationClass, final String... urlPatterns) {
     ServletRegistration servletRegistration = servletContext.getServletRegistration(servletName);
 
     if (servletRegistration == null) {

@@ -1,5 +1,12 @@
 package org.camunda.bpm.spring.boot.starter.actuator;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.camunda.bpm.engine.impl.ProcessEngineImpl;
 import org.camunda.bpm.engine.impl.jobexecutor.JobExecutor;
 import org.camunda.bpm.spring.boot.starter.actuator.JobExecutorHealthIndicator.Details;
@@ -10,13 +17,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.Status;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class JobExecutorHealthIndicatorTest {
@@ -79,7 +79,6 @@ public class JobExecutorHealthIndicatorTest {
     assertEquals(JOB_EXECUTOR_NAME, details.getName());
     assertEquals(WAIT_TIME_IN_MILLIS, details.getWaitTimeInMillis());
     assertEquals(PROCESS_ENGINES.size(), details.getProcessEngineNames().size());
-    assertEquals(PROCESS_ENGINE_NAME, details.getProcessEngineNames().iterator()
-      .next());
+    assertEquals(PROCESS_ENGINE_NAME, details.getProcessEngineNames().iterator().next());
   }
 }

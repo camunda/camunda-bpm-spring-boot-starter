@@ -22,7 +22,8 @@ public class TestEntity {
   }
 
   /**
-   * @param id the id to set
+   * @param id
+   *          the id to set
    */
   public void setId(Long id) {
     this.id = id;
@@ -36,7 +37,8 @@ public class TestEntity {
   }
 
   /**
-   * @param text the text to set
+   * @param text
+   *          the text to set
    */
   public void setText(String text) {
     this.text = text;
