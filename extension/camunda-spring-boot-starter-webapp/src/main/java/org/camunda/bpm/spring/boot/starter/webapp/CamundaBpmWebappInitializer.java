@@ -1,5 +1,8 @@
 package org.camunda.bpm.spring.boot.starter.webapp;
 
+import static java.util.Collections.singletonMap;
+import static org.glassfish.jersey.servlet.ServletProperties.JAXRS_APPLICATION_CLASS;
+
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Map;
@@ -27,10 +30,6 @@ import org.glassfish.jersey.servlet.ServletContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.embedded.ServletContextInitializer;
-
-import static java.lang.String.format;
-import static java.util.Collections.singletonMap;
-import static org.glassfish.jersey.servlet.ServletProperties.JAXRS_APPLICATION_CLASS;
 
 /**
  * Inspired by:

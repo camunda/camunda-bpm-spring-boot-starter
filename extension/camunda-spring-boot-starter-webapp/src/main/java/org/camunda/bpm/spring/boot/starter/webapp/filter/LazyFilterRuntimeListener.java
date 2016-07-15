@@ -3,7 +3,6 @@ package org.camunda.bpm.spring.boot.starter.webapp.filter;
 import org.camunda.bpm.spring.boot.starter.webapp.filter.LazyDelegateFilter.InitHook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringApplicationRunListener;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -40,16 +39,22 @@ public class LazyFilterRuntimeListener implements SpringApplicationRunListener {
     if (context.containsBean("resourceLoaderDependingInitHook")) {
       @SuppressWarnings("unchecked")
       InitHook<ResourceLoaderDependingFilter> initHook = context.getBean("resourceLoaderDependingInitHook", InitHook.class);
-      init(LazySecurityFilter.INSTANCE, initHook);
-      init(LazyProcessEnginesFilter.INSTANCE, initHook);
+      registerAndInit(getClassFrom(LazySecurityFilter.INSTANCE, LazySecurityFilter.class), LazySecurityFilter.INSTANCE, initHook);
+      registerAndInit(getClassFrom(LazyProcessEnginesFilter.INSTANCE, LazyProcessEnginesFilter.class), LazyProcessEnginesFilter.INSTANCE, initHook);
     } else {
       logger.warn("Finished lazy runtime listener without access to resourceLoaderDependingInitHook");
     }
   }
 
-  private void init(LazyDelegateFilter<ResourceLoaderDependingFilter> filter, InitHook<ResourceLoaderDependingFilter> initHook) {
-    filter.setInitHook(initHook);
-    filter.lazyInit();
+  @SuppressWarnings("unchecked")
+  private <T extends LazyDelegateFilter<?>> Class<T> getClassFrom(T instance, Class<T> clazz) {
+    return (Class<T>) (instance == null ? clazz : instance.getClass());
+  }
+
+  private <T extends LazyDelegateFilter<ResourceLoaderDependingFilter>> void registerAndInit(Class<T> filterClass, T filter,
+      InitHook<ResourceLoaderDependingFilter> initHook) {
+    LazyInitRegistration.addInitHookRegistration(filterClass, initHook);
+    LazyInitRegistration.lazyInit(filter);
   }
 
 }

@@ -20,9 +20,12 @@ import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(LazyInitRegistration.class)
 public class LazyDelegateFilterTest {
 
   @Mock
@@ -36,11 +39,14 @@ public class LazyDelegateFilterTest {
 
   @Test
   public void initTest() throws Exception {
+    PowerMockito.mockStatic(LazyInitRegistration.class);
     LazyDelegateFilter<Filter> delegateFilter = new LazyDelegateFilter<Filter>(filterMock.getClass());
     delegateFilter.delegate = filterMock;
     delegateFilter.init(filterConfigMock);
     assertSame(filterConfigMock, delegateFilter.filterConfig);
     verify(filterMock, times(0)).init(Mockito.any(FilterConfig.class));
+    PowerMockito.verifyStatic();
+    LazyInitRegistration.lazyInit(delegateFilter);
   }
 
   @Test
@@ -82,4 +88,5 @@ public class LazyDelegateFilterTest {
     delegateFilter.destroy();
     verify(filterMock).destroy();
   }
+
 }
