@@ -16,6 +16,7 @@
     <module>camunda-spring-boot-starter-example-web</module>
     <module>camunda-spring-boot-starter-example-cloud</module>
     <module>camunda-spring-boot-starter-example-webapp</module>
+    <module>camunda-spring-boot-starter-example-war</module>
     <module>camunda-spring-boot-starter-example-dmn-rest</module>
 	<module>camunda-spring-boot-starter-example-testhelper</module>
   </modules>
