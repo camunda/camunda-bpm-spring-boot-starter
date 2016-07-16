@@ -89,4 +89,12 @@ public class LazyDelegateFilterTest {
     verify(filterMock).destroy();
   }
 
+  @Test
+  public void lazyInitRegistrationTest() {
+    PowerMockito.mockStatic(LazyInitRegistration.class);
+    LazyDelegateFilter<Filter> delegateFilter = new LazyDelegateFilter<Filter>(filterMock.getClass());
+    PowerMockito.verifyStatic();
+    LazyInitRegistration.register(delegateFilter);
+  }
+
 }

@@ -18,6 +18,7 @@ public class LazyDelegateFilter<T extends Filter> implements Filter {
 
   public LazyDelegateFilter(Class<? extends T> delegateClass) {
     this.delegateClass = delegateClass;
+    LazyInitRegistration.register(this);
   }
 
   public void lazyInit() {

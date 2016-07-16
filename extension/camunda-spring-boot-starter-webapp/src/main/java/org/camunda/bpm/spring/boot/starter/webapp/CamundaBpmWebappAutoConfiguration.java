@@ -2,6 +2,7 @@ package org.camunda.bpm.spring.boot.starter.webapp;
 
 import org.camunda.bpm.spring.boot.starter.CamundaBpmAutoConfiguration;
 import org.camunda.bpm.spring.boot.starter.webapp.filter.LazyDelegateFilter.InitHook;
+import org.camunda.bpm.spring.boot.starter.webapp.filter.LazyInitRegistration;
 import org.camunda.bpm.spring.boot.starter.webapp.filter.ResourceLoaderDependingFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,6 +40,11 @@ public class CamundaBpmWebappAutoConfiguration extends WebMvcAutoConfigurationAd
         filter.setResourceLoader(resourceLoader);
       }
     };
+  }
+
+  @Bean
+  public LazyInitRegistration lazyInitRegistration() {
+    return new LazyInitRegistration();
   }
 
   @Override
