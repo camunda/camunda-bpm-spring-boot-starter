@@ -105,6 +105,19 @@ public class LazyInitRegistrationTest {
     assertFalse(LazyInitRegistration.getRegistrations().contains(lazyDelegateFilterMock));
   }
 
+  @Test
+  public void lazyInitWithoutInitHook() {
+    LazyInitRegistration.APPLICATION_CONTEXT = applicationContextMock;
+    LazyInitRegistration.register(lazyDelegateFilterMock);
+    when(applicationContextMock.containsBean(LazyInitRegistration.RESOURCE_LOADER_DEPENDING_INIT_HOOK)).thenReturn(false);
+    when(applicationContextMock.getBean(LazyInitRegistration.RESOURCE_LOADER_DEPENDING_INIT_HOOK, InitHook.class)).thenReturn(initHookMock);
+
+    assertTrue(LazyInitRegistration.lazyInit(lazyDelegateFilterMock));
+    verify(lazyDelegateFilterMock, times(1)).setInitHook(null);
+    verify(lazyDelegateFilterMock, times(1)).lazyInit();
+    assertFalse(LazyInitRegistration.getRegistrations().contains(lazyDelegateFilterMock));
+  }
+
   @Test(expected = UnsupportedOperationException.class)
   public void getRegistrationsTest() {
     LazyInitRegistration.getRegistrations().add(lazyDelegateFilterMock);

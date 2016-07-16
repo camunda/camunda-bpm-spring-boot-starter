@@ -31,8 +31,6 @@ public class LazyInitRegistration implements ApplicationContextAware {
   protected static <T extends Filter> InitHook<T> getInitHook() {
     if (APPLICATION_CONTEXT != null && APPLICATION_CONTEXT.containsBean(RESOURCE_LOADER_DEPENDING_INIT_HOOK)) {
       return APPLICATION_CONTEXT.getBean(RESOURCE_LOADER_DEPENDING_INIT_HOOK, InitHook.class);
-    } else {
-      LOGGER.warn("Finished lazy runtime listener without access to {}", RESOURCE_LOADER_DEPENDING_INIT_HOOK);
     }
     return null;
   }
