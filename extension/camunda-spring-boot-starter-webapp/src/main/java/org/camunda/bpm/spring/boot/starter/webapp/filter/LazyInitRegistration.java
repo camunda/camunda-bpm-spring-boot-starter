@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.servlet.Filter;
+
 import org.camunda.bpm.spring.boot.starter.webapp.filter.LazyDelegateFilter.InitHook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,19 +17,18 @@ public class LazyInitRegistration implements ApplicationContextAware {
 
   protected static final String RESOURCE_LOADER_DEPENDING_INIT_HOOK = "resourceLoaderDependingInitHook";
 
-  @SuppressWarnings("rawtypes")
-  protected static final Set<LazyDelegateFilter> REGISTRATION = new HashSet<LazyDelegateFilter>();
+  protected static final Set<LazyDelegateFilter<? extends Filter>> REGISTRATION = new HashSet<LazyDelegateFilter<? extends Filter>>();
 
   protected static ApplicationContext APPLICATION_CONTEXT;
 
   private static final Logger LOGGER = LoggerFactory.getLogger(LazyInitRegistration.class);
 
-  static void register(LazyDelegateFilter<?> lazyDelegateFilter) {
+  static void register(LazyDelegateFilter<? extends Filter> lazyDelegateFilter) {
     REGISTRATION.add(lazyDelegateFilter);
   }
 
-  @SuppressWarnings({ "rawtypes" })
-  protected static InitHook getInitHook() {
+  @SuppressWarnings("unchecked")
+  protected static <T extends Filter> InitHook<T> getInitHook() {
     if (APPLICATION_CONTEXT != null && APPLICATION_CONTEXT.containsBean(RESOURCE_LOADER_DEPENDING_INIT_HOOK)) {
       return APPLICATION_CONTEXT.getBean(RESOURCE_LOADER_DEPENDING_INIT_HOOK, InitHook.class);
     } else {
@@ -36,40 +37,37 @@ public class LazyInitRegistration implements ApplicationContextAware {
     return null;
   }
 
-  static boolean hasInitHookRegistrationFor(LazyDelegateFilter<?> lazyDelegateFilter) {
+  static boolean isRegistered(LazyDelegateFilter<? extends Filter> lazyDelegateFilter) {
     return REGISTRATION.contains(lazyDelegateFilter);
   }
 
-  @SuppressWarnings({ "rawtypes", "unchecked" })
-  static boolean lazyInit(LazyDelegateFilter lazyDelegateFilter) {
+  static <T extends Filter> boolean lazyInit(LazyDelegateFilter<T> lazyDelegateFilter) {
     if (APPLICATION_CONTEXT != null) {
-      if (hasInitHookRegistrationFor(lazyDelegateFilter)) {
-        lazyDelegateFilter.setInitHook(getInitHook());
+      if (isRegistered(lazyDelegateFilter)) {
+        lazyDelegateFilter.setInitHook(LazyInitRegistration.<T> getInitHook());
         lazyDelegateFilter.lazyInit();
         REGISTRATION.remove(lazyDelegateFilter);
         LOGGER.info("lazy initialized {}", lazyDelegateFilter);
         return true;
       } else {
-        LOGGER.debug("skipping lazy init for {} because of no init hook registration");
+        LOGGER.debug("skipping lazy init for {} because of no init hook registration", lazyDelegateFilter);
       }
     } else {
-      LOGGER.debug("skipping lazy init for {} because application context not initialized yet");
+      LOGGER.debug("skipping lazy init for {} because application context not initialized yet", lazyDelegateFilter);
     }
 
     return false;
   }
 
-  @SuppressWarnings("rawtypes")
   @Override
   public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
     APPLICATION_CONTEXT = applicationContext;
-    for (LazyDelegateFilter lazyDelegateFilter : getRegistrations()) {
+    for (LazyDelegateFilter<? extends Filter> lazyDelegateFilter : getRegistrations()) {
       lazyInit(lazyDelegateFilter);
     }
   }
 
-  @SuppressWarnings("rawtypes")
-  static Set<LazyDelegateFilter> getRegistrations() {
-    return Collections.unmodifiableSet(new HashSet<LazyDelegateFilter>(REGISTRATION));
+  static Set<LazyDelegateFilter<? extends Filter>> getRegistrations() {
+    return Collections.unmodifiableSet(new HashSet<LazyDelegateFilter<? extends Filter>>(REGISTRATION));
   }
 }

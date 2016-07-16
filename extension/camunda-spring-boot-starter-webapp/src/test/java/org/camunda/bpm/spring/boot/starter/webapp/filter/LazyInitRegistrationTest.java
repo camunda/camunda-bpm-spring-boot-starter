@@ -11,6 +11,8 @@ import static org.mockito.Mockito.when;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.servlet.Filter;
+
 import org.camunda.bpm.spring.boot.starter.webapp.filter.LazyDelegateFilter.InitHook;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,14 +28,13 @@ import org.springframework.context.ApplicationContext;
 public class LazyInitRegistrationTest {
 
   @Mock
-  private LazyDelegateFilter<?> lazyDelegateFilterMock;
+  private LazyDelegateFilter<ResourceLoaderDependingFilter> lazyDelegateFilterMock;
 
   @Mock
   private ApplicationContext applicationContextMock;
 
-  @SuppressWarnings("rawtypes")
   @Mock
-  private InitHook initHookMock;
+  private InitHook<ResourceLoaderDependingFilter> initHookMock;
 
   public void init() {
     LazyInitRegistration.APPLICATION_CONTEXT = null;
@@ -68,10 +69,10 @@ public class LazyInitRegistrationTest {
   }
 
   @Test
-  public void hasInitHookRegistrationForTest() {
-    assertFalse(LazyInitRegistration.hasInitHookRegistrationFor(lazyDelegateFilterMock));
+  public void isRegisteredTest() {
+    assertFalse(LazyInitRegistration.isRegistered(lazyDelegateFilterMock));
     LazyInitRegistration.register(lazyDelegateFilterMock);
-    assertTrue(LazyInitRegistration.hasInitHookRegistrationFor(lazyDelegateFilterMock));
+    assertTrue(LazyInitRegistration.isRegistered(lazyDelegateFilterMock));
   }
 
   @SuppressWarnings("unchecked")
@@ -91,7 +92,6 @@ public class LazyInitRegistrationTest {
     verify(lazyDelegateFilterMock, times(0)).lazyInit();
   }
 
-  @SuppressWarnings("unchecked")
   @Test
   public void lazyInitWithRegistration() {
     LazyInitRegistration.APPLICATION_CONTEXT = applicationContextMock;
@@ -110,15 +110,12 @@ public class LazyInitRegistrationTest {
     LazyInitRegistration.getRegistrations().add(lazyDelegateFilterMock);
   }
 
-  @SuppressWarnings({ "rawtypes" })
   @Test
   public void setApplicationContextTest() {
     PowerMockito.mockStatic(LazyInitRegistration.class);
 
     LazyInitRegistration.register(lazyDelegateFilterMock);
-    when(applicationContextMock.containsBean(LazyInitRegistration.RESOURCE_LOADER_DEPENDING_INIT_HOOK)).thenReturn(true);
-    when(applicationContextMock.getBean(LazyInitRegistration.RESOURCE_LOADER_DEPENDING_INIT_HOOK, InitHook.class)).thenReturn(initHookMock);
-    Set<LazyDelegateFilter> registrations = new HashSet<LazyDelegateFilter>();
+    Set<LazyDelegateFilter<? extends Filter>> registrations = new HashSet<LazyDelegateFilter<? extends Filter>>();
     registrations.add(lazyDelegateFilterMock);
     when(LazyInitRegistration.getRegistrations()).thenReturn(registrations);
 
