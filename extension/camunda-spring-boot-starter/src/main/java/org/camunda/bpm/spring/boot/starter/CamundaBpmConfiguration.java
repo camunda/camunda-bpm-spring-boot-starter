@@ -24,7 +24,6 @@ import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultJobConfigur
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultJpaConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.jdbc.HistoryLevelDeterminator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -37,17 +36,16 @@ import org.springframework.jdbc.core.JdbcTemplate;
 @Import(JobConfiguration.class)
 public class CamundaBpmConfiguration {
 
-  @Autowired
-  protected List<ProcessEnginePlugin> processEnginePlugins;
-
   @Bean
   @ConditionalOnMissingBean(ProcessEngineConfigurationImpl.class)
   public ProcessEngineConfigurationImpl processEngineConfigurationImpl() {
-    final SpringProcessEngineConfiguration configuration = new SpringProcessEngineConfiguration();
+    return new SpringProcessEngineConfiguration();
+  }
 
-    configuration.setProcessEnginePlugins(processEnginePlugins);
-
-    return configuration;
+  @Bean
+  @ConditionalOnMissingBean(ProcessEngineConfigurationImplBeanPostProcessor.class)
+  public ProcessEngineConfigurationImplBeanPostProcessor processEngineConfigurationImplBeanPostProcessor(List<ProcessEnginePlugin> processEnginePlugins) {
+    return new ProcessEngineConfigurationImplBeanPostProcessor(processEnginePlugins);
   }
 
   @Bean
