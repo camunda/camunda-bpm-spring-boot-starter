@@ -123,19 +123,6 @@ public class CamundaBpmProperties {
   }
 
   /**
-   * rest configuration
-   */
-  private Rest rest = new Rest();
-
-  public Rest getRest() {
-    return rest;
-  }
-
-  public void setRest(Rest rest) {
-    this.rest = rest;
-  }
-
-  /**
    * database configuration
    */
   private Database database = new Database();
@@ -337,52 +324,6 @@ public class CamundaBpmProperties {
       this.deploymentAware = deploymentAware;
     }
 
-  }
-
-  public static class Rest extends NestedProperty {
-
-    /**
-     * enables rest services
-     */
-    private boolean enabled = true;
-    private String mappedUrl = "/rest/*";
-
-    /**
-     * @return the enabled
-     */
-    public boolean isEnabled() {
-      return enabled;
-    }
-
-    /**
-     * @param enabled
-     *          the enabled to set
-     */
-    public void setEnabled(boolean enabled) {
-      this.enabled = enabled;
-    }
-
-    public String getMappedUrl() {
-      return mappedUrl;
-    }
-
-    public void setMappedUrl(String mappedUrl) {
-      if (mappedUrl == null || mappedUrl.equals("/")) {
-        mappedUrl = "/*";
-      }
-
-      if (!mappedUrl.startsWith("/")) {
-        mappedUrl = "/" + mappedUrl;
-      }
-
-      if (mappedUrl.equals("/")) {
-        mappedUrl = "/*";
-      } else {
-        mappedUrl += "/*";
-      }
-
-      this.mappedUrl = mappedUrl;
-    }
   }
 
   public static class Metrics extends NestedProperty {

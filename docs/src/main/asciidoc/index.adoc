@@ -295,10 +295,6 @@ public class MyApplication extends SpringBootProcessApplication{
 |enables default camunda health indicators
 |`true`
 
-|`camunda.bpm.rest.enabled`
-|enables camunda rest services
-|`true`
-
 |`{properties-prefix}.version`
 |version of the process engine
 |read only value e.g. 7.4.0
