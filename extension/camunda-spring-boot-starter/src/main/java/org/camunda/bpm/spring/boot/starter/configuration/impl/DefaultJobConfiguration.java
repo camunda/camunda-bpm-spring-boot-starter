@@ -8,7 +8,9 @@ import org.camunda.bpm.engine.impl.jobexecutor.JobHandler;
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 import org.camunda.bpm.engine.spring.components.jobexecutor.SpringJobExecutor;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaJobConfiguration;
+import org.camunda.bpm.spring.boot.starter.events.JobExecutorStartingEventListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -72,5 +74,11 @@ public class DefaultJobConfiguration extends AbstractCamundaConfiguration implem
       return springJobExecutor;
     }
 
+    @Bean
+    @ConditionalOnProperty(prefix = "camunda.bpm.job-execution", name = "enabled", havingValue = "true", matchIfMissing = true)
+    @ConditionalOnBean(JobExecutor.class)
+    public static JobExecutorStartingEventListener jobExecutorStartingEventListener() {
+      return new JobExecutorStartingEventListener();
+    }
   }
 }
