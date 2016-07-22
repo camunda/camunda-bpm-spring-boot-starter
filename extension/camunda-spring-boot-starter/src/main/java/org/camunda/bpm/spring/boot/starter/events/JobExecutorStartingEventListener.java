@@ -1,7 +1,6 @@
 package org.camunda.bpm.spring.boot.starter.events;
 
 import org.camunda.bpm.engine.impl.jobexecutor.JobExecutor;
-import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +9,6 @@ import org.springframework.context.event.EventListener;
 public class JobExecutorStartingEventListener {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(JobExecutorStartingEventListener.class);
-
-  @Autowired
-  protected CamundaBpmProperties camundaBpmProperties;
 
   @Autowired
   protected JobExecutor jobExecutor;
