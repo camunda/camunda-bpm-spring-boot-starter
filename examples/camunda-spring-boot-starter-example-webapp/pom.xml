@@ -9,6 +9,7 @@
 
   <properties>
     <start-class>org.camunda.bpm.spring.boot.starter.example.webapp.WebappExampleApplication</start-class>
+    <camunda-springboot.version>${project.version}</camunda-springboot.version>
   </properties>
 
   <dependencyManagement>
@@ -28,7 +29,14 @@
     <dependency>
       <groupId>org.camunda.bpm.extension</groupId>
       <artifactId>camunda-bpm-spring-boot-starter-webapp</artifactId>
-      <version>${project.version}</version>
+      <version>${camunda-springboot.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.camunda.bpm.extension</groupId>
+      <artifactId>camunda-bpm-spring-boot-processor</artifactId>
+      <version>${camunda-springboot.version}</version>
+      <scope>provided</scope>
     </dependency>
 
     <dependency>
@@ -39,6 +47,12 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>2.0.0</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
