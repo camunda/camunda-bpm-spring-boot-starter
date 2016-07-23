@@ -1,7 +1,5 @@
 # AutoConfigurations
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=org.camunda.bpm.spring.boot.starter.CamundaBpmAutoConfiguration
-# RunListeners
-org.springframework.boot.SpringApplicationRunListener=org.camunda.bpm.spring.boot.starter.runlistener.ProcessEventPublishingRunListener
 # Application Listeners
 org.springframework.context.ApplicationListener=org.camunda.bpm.spring.boot.starter.runlistener.PropertiesListener
 

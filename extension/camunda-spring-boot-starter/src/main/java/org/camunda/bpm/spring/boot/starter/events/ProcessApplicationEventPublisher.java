@@ -1,6 +1,8 @@
 package org.camunda.bpm.spring.boot.starter.events;
 
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.EventListener;
 
 public class ProcessApplicationEventPublisher {
 
@@ -10,7 +12,12 @@ public class ProcessApplicationEventPublisher {
     this.publisher = publisher;
   }
 
-  public void publishProcessApplicationStartedEvent(Object source) {
+  @EventListener
+  public void handleApplicationReadyEvent(ApplicationReadyEvent applicationReadyEvent) {
+    publishProcessApplicationStartedEvent(applicationReadyEvent);
+  }
+
+  protected void publishProcessApplicationStartedEvent(Object source) {
     publisher.publishEvent(createNewEvent(source));
   }
 
