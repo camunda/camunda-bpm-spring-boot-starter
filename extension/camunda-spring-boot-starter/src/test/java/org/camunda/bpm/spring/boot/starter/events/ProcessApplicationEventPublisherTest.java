@@ -1,18 +1,20 @@
 package org.camunda.bpm.spring.boot.starter.events;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.ContextClosedEvent;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProcessApplicationEventPublisherTest {
@@ -20,33 +22,28 @@ public class ProcessApplicationEventPublisherTest {
   @Mock
   private ApplicationEventPublisher publisherMock;
 
+  @Mock
+  private ApplicationContext applicationContextMock;
+
   @Test
   public void handleApplicationReadyEventTest() {
     ProcessApplicationEventPublisher processApplicationEventPublisher = spy(new ProcessApplicationEventPublisher(publisherMock));
     ApplicationReadyEvent applicationReadyEventMock = mock(ApplicationReadyEvent.class);
     processApplicationEventPublisher.handleApplicationReadyEvent(applicationReadyEventMock);
-    verify(processApplicationEventPublisher).publishProcessApplicationStartedEvent(applicationReadyEventMock);
+    verify(processApplicationEventPublisher).publishProcessApplicationEvent(Mockito.any(ProcessApplicationStartedEvent.class));
   }
 
   @Test
-  public void publishProcessApplicationStartedEventTest() {
+  public void handleContextStoppedEventTest() {
     ProcessApplicationEventPublisher processApplicationEventPublisher = spy(new ProcessApplicationEventPublisher(publisherMock));
-    ProcessApplicationStartedEvent event = new ProcessApplicationStartedEvent(this);
-    when(processApplicationEventPublisher.createNewEvent(this)).thenReturn(event);
-    processApplicationEventPublisher.publishProcessApplicationStartedEvent(this);
-    verify(publisherMock).publishEvent(event);
+    processApplicationEventPublisher.setApplicationContext(applicationContextMock);
+    ContextClosedEvent contextClosedEventMock = mock(ContextClosedEvent.class);
+    processApplicationEventPublisher.handleContextStoppedEvent(contextClosedEventMock);
+    verify(processApplicationEventPublisher, times(0)).publishProcessApplicationEvent(Mockito.any(ProcessApplicationStoppedEvent.class));
+
+    when(contextClosedEventMock.getApplicationContext()).thenReturn(applicationContextMock);
+    processApplicationEventPublisher.handleContextStoppedEvent(contextClosedEventMock);
+    verify(processApplicationEventPublisher).publishProcessApplicationEvent(Mockito.any(ProcessApplicationStoppedEvent.class));
   }
 
-  @Test
-  public void createNewEventTest() {
-    ProcessApplicationEventPublisher processApplicationEventPublisher = new ProcessApplicationEventPublisher(publisherMock);
-    Object source1 = new Object();
-    Object source2 = new Object();
-    ProcessApplicationStartedEvent event1 = processApplicationEventPublisher.createNewEvent(source1);
-    ProcessApplicationStartedEvent event2 = processApplicationEventPublisher.createNewEvent(source2);
-
-    assertNotSame(event1, event2);
-    assertEquals(source1, event1.getSource());
-    assertEquals(source2, event2.getSource());
-  }
 }
