@@ -11,6 +11,7 @@
   <packaging>pom</packaging>
 
   <modules>
+    <module>camunda-spring-boot-processor</module>
     <module>camunda-spring-boot-starter</module>
     <module>camunda-spring-boot-starter-rest</module>
     <module>camunda-spring-boot-starter-webapp</module>
@@ -60,5 +61,12 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
+  </dependencies>
 
 </project>
