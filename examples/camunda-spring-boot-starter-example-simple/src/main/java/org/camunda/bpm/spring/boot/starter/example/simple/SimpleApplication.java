@@ -6,7 +6,7 @@ import org.camunda.bpm.engine.HistoryService;
 import org.camunda.bpm.engine.history.HistoricProcessInstance;
 import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties;
 import org.camunda.bpm.spring.boot.starter.SpringBootProcessApplication;
-import org.camunda.bpm.spring.boot.starter.events.ProcessApplicationStoppedEvent;
+import org.camunda.bpm.spring.boot.starter.event.ProcessApplicationStoppedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

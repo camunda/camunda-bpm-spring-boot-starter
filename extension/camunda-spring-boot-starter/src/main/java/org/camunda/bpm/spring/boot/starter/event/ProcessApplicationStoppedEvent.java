@@ -1,4 +1,4 @@
-package org.camunda.bpm.spring.boot.starter.events;
+package org.camunda.bpm.spring.boot.starter.event;
 
 public class ProcessApplicationStoppedEvent extends ProcessApplicationEvent {
 
