@@ -44,6 +44,14 @@ Check out the [Documentation](https://camunda.github.io/camunda-bpm-spring-boot-
 * [Release Notes 1.2.1](https://github.com/camunda/camunda-bpm-spring-boot-starter/milestone/5?closed=1)
 * [Blog Article for release 1.2.0](https://blog.camunda.org/post/2016/06/camunda-spring-boot-1.2.0-released/)
 
+## Contribution
+
+As of release 2.0.0, this extension uses Java8 only. To ensure correct behavior of maven builds we use 
+the [maven wrapper](https://github.com/takari/maven-wrapper) and maven 3.3.1.
+
+Build with:
+
+    ./mvnw(.cmd) clean install
 
 ## Maintainer
 
