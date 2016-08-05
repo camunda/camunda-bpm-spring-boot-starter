@@ -11,9 +11,9 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>camunda-spring-boot-starter</module>
-    <module>camunda-spring-boot-starter-rest</module>
-    <module>camunda-spring-boot-starter-webapp</module>
+    <module>starter</module>
+    <module>starter-rest</module>
+    <module>starter-webapp</module>
   </modules>
 
   <dependencyManagement>

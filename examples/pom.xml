@@ -13,12 +13,12 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>camunda-spring-boot-starter-example-simple</module>
-    <module>camunda-spring-boot-starter-example-web</module>
-    <module>camunda-spring-boot-starter-example-cloud</module>
-    <module>camunda-spring-boot-starter-example-webapp</module>
-    <module>camunda-spring-boot-starter-example-war</module>
-    <module>camunda-spring-boot-starter-example-dmn-rest</module>
+    <module>example-simple</module>
+    <module>example-web</module>
+    <module>example-cloud</module>
+    <module>example-webapp</module>
+    <module>example-war</module>
+    <module>example-dmn-rest</module>
     <module>example-testhelper</module>
   </modules>
 
