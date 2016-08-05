@@ -19,7 +19,7 @@
     <module>camunda-spring-boot-starter-example-webapp</module>
     <module>camunda-spring-boot-starter-example-war</module>
     <module>camunda-spring-boot-starter-example-dmn-rest</module>
-    <module>camunda-spring-boot-starter-example-testhelper</module>
+    <module>example-testhelper</module>
   </modules>
 
   <!-- examples should be usable standalone, do not add common deps/buils here! -->
