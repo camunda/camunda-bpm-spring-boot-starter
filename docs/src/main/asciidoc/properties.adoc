@@ -38,6 +38,10 @@
 |activate job execution after successful startup
 |`true`
 
+|`.enabled`
+|if set to `false`, no JobExecutor bean is created at all. Maybe used for testing.
+|`true`
+
 |`.deployment-aware`
 |if job executor is deployment aware
 |`false`
