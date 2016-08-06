@@ -20,9 +20,6 @@ import org.camunda.bpm.engine.impl.bpmn.deployer.BpmnDeployer;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.camunda.bpm.engine.impl.cmmn.deployer.CmmnDeployer;
 import org.camunda.bpm.engine.impl.dmn.deployer.DmnDeployer;
-import org.camunda.bpm.engine.impl.metrics.MetricsRegistry;
-import org.camunda.bpm.engine.impl.metrics.MetricsReporterIdProvider;
-import org.camunda.bpm.engine.impl.metrics.reporter.DbMetricsReporter;
 import org.camunda.bpm.engine.repository.ResumePreviousBy;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.util.Assert;
@@ -329,10 +326,7 @@ public class CamundaBpmProperties {
   public static class Metrics extends NestedProperty {
 
     private boolean enabled = true;
-    private MetricsRegistry metricsRegistry;
-    private MetricsReporterIdProvider metricsReporterIdProvider;
-    private DbMetricsReporter dbMetricsReporter;
-    private boolean dbMetricsReporterActivate = true;
+    private boolean dbReporterActivate = true;
 
     public boolean isEnabled() {
       return enabled;
@@ -342,36 +336,12 @@ public class CamundaBpmProperties {
       this.enabled = enabled;
     }
 
-    public DbMetricsReporter getDbMetricsReporter() {
-      return dbMetricsReporter;
+    public boolean isDbReporterActivate() {
+      return dbReporterActivate;
     }
 
-    public void setDbMetricsReporter(DbMetricsReporter dbMetricsReporter) {
-      this.dbMetricsReporter = dbMetricsReporter;
-    }
-
-    public boolean isDbMetricsReporterActivate() {
-      return dbMetricsReporterActivate;
-    }
-
-    public void setDbMetricsReporterActivate(boolean dbMetricsReporterActivate) {
-      this.dbMetricsReporterActivate = dbMetricsReporterActivate;
-    }
-
-    public MetricsRegistry getMetricsRegistry() {
-      return metricsRegistry;
-    }
-
-    public void setMetricsRegistry(MetricsRegistry metricsRegistry) {
-      this.metricsRegistry = metricsRegistry;
-    }
-
-    public MetricsReporterIdProvider getMetricsReporterIdProvider() {
-      return metricsReporterIdProvider;
-    }
-
-    public void setMetricsReporterIdProvider(MetricsReporterIdProvider metricsReporterIdProvider) {
-      this.metricsReporterIdProvider = metricsReporterIdProvider;
+    public void setDbReporterActivate(boolean dbReporterActivate) {
+      this.dbReporterActivate = dbReporterActivate;
     }
   }
 
