@@ -14,6 +14,7 @@ import java.util.Set;
 import javax.servlet.Filter;
 
 import org.camunda.bpm.spring.boot.starter.webapp.filter.LazyDelegateFilter.InitHook;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -36,6 +37,7 @@ public class LazyInitRegistrationTest {
   @Mock
   private InitHook<ResourceLoaderDependingFilter> initHookMock;
 
+  @Before
   public void init() {
     LazyInitRegistration.APPLICATION_CONTEXT = null;
     LazyInitRegistration.REGISTRATION.clear();

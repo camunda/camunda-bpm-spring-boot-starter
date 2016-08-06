@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 FOLDER=${1:-master}
 # following doesn't work when in detached head state
@@ -10,8 +10,11 @@ GH_PAGES_DIR=github-pages
 rm -rf $GH_PAGES_DIR
 git clone git@github.com:camunda/camunda-bpm-spring-boot-starter.git $GH_PAGES_DIR
 (cd $GH_PAGES_DIR && git checkout gh-pages)
+if [ ! -d "${GH_PAGES_DIR}/docs/${FOLDER}" ]; then
+  mkdir ${GH_PAGES_DIR}/docs/${FOLDER}
+fi
 cp -r docs/target/generated-docs/* $GH_PAGES_DIR/docs/${FOLDER}/
-if [ -z "${RELEASE_VERSION}" ]; then
+if [ ! -z $RELEASE_VERSION ]; then
   cp -r docs/target/generated-docs/* $GH_PAGES_DIR/docs/current/
 fi
 

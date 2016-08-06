@@ -39,11 +39,16 @@ Check out the [Documentation](https://camunda.github.io/camunda-bpm-spring-boot-
 * [Contributing](https://github.com/camunda/camunda-bpm-spring-boot-starter/blob/master/CONTRIBUTE.md)
 
 
+
 ## Releases
 
 * [Release Notes 1.2.1](https://github.com/camunda/camunda-bpm-spring-boot-starter/milestone/5?closed=1)
 * [Blog Article for release 1.2.0](https://blog.camunda.org/post/2016/06/camunda-spring-boot-1.2.0-released/)
 
+### Roadmap
+
+* [Milestone 1.3.0](https://github.com/camunda/camunda-bpm-spring-boot-starter/milestone/4)
+* [Milestone 2.0.0](https://github.com/camunda/camunda-bpm-spring-boot-starter/milestone/3) - Java8 + Spring Boot 1.4
 
 ## Maintainer
 

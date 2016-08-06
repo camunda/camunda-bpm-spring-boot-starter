@@ -1,0 +1,111 @@
+[[properties]]
+== Camunda application properties
+
+[options="header"]
+|===
+|Prefix | Property name |Description | Default value
+4+|**General**
+.6+|`{properties-prefix}`
+
+|`.process-engine-name`
+|name of the process engine
+|camunda default value
+
+|`.history-level`
+|camunda history level
+|camunda default value
+
+|`.history-level-default`
+|camunda history level to use when `history-level` is `auto` but the level can not determined automatically
+|default value from `history-level`
+
+|`.auto-deployment-enabled`
+|if processes should be auto deployed. This is disabled when using the SpringBootProcessApplication
+|`true`
+
+|`.version`
+|version of the process engine
+|read only value e.g. 7.4.0
+
+|`.formatted-version`
+|formatted version of the process engine
+|read only value e.g. (v7.4.0)
+
+4+|**Job Execution**
+.3+|`{properties-prefix}.job-execution`
+
+|`.active`
+|activate job execution after successful startup
+|`true`
+
+|`.enabled`
+|if set to `false`, no JobExecutor bean is created at all. Maybe used for testing.
+|`true`
+
+|`.deployment-aware`
+|if job executor is deployment aware
+|`false`
+
+|`.deployment-resource-pattern`
+|location for auto deployment
+|`classpath*:**/*.bpmn, classpath*:**/*.bpmn20.xml, classpath*:**/*.dmn, classpath*:**/*.dmn11.xml, classpath*:**/*.cmmn, classpath*:**/*.cmmn10.xml, classpath*:**/*.cmmn11.xml`
+
+4+|**Datasource**
+.3+|`{properties-prefix}.database`
+|`.schema-update`
+|if automatic schema update should be applied, use one of [true, false, create, create-drop, drop-create]
+|`true`
+
+|`.type`
+|type of the underlying database
+|'h2', 'oracle', ...
+
+|`.table-prefix`
+|prefix of the camunda database tables
+|camunda default value
+
+4+|**JPA**
+.4+|`{properties-prefix}.jpa`
+
+|`.enabled`
+|enables jpa configuration
+|`true`. Depends on `entityManagerFactory` bean.
+
+|`.persistence-unit-name`
+|JPA persistence unit name
+|-
+
+|`.close-entity-manager`
+|close JPA entity manager
+|`true`
+
+|`.handle-transaction`
+|JPA handle transaction
+|`true`
+
+4+|**Management**
+.1+|`{properties-prefix}.management`
+
+|`.health.camunda.enabled`
+|enables default camunda health indicators
+|`true`
+
+4+|**Metrics**
+.4+|`{properties-prefix}.metrics`
+
+|`.enabled`
+|enables metrics reporting
+|`true`
+
+|`.db-reporter-activate`
+|enables db metrics reporting
+|`true`
+
+4+|**Webapp**
+.1+|`{properties-prefix}.webapp`
+
+|`.index-redirect-enabled`
+|registers a redirect from `/` to camundas bundled `index.html`
+|`true`
+
+|===
