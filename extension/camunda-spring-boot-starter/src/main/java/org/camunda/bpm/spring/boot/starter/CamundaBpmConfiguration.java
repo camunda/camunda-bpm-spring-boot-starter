@@ -13,6 +13,7 @@ import org.camunda.bpm.spring.boot.starter.configuration.CamundaHistoryConfigura
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaHistoryLevelAutoHandlingConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaJobConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaJpaConfiguration;
+import org.camunda.bpm.spring.boot.starter.configuration.CamundaMetricsConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.condition.NeedsHistoryAutoConfigurationCondition;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultDatasourceConfiguration;
@@ -22,6 +23,7 @@ import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultHistoryLeve
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultJobConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultJobConfiguration.JobConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultJpaConfiguration;
+import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultMetricsConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.jdbc.HistoryLevelDeterminator;
 import org.slf4j.Logger;
@@ -89,6 +91,13 @@ public class CamundaBpmConfiguration {
   public static CamundaHistoryConfiguration camundaHistoryConfiguration() {
     return new DefaultHistoryConfiguration();
   }
+
+  @Bean
+  @ConditionalOnMissingBean(CamundaMetricsConfiguration.class)
+  public static CamundaMetricsConfiguration camundaMetricsConfiguration() {
+    return new DefaultMetricsConfiguration();
+  }
+
 
   @Bean(name = "historyLevelAutoConfiguration")
   @ConditionalOnMissingBean(CamundaHistoryLevelAutoHandlingConfiguration.class)
