@@ -16,10 +16,7 @@ import org.camunda.bpm.application.impl.metadata.ProcessArchiveXmlImpl;
 import org.camunda.bpm.application.impl.metadata.spi.ProcessArchiveXml;
 import org.camunda.bpm.engine.ProcessEngineConfiguration;
 import org.camunda.bpm.engine.ProcessEngines;
-import org.camunda.bpm.engine.impl.bpmn.deployer.BpmnDeployer;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
-import org.camunda.bpm.engine.impl.cmmn.deployer.CmmnDeployer;
-import org.camunda.bpm.engine.impl.dmn.deployer.DmnDeployer;
 import org.camunda.bpm.engine.repository.ResumePreviousBy;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.util.Assert;
@@ -29,9 +26,9 @@ public class CamundaBpmProperties {
 
   static String[] initDeploymentResourcePattern() {
     final Set<String> suffixes = new HashSet<String>();
-    suffixes.addAll(Arrays.asList(DmnDeployer.DMN_RESOURCE_SUFFIXES));
-    suffixes.addAll(Arrays.asList(BpmnDeployer.BPMN_RESOURCE_SUFFIXES));
-    suffixes.addAll(Arrays.asList(CmmnDeployer.CMMN_RESOURCE_SUFFIXES));
+    suffixes.addAll(Arrays.asList(new String[] {"dmn11.xml", "dmn"}));
+    suffixes.addAll(Arrays.asList(new String[] { "bpmn20.xml", "bpmn" }));
+    suffixes.addAll(Arrays.asList( new String[] { "cmmn11.xml", "cmmn10.xml", "cmmn" }));
 
     final Set<String> patterns = new HashSet<String>();
     for (String suffix : suffixes) {
