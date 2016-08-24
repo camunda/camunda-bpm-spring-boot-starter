@@ -24,11 +24,15 @@ import org.springframework.util.Assert;
 @ConfigurationProperties("camunda.bpm")
 public class CamundaBpmProperties {
 
+  public static final String[] DEFAULT_BPMN_RESOURCE_SUFFIXES = new String[] { "bpmn20.xml", "bpmn" };
+  public static final String[] DEFAULT_CMMN_RESOURCE_SUFFIXES = new String[] { "cmmn11.xml", "cmmn10.xml", "cmmn" };
+  public static final String[] DEFAULT_DMN_RESOURCE_SUFFIXES = new String[] { "dmn11.xml", "dmn" };
+
   static String[] initDeploymentResourcePattern() {
     final Set<String> suffixes = new HashSet<String>();
-    suffixes.addAll(Arrays.asList(new String[] {"dmn11.xml", "dmn"}));
-    suffixes.addAll(Arrays.asList(new String[] { "bpmn20.xml", "bpmn" }));
-    suffixes.addAll(Arrays.asList( new String[] { "cmmn11.xml", "cmmn10.xml", "cmmn" }));
+    suffixes.addAll(Arrays.asList(DEFAULT_DMN_RESOURCE_SUFFIXES));
+    suffixes.addAll(Arrays.asList(DEFAULT_BPMN_RESOURCE_SUFFIXES));
+    suffixes.addAll(Arrays.asList(DEFAULT_CMMN_RESOURCE_SUFFIXES));
 
     final Set<String> patterns = new HashSet<String>();
     for (String suffix : suffixes) {
