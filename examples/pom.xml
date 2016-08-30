@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -11,6 +12,10 @@
   <artifactId>camunda-bpm-spring-boot-starter-example-root</artifactId>
   <packaging>pom</packaging>
 
+  <properties>
+    <java.version>1.8</java.version>
+  </properties>
+
   <modules>
     <module>camunda-spring-boot-starter-example-simple</module>
     <module>camunda-spring-boot-starter-example-web</module>
@@ -18,8 +23,21 @@
     <module>camunda-spring-boot-starter-example-webapp</module>
     <module>camunda-spring-boot-starter-example-war</module>
     <module>camunda-spring-boot-starter-example-dmn-rest</module>
-	<module>camunda-spring-boot-starter-example-testhelper</module>
+    <module>camunda-spring-boot-starter-example-testhelper</module>
   </modules>
 
-  <!-- examples should be usable standalone, do not add common deps/buils here! -->
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <!-- examples should be usable standalone, do not add common deps/buils 
+    here! -->
 </project>
