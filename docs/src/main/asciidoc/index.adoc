@@ -42,7 +42,7 @@ This will add the camunda version `{camunda-version}` to your dependencies. If y
 ----
 
 == Process engine configuration
-The auto starter automatically applies all beans implementing the `org.camunda.bpm.spring.boot.starter.configuration.CamundaConfiguration` interface to configure the engine.
+The auto starter uses the  `org.camunda.bpm.engine.impl.cfg.ProcessEnginePlugin` mechanism to configure the engine.
 
 The configuration is divided into _sections_. These _sections_ are represented by the marker interfaces:
 
@@ -148,7 +148,7 @@ public class MyCamundaConfiguration {
 
 === Adding additional configurations
 
-You just have to provide one or more beans implementing the `org.camunda.bpm.spring.boot.starter.configuration.CamundaConfiguration` interface. The configurations are applied ordered using the spring ordering mechanism (`@Order` annotation and `Ordered` interface). So if you want that your configuration is applied before the default configurations add a `@Order(CamundaConfiguration.DEFAULT_ORDER - 1)` annotation to your class. If you want that your configuration is applied after the default configurations add a `@Order(CamundaConfiguration.DEFAULT_ORDER + 1)` annotation to your class.
+You just have to provide one or more beans implementing the `org.camunda.bpm.engine.impl.cfg.ProcessEnginePlugin` interface (or extend from `org.camunda.bpm.spring.boot.starter.configuration.impl.AbstractCamundaConfiguration`). The configurations are applied ordered using the spring ordering mechanism (`@Order` annotation and `Ordered` interface). So if you want that your configuration is applied before the default configurations add a `@Order(Ordering.DEFAULT_ORDER - 1)` annotation to your class. If you want that your configuration is applied after the default configurations add a `@Order(Ordering.DEFAULT_ORDER + 1)` annotation to your class.
 
 [source,java]
 ----
@@ -156,7 +156,7 @@ You just have to provide one or more beans implementing the `org.camunda.bpm.spr
 public class MyCamundaConfiguration {
 
 	@Bean
-	@Order(CamundaConfiguration.DEFAULT_ORDER + 1)
+	@Order(Ordering.DEFAULT_ORDER + 1)
 	public static CamundaConfiguration myCustomConfiguration() {
 		return new MyCustomConfiguration();
 	}
@@ -169,13 +169,33 @@ Or if you have component scan enabled:
 [source,java]
 ----
 @Component
-@Order(CamundaConfiguration.DEFAULT_ORDER + 1)
-public class MyCustomConfiguration implements CamundaConfiguration {
+@Order(Ordering.DEFAULT_ORDER + 1)
+public class MyCustomConfiguration implements ProcessEnginePlugin {
 
 	@Override
-	public void accept(SpringProcessEngineConfiguration configuration) {
+	public void preInit(ProcessEngineConfigurationImpl processEngineConfiguration) {
 		//...
 	}
+	
+	...
+
+}
+----
+
+or
+
+[source,java]
+----
+@Component
+@Order(Ordering.DEFAULT_ORDER + 1)
+public class MyCustomConfiguration extends AbstractCamundaConfiguration {
+
+	@Override
+	public void preInit(SpringProcessEngineConfiguration springProcessEngineConfiguration) {
+		//...
+	}
+	
+	...
 
 }
 ----
