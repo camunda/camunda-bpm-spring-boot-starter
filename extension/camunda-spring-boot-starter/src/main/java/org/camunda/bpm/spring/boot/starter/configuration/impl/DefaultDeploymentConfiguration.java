@@ -17,7 +17,7 @@ public class DefaultDeploymentConfiguration extends AbstractCamundaConfiguration
   private final Logger logger = LoggerFactory.getLogger(DefaultDeploymentConfiguration.class);
 
   @Override
-  public void accept(SpringProcessEngineConfiguration configuration) {
+  public void preInit(SpringProcessEngineConfiguration configuration) {
     if (camundaBpmProperties.isAutoDeploymentEnabled()) {
       configuration.setDeploymentResources(getDeploymentResources());
     }
