@@ -11,6 +11,10 @@
 |name of the process engine
 |camunda default value
 
+|`.authorization-enabled`
+|enables authorization
+|`true`
+
 |`.history-level`
 |camunda history level
 |camunda default value

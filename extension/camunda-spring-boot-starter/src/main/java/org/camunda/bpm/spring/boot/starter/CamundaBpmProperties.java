@@ -108,6 +108,19 @@ public class CamundaBpmProperties {
   }
 
   /**
+   * enables authorization. Defaults to true.
+   */
+  private boolean authorizationEnabled = true;
+
+  public boolean isAuthorizationEnabled() {
+    return authorizationEnabled;
+  }
+
+  public void setAuthorizationEnabled(boolean authorizationEnabled) {
+    this.authorizationEnabled = authorizationEnabled;
+  }
+
+  /**
    * metrics configuration
    */
   private Metrics metrics = new Metrics();
