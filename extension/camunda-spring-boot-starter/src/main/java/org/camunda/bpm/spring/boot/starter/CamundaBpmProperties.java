@@ -18,6 +18,7 @@ import org.camunda.bpm.engine.ProcessEngineConfiguration;
 import org.camunda.bpm.engine.ProcessEngines;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.camunda.bpm.engine.repository.ResumePreviousBy;
+import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.util.Assert;
 
@@ -118,6 +119,19 @@ public class CamundaBpmProperties {
 
   public void setAuthorizationEnabled(boolean authorizationEnabled) {
     this.authorizationEnabled = authorizationEnabled;
+  }
+
+  /**
+   * default serialization format to use
+   */
+  private String defaultSerializationFormat = new SpringProcessEngineConfiguration().getDefaultSerializationFormat();
+
+  public String getDefaultSerializationFormat() {
+    return defaultSerializationFormat;
+  }
+
+  public void setDefaultSerializationFormat(String defaultSerializationFormat) {
+    this.defaultSerializationFormat = defaultSerializationFormat;
   }
 
   /**

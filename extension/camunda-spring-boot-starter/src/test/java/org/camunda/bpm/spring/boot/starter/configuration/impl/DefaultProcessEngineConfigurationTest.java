@@ -47,4 +47,27 @@ public class DefaultProcessEngineConfigurationTest {
     assertThat(configuration.getProcessEngineName()).isEqualTo(ProcessEngines.NAME_DEFAULT);
   }
 
+  @Test
+  public void setDefaultSerializationFormat() {
+    final String defaultSerializationFormat = "testformat";
+    properties.setDefaultSerializationFormat(defaultSerializationFormat);
+    instance.preInit(configuration);
+    assertThat(configuration.getDefaultSerializationFormat()).isSameAs(defaultSerializationFormat);
+  }
+
+  @Test
+  public void setDefaultSerializationFormat_ignore_null() {
+    final String defaultSerializationFormat = configuration.getDefaultSerializationFormat();
+    properties.setDefaultSerializationFormat(null);
+    instance.preInit(configuration);
+    assertThat(configuration.getDefaultSerializationFormat()).isEqualTo(defaultSerializationFormat);
+  }
+
+  @Test
+  public void setDefaultSerializationFormat_ignore_empty() {
+    final String defaultSerializationFormat = configuration.getDefaultSerializationFormat();
+    properties.setDefaultSerializationFormat(" ");
+    instance.preInit(configuration);
+    assertThat(configuration.getDefaultSerializationFormat()).isEqualTo(defaultSerializationFormat);
+  }
 }

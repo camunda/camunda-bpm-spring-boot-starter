@@ -16,6 +16,13 @@ public class DefaultProcessEngineConfiguration extends AbstractCamundaConfigurat
     }
 
     configuration.setAuthorizationEnabled(camundaBpmProperties.isAuthorizationEnabled());
+
+    String defaultSerializationFormat = camundaBpmProperties.getDefaultSerializationFormat();
+    if (StringUtils.hasText(defaultSerializationFormat)) {
+      configuration.setDefaultSerializationFormat(defaultSerializationFormat);
+    } else {
+      logger.warn("Ignoring invalid defaultSerializationFormat='{}'", defaultSerializationFormat);
+    }
   }
 
 }

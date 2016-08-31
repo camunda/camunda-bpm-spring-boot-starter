@@ -15,6 +15,10 @@
 |enables authorization
 |`true`
 
+|`.default-serialization-format`
+|default serialization format
+|camunda default value
+
 |`.history-level`
 |camunda history level
 |camunda default value
