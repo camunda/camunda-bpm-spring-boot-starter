@@ -11,15 +11,11 @@ import org.camunda.bpm.spring.boot.starter.test.TestApplication;
 import org.camunda.bpm.spring.boot.starter.test.jpa.domain.TestEntity;
 import org.camunda.bpm.spring.boot.starter.test.jpa.repository.TestEntityRepository;
 import org.camunda.bpm.spring.boot.starter.test.service.TransactionalTestService;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
-
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { TestApplication.class })
@@ -46,7 +42,6 @@ public class CamundaJpaAutoConfigurationIT extends AbstractCamundaAutoConfigurat
   }
 
   @Test
-  @Ignore("fails with spring boot 1.4")
   public void transactionTest() {
     assertEquals(0, testEntityRepository.count());
     try {
