@@ -15,8 +15,6 @@ public class DefaultProcessEngineConfiguration extends AbstractCamundaConfigurat
       logger.warn("Ignoring invalid processEngineName='{}' - must not be null, blank or contain hyphen", camundaBpmProperties.getProcessEngineName());
     }
 
-    configuration.setAuthorizationEnabled(camundaBpmProperties.isAuthorizationEnabled());
-
     String defaultSerializationFormat = camundaBpmProperties.getDefaultSerializationFormat();
     if (StringUtils.hasText(defaultSerializationFormat)) {
       configuration.setDefaultSerializationFormat(defaultSerializationFormat);

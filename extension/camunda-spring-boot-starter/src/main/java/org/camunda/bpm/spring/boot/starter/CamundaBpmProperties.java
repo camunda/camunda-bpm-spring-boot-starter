@@ -109,19 +109,6 @@ public class CamundaBpmProperties {
   }
 
   /**
-   * enables authorization. Defaults to true.
-   */
-  private boolean authorizationEnabled = true;
-
-  public boolean isAuthorizationEnabled() {
-    return authorizationEnabled;
-  }
-
-  public void setAuthorizationEnabled(boolean authorizationEnabled) {
-    this.authorizationEnabled = authorizationEnabled;
-  }
-
-  /**
    * default serialization format to use
    */
   private String defaultSerializationFormat = new SpringProcessEngineConfiguration().getDefaultSerializationFormat();
@@ -210,6 +197,16 @@ public class CamundaBpmProperties {
 
   public void setApplication(Application application) {
     this.application = application;
+  }
+
+  private Authorization authorization = new Authorization();
+
+  public Authorization getAuthorization() {
+    return authorization;
+  }
+
+  public void setAuthorization(Authorization authorization) {
+    this.authorization = authorization;
   }
 
   static class NestedProperty {
@@ -560,6 +557,46 @@ public class CamundaBpmProperties {
       properties.put(ProcessArchiveXml.PROP_RESUME_PREVIOUS_BY, resumePreviousBy);
 
       return processArchives;
+    }
+
+  }
+
+  public static class Authorization extends NestedProperty {
+
+    /**
+     * enables authorization
+     */
+    private boolean enabled = new SpringProcessEngineConfiguration().isAuthorizationEnabled();
+
+    /**
+     * enables authorization for custom code
+     */
+    private boolean enabledForCustomCode = new SpringProcessEngineConfiguration().isAuthorizationEnabledForCustomCode();
+
+    private String authorizationCheckRevokes = new SpringProcessEngineConfiguration().getAuthorizationCheckRevokes();
+
+    public Boolean isEnabled() {
+      return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+      this.enabled = enabled;
+    }
+
+    public Boolean isEnabledForCustomCode() {
+      return enabledForCustomCode;
+    }
+
+    public void setEnabledForCustomCode(Boolean enabledForCustomCode) {
+      this.enabledForCustomCode = enabledForCustomCode;
+    }
+
+    public String getAuthorizationCheckRevokes() {
+      return authorizationCheckRevokes;
+    }
+
+    public void setAuthorizationCheckRevokes(String authorizationCheckRevokes) {
+      this.authorizationCheckRevokes = authorizationCheckRevokes;
     }
 
   }

@@ -53,6 +53,7 @@ The configuration is divided into _sections_. These _sections_ are represented b
 * `org.camunda.bpm.spring.boot.starter.configuration.CamundaJobConfiguration`
 * `org.camunda.bpm.spring.boot.starter.configuration.CamundaDeploymentConfiguration`
 * `org.camunda.bpm.spring.boot.starter.configuration.CamundaJpaConfiguration`
+* `org.camunda.bpm.spring.boot.starter.configuration.CamundaAuthorizationConfiguration`
 
 === Default configurations
 
@@ -128,6 +129,10 @@ The resource pattern can be changed using properties (see <<properties>>).
 ==== `DefaultJpaConfiguration`
 
 If JPA is enabled and a `entityManagerFactory` bean is configured the process engine will be enabled to use JPA (see <<properties>>).
+
+==== `DefaultAuthorizationConfiguration`
+
+Applies the authorization configuration to the process engine. If not configured the `camunda` default values will be used (see <<properties>>).
 
 === Overriding a default configuration
 

@@ -5,15 +5,11 @@
 |===
 |Prefix | Property name |Description | Default value
 4+|**General**
-.6+|`{properties-prefix}`
+.7+|`{properties-prefix}`
 
 |`.process-engine-name`
 |name of the process engine
 |camunda default value
-
-|`.authorization-enabled`
-|enables authorization
-|`true`
 
 |`.default-serialization-format`
 |default serialization format
@@ -40,7 +36,7 @@
 |read only value e.g. (v7.4.0)
 
 4+|**Job Execution**
-.3+|`{properties-prefix}.job-execution`
+.4+|`{properties-prefix}.job-execution`
 
 |`.active`
 |activate job execution after successful startup
@@ -99,7 +95,7 @@
 |`true`
 
 4+|**Metrics**
-.4+|`{properties-prefix}.metrics`
+.2+|`{properties-prefix}.metrics`
 
 |`.enabled`
 |enables metrics reporting
@@ -115,5 +111,20 @@
 |`.index-redirect-enabled`
 |registers a redirect from `/` to camundas bundled `index.html`
 |`true`
+
+4+|**Authorization**
+.3+|`{properties-prefix}.authorization`
+
+|`.enabled`
+|enables authorization
+|camunda default value
+
+|`.enabled-for-custom-code`
+|enables authorization for custom code
+|camunda default value
+
+|`.authorization-check-revokes`
+|configures authorization check revokes
+|camunda default value
 
 |===
