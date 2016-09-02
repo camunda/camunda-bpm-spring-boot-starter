@@ -11,9 +11,9 @@ import java.util.Arrays;
 import org.camunda.bpm.engine.impl.jobexecutor.JobHandler;
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties;
-import org.camunda.bpm.spring.boot.starter.configuration.CamundaJobConfiguration;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 public class DefaultJobConfigurationTest {
 
@@ -28,15 +28,10 @@ public class DefaultJobConfigurationTest {
 
   @Test
   public void delegate_to_specialized_configurations() {
-    CamundaJobConfiguration p = mock(CamundaJobConfiguration.class);
-    CamundaJobConfiguration r = mock(CamundaJobConfiguration.class);
-
-    setField(jobConfiguration, "configureJobExecutor", p);
-    setField(jobConfiguration, "registerCustomJobHandlers", r);
-
-    jobConfiguration.accept(processEngineConfiguration);
-    verify(p).accept(processEngineConfiguration);
-    verify(r).accept(processEngineConfiguration);
+    DefaultJobConfiguration configurationSpy = Mockito.spy(jobConfiguration);
+    configurationSpy.preInit(processEngineConfiguration);
+    verify(configurationSpy).configureJobExecutor(processEngineConfiguration);
+    verify(configurationSpy).registerCustomJobHandlers(processEngineConfiguration);
   }
 
   @Test
@@ -46,7 +41,7 @@ public class DefaultJobConfigurationTest {
     setField(jobConfiguration, "customJobHandlers", Arrays.asList(jobHandler));
 
     assertThat(processEngineConfiguration.getCustomJobHandlers()).isNull();
-    jobConfiguration.registerCustomJobHandlers.accept(processEngineConfiguration);
+    jobConfiguration.registerCustomJobHandlers(processEngineConfiguration);
 
     assertThat(processEngineConfiguration.getCustomJobHandlers()).containsOnly(jobHandler);
   }

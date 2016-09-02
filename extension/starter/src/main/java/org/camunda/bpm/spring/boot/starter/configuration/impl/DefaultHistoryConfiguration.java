@@ -11,7 +11,7 @@ public class DefaultHistoryConfiguration extends AbstractCamundaConfiguration im
   protected HistoryEventHandler historyEventHandler;
 
   @Override
-  public void accept(SpringProcessEngineConfiguration configuration) {
+  public void preInit(SpringProcessEngineConfiguration configuration) {
     String historyLevel = camundaBpmProperties.getHistoryLevel();
     if (historyLevel != null) {
       configuration.setHistory(historyLevel);
