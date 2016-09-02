@@ -4,8 +4,10 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.camunda.bpm.engine.ProcessEngine;
+import org.camunda.bpm.engine.ProcessEngineConfiguration;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.camunda.bpm.engine.impl.cfg.ProcessEnginePlugin;
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
@@ -39,6 +41,27 @@ public abstract class AbstractCamundaConfiguration implements ProcessEnginePlugi
     return target;
   }
 
+  /**
+   * 
+   * @param obj
+   *          that should be casted
+   * @param type
+   *          to cast
+   * @return optional casted object
+   */
+  @SuppressWarnings("unchecked")
+  public static <T> Optional<T> castIntoOptional(Object obj, Class<T> type) {
+    if (type.isInstance(obj)) {
+      return Optional.of((T) obj);
+    }
+    return Optional.empty();
+  }
+
+  public static Optional<SpringProcessEngineConfiguration> castIntoOptionalSpringProcessEngineConfiguration(
+      ProcessEngineConfiguration processEngineConfiguration) {
+    return castIntoOptional(processEngineConfiguration, SpringProcessEngineConfiguration.class);
+  }
+
   protected final Logger logger = getLogger(this.getClass());
 
   @Autowired
@@ -53,9 +76,7 @@ public abstract class AbstractCamundaConfiguration implements ProcessEnginePlugi
    */
   @Override
   public void preInit(ProcessEngineConfigurationImpl processEngineConfiguration) {
-    if (processEngineConfiguration instanceof SpringProcessEngineConfiguration) {
-      preInit((SpringProcessEngineConfiguration) processEngineConfiguration);
-    }
+    castIntoOptionalSpringProcessEngineConfiguration(processEngineConfiguration).ifPresent(this::preInit);
   }
 
   abstract protected void preInit(SpringProcessEngineConfiguration springProcessEngineConfiguration);
