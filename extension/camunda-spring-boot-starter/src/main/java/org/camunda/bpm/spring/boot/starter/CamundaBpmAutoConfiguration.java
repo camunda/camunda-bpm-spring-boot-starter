@@ -46,4 +46,5 @@ public class CamundaBpmAutoConfiguration {
   public ProcessApplicationEventPublisher processApplicationEventPublisher(ApplicationEventPublisher publisher) {
     return new ProcessApplicationEventPublisher(publisher);
   }
+
 }
