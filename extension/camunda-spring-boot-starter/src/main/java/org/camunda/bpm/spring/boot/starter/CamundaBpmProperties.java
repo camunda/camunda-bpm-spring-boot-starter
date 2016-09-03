@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -207,6 +208,16 @@ public class CamundaBpmProperties {
 
   public void setAuthorization(Authorization authorization) {
     this.authorization = authorization;
+  }
+
+  private GenericProperties genericProperties = new GenericProperties();
+
+  public GenericProperties getGenericProperties() {
+    return genericProperties;
+  }
+
+  public void setGenericProperties(GenericProperties genericProperties) {
+    this.genericProperties = genericProperties;
   }
 
   static class NestedProperty {
@@ -597,6 +608,37 @@ public class CamundaBpmProperties {
 
     public void setAuthorizationCheckRevokes(String authorizationCheckRevokes) {
       this.authorizationCheckRevokes = authorizationCheckRevokes;
+    }
+
+  }
+
+  public static class GenericProperties extends NestedProperty {
+    private Map<String, Object> properties = new HashMap<String, Object>();
+    private boolean ignoreInvalidFields;
+    private boolean ignoreUnknownFields;
+
+    public Map<String, Object> getProperties() {
+      return properties;
+    }
+
+    public void setProperties(Map<String, Object> properties) {
+      this.properties = properties;
+    }
+
+    public boolean isIgnoreInvalidFields() {
+      return ignoreInvalidFields;
+    }
+
+    public void setIgnoreInvalidFields(boolean ignoreInvalidFields) {
+      this.ignoreInvalidFields = ignoreInvalidFields;
+    }
+
+    public boolean isIgnoreUnknownFields() {
+      return ignoreUnknownFields;
+    }
+
+    public void setIgnoreUnknownFields(boolean ignoreUnknownFields) {
+      this.ignoreUnknownFields = ignoreUnknownFields;
     }
 
   }
