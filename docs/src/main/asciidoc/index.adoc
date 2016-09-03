@@ -42,7 +42,7 @@ This will add the camunda version `{camunda-version}` to your dependencies. If y
 ----
 
 == Process engine configuration
-The auto starter automatically applies all beans implementing the `org.camunda.bpm.spring.boot.starter.configuration.CamundaConfiguration` interface to configure the engine.
+The auto starter uses the  `org.camunda.bpm.engine.impl.cfg.ProcessEnginePlugin` mechanism to configure the engine.
 
 The configuration is divided into _sections_. These _sections_ are represented by the marker interfaces:
 
@@ -53,6 +53,7 @@ The configuration is divided into _sections_. These _sections_ are represented b
 * `org.camunda.bpm.spring.boot.starter.configuration.CamundaJobConfiguration`
 * `org.camunda.bpm.spring.boot.starter.configuration.CamundaDeploymentConfiguration`
 * `org.camunda.bpm.spring.boot.starter.configuration.CamundaJpaConfiguration`
+* `org.camunda.bpm.spring.boot.starter.configuration.CamundaAuthorizationConfiguration`
 
 === Default configurations
 
@@ -129,6 +130,10 @@ The resource pattern can be changed using properties (see <<properties>>).
 
 If JPA is enabled and a `entityManagerFactory` bean is configured the process engine will be enabled to use JPA (see <<properties>>).
 
+==== `DefaultAuthorizationConfiguration`
+
+Applies the authorization configuration to the process engine. If not configured the `camunda` default values will be used (see <<properties>>).
+
 === Overriding a default configuration
 
 Provide a bean implementing one of the marker interfaces. For example to customize the datasource configuration:
@@ -148,7 +153,7 @@ public class MyCamundaConfiguration {
 
 === Adding additional configurations
 
-You just have to provide one or more beans implementing the `org.camunda.bpm.spring.boot.starter.configuration.CamundaConfiguration` interface. The configurations are applied ordered using the spring ordering mechanism (`@Order` annotation and `Ordered` interface). So if you want that your configuration is applied before the default configurations add a `@Order(CamundaConfiguration.DEFAULT_ORDER - 1)` annotation to your class. If you want that your configuration is applied after the default configurations add a `@Order(CamundaConfiguration.DEFAULT_ORDER + 1)` annotation to your class.
+You just have to provide one or more beans implementing the `org.camunda.bpm.engine.impl.cfg.ProcessEnginePlugin` interface (or extend from `org.camunda.bpm.spring.boot.starter.configuration.impl.AbstractCamundaConfiguration`). The configurations are applied ordered using the spring ordering mechanism (`@Order` annotation and `Ordered` interface). So if you want that your configuration is applied before the default configurations add a `@Order(Ordering.DEFAULT_ORDER - 1)` annotation to your class. If you want that your configuration is applied after the default configurations add a `@Order(Ordering.DEFAULT_ORDER + 1)` annotation to your class.
 
 [source,java]
 ----
@@ -156,8 +161,8 @@ You just have to provide one or more beans implementing the `org.camunda.bpm.spr
 public class MyCamundaConfiguration {
 
 	@Bean
-	@Order(CamundaConfiguration.DEFAULT_ORDER + 1)
-	public static CamundaConfiguration myCustomConfiguration() {
+	@Order(Ordering.DEFAULT_ORDER + 1)
+	public static ProcessEnginePlugin myCustomConfiguration() {
 		return new MyCustomConfiguration();
 	}
 
@@ -169,13 +174,67 @@ Or if you have component scan enabled:
 [source,java]
 ----
 @Component
-@Order(CamundaConfiguration.DEFAULT_ORDER + 1)
-public class MyCustomConfiguration implements CamundaConfiguration {
+@Order(Ordering.DEFAULT_ORDER + 1)
+public class MyCustomConfiguration implements ProcessEnginePlugin {
 
 	@Override
-	public void accept(SpringProcessEngineConfiguration configuration) {
+	public void preInit(ProcessEngineConfigurationImpl processEngineConfiguration) {
 		//...
 	}
+	
+	...
+
+}
+----
+
+or
+
+[source,java]
+----
+@Component
+@Order(Ordering.DEFAULT_ORDER + 1)
+public class MyCustomConfiguration extends AbstractCamundaConfiguration {
+
+	@Override
+	public void preInit(SpringProcessEngineConfiguration springProcessEngineConfiguration) {
+		//...
+	}
+	
+	...
+
+}
+----
+
+== REST API
+
+To enable link:https://docs.camunda.org/manual/7.5/reference/rest/[REST API^] you can use
+
+[source,xml,subs="verbatim,attributes"]
+.pom.xml
+----
+<dependency>
+  <groupId>org.camunda.bpm.extension</groupId>
+  <artifactId>camunda-bpm-spring-boot-starter-rest</artifactId>
+  <version>{project-version}</version>
+</dependency>
+----
+
+By default the application path is `rest`.
+
+Because we are using jersey one can use spring boot's link:http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html[common application properties]. For example to change the application path use `spring.jersey.application-path=myapplicationpath`.
+
+To modify the configuration or register additional resources one can provide a bean which extends from `org.camunda.bpm.spring.boot.starter.rest.CamundaJerseyResourceConfig`:
+
+[source,java]
+----
+@Component
+@ApplicationPath("/rest")
+public class JerseyConfig extends CamundaJerseyResourceConfig {
+
+  @Override
+  protected void registerAdditionalResources() {
+    register(...);
+  }
 
 }
 ----
@@ -229,81 +288,4 @@ public class MyApplication extends SpringBootProcessApplication{
 }
 ----
 
-
-[[properties]]
-== Camunda application properties
-[options="header"]
-|===
-|Property name |Description | Default value
-|`{properties-prefix}.process-engine-name`
-|name of the process engine
-|camunda default value
-
-|`{properties-prefix}.job-execution.active`
-|activate job execution after successful startup
-|`true`
-
-|`{properties-prefix}.job-execution.deployment-aware`
-|if job executor is deployment aware
-|`false`
-
-|`{properties-prefix}.database.schema-update`
-|if automatic schema update should be applied, use one of [true, false, create, create-drop, drop-create]
-|`true`
-
-|`{properties-prefix}.database.type`
-|type of the underlying database
-|
-
-|`{properties-prefix}.database.table-prefix`
-|prefix of the camunda database tables
-|camunda default value
-
-|`{properties-prefix}.history-level`
-|camunda history level
-|camunda default value
-
-|`{properties-prefix}.history-level-default`
-|camunda history level to use when `history-level` is `auto` but the level can not determined automatically
-|default value from `history-level`
-
-|`{properties-prefix}.auto-deployment-enabled`
-|if processes should be auto deployed. This is disabled when using the SpringBootProcessApplication
-|`true`
-
-|`{properties-prefix}.deployment-resource-pattern`
-|location for auto deployment
-|`classpath*:**/*.bpmn, classpath*:**/*.bpmn20.xml, classpath*:**/*.dmn, classpath*:**/*.dmn11.xml, classpath*:**/*.cmmn, classpath*:**/*.cmmn10.xml, classpath*:**/*.cmmn11.xml`
-
-|`{properties-prefix}.jpa.enabled`
-|enables jpa configuration
-|`true`. Depends on `entityManagerFactory` bean.
-
-|`{properties-prefix}.jpa-persistence-unit-name`
-|JPA persistence unit name
-|
-
-|`{properties-prefix}.jpa.close-entity-manager`
-|close JPA entity manager
-|`true`
-
-|`{properties-prefix}.jpa.handle-transaction`
-|JPA handle transaction
-|`true`
-
-|`management.health.camunda.enabled`
-|enables default camunda health indicators
-|`true`
-
-|`{properties-prefix}.version`
-|version of the process engine
-|read only value e.g. 7.4.0
-
-|`{properties-prefix}.formatted-version`
-|formatted version of the process engine
-|read only value e.g. (v7.4.0)
-
-|`{properties-prefix}.webapp.index-redirect-enabled`
-|registers a redirect from `/` to camundas bundled `index.html`
-|`true`
-|===
+include::properties.adoc[]

@@ -16,25 +16,24 @@ import org.camunda.bpm.application.impl.metadata.ProcessArchiveXmlImpl;
 import org.camunda.bpm.application.impl.metadata.spi.ProcessArchiveXml;
 import org.camunda.bpm.engine.ProcessEngineConfiguration;
 import org.camunda.bpm.engine.ProcessEngines;
-import org.camunda.bpm.engine.impl.bpmn.deployer.BpmnDeployer;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
-import org.camunda.bpm.engine.impl.cmmn.deployer.CmmnDeployer;
-import org.camunda.bpm.engine.impl.dmn.deployer.DmnDeployer;
-import org.camunda.bpm.engine.impl.metrics.MetricsRegistry;
-import org.camunda.bpm.engine.impl.metrics.MetricsReporterIdProvider;
-import org.camunda.bpm.engine.impl.metrics.reporter.DbMetricsReporter;
 import org.camunda.bpm.engine.repository.ResumePreviousBy;
+import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.util.Assert;
 
 @ConfigurationProperties("camunda.bpm")
 public class CamundaBpmProperties {
 
+  public static final String[] DEFAULT_BPMN_RESOURCE_SUFFIXES = new String[] { "bpmn20.xml", "bpmn" };
+  public static final String[] DEFAULT_CMMN_RESOURCE_SUFFIXES = new String[] { "cmmn11.xml", "cmmn10.xml", "cmmn" };
+  public static final String[] DEFAULT_DMN_RESOURCE_SUFFIXES = new String[] { "dmn11.xml", "dmn" };
+
   static String[] initDeploymentResourcePattern() {
     final Set<String> suffixes = new HashSet<String>();
-    suffixes.addAll(Arrays.asList(DmnDeployer.DMN_RESOURCE_SUFFIXES));
-    suffixes.addAll(Arrays.asList(BpmnDeployer.BPMN_RESOURCE_SUFFIXES));
-    suffixes.addAll(Arrays.asList(CmmnDeployer.CMMN_RESOURCE_SUFFIXES));
+    suffixes.addAll(Arrays.asList(DEFAULT_DMN_RESOURCE_SUFFIXES));
+    suffixes.addAll(Arrays.asList(DEFAULT_BPMN_RESOURCE_SUFFIXES));
+    suffixes.addAll(Arrays.asList(DEFAULT_CMMN_RESOURCE_SUFFIXES));
 
     final Set<String> patterns = new HashSet<String>();
     for (String suffix : suffixes) {
@@ -107,6 +106,19 @@ public class CamundaBpmProperties {
 
   public void setDeploymentResourcePattern(String[] deploymentResourcePattern) {
     this.deploymentResourcePattern = deploymentResourcePattern;
+  }
+
+  /**
+   * default serialization format to use
+   */
+  private String defaultSerializationFormat = new SpringProcessEngineConfiguration().getDefaultSerializationFormat();
+
+  public String getDefaultSerializationFormat() {
+    return defaultSerializationFormat;
+  }
+
+  public void setDefaultSerializationFormat(String defaultSerializationFormat) {
+    this.defaultSerializationFormat = defaultSerializationFormat;
   }
 
   /**
@@ -185,6 +197,16 @@ public class CamundaBpmProperties {
 
   public void setApplication(Application application) {
     this.application = application;
+  }
+
+  private Authorization authorization = new Authorization();
+
+  public Authorization getAuthorization() {
+    return authorization;
+  }
+
+  public void setAuthorization(Authorization authorization) {
+    this.authorization = authorization;
   }
 
   static class NestedProperty {
@@ -329,10 +351,7 @@ public class CamundaBpmProperties {
   public static class Metrics extends NestedProperty {
 
     private boolean enabled = true;
-    private MetricsRegistry metricsRegistry;
-    private MetricsReporterIdProvider metricsReporterIdProvider;
-    private DbMetricsReporter dbMetricsReporter;
-    private boolean dbMetricsReporterActivate = true;
+    private boolean dbReporterActivate = true;
 
     public boolean isEnabled() {
       return enabled;
@@ -342,36 +361,12 @@ public class CamundaBpmProperties {
       this.enabled = enabled;
     }
 
-    public DbMetricsReporter getDbMetricsReporter() {
-      return dbMetricsReporter;
+    public boolean isDbReporterActivate() {
+      return dbReporterActivate;
     }
 
-    public void setDbMetricsReporter(DbMetricsReporter dbMetricsReporter) {
-      this.dbMetricsReporter = dbMetricsReporter;
-    }
-
-    public boolean isDbMetricsReporterActivate() {
-      return dbMetricsReporterActivate;
-    }
-
-    public void setDbMetricsReporterActivate(boolean dbMetricsReporterActivate) {
-      this.dbMetricsReporterActivate = dbMetricsReporterActivate;
-    }
-
-    public MetricsRegistry getMetricsRegistry() {
-      return metricsRegistry;
-    }
-
-    public void setMetricsRegistry(MetricsRegistry metricsRegistry) {
-      this.metricsRegistry = metricsRegistry;
-    }
-
-    public MetricsReporterIdProvider getMetricsReporterIdProvider() {
-      return metricsReporterIdProvider;
-    }
-
-    public void setMetricsReporterIdProvider(MetricsReporterIdProvider metricsReporterIdProvider) {
-      this.metricsReporterIdProvider = metricsReporterIdProvider;
+    public void setDbReporterActivate(boolean dbReporterActivate) {
+      this.dbReporterActivate = dbReporterActivate;
     }
   }
 
@@ -562,6 +557,46 @@ public class CamundaBpmProperties {
       properties.put(ProcessArchiveXml.PROP_RESUME_PREVIOUS_BY, resumePreviousBy);
 
       return processArchives;
+    }
+
+  }
+
+  public static class Authorization extends NestedProperty {
+
+    /**
+     * enables authorization
+     */
+    private boolean enabled = new SpringProcessEngineConfiguration().isAuthorizationEnabled();
+
+    /**
+     * enables authorization for custom code
+     */
+    private boolean enabledForCustomCode = new SpringProcessEngineConfiguration().isAuthorizationEnabledForCustomCode();
+
+    private String authorizationCheckRevokes = new SpringProcessEngineConfiguration().getAuthorizationCheckRevokes();
+
+    public Boolean isEnabled() {
+      return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+      this.enabled = enabled;
+    }
+
+    public Boolean isEnabledForCustomCode() {
+      return enabledForCustomCode;
+    }
+
+    public void setEnabledForCustomCode(Boolean enabledForCustomCode) {
+      this.enabledForCustomCode = enabledForCustomCode;
+    }
+
+    public String getAuthorizationCheckRevokes() {
+      return authorizationCheckRevokes;
+    }
+
+    public void setAuthorizationCheckRevokes(String authorizationCheckRevokes) {
+      this.authorizationCheckRevokes = authorizationCheckRevokes;
     }
 
   }
