@@ -36,9 +36,9 @@ public class DefaultJobConfigurationTest {
 
   @Test
   public void addJobHandler() {
-    JobHandler jobHandler = mock(JobHandler.class);
+    JobHandler<?> jobHandler = mock(JobHandler.class);
     when(jobHandler.getType()).thenReturn("MockHandler");
-    setField(jobConfiguration, "customJobHandlers", Arrays.asList(jobHandler));
+    setField(jobConfiguration, "customJobHandlers", Arrays.<JobHandler<?>> asList(jobHandler));
 
     assertThat(processEngineConfiguration.getCustomJobHandlers()).isNull();
     jobConfiguration.registerCustomJobHandlers(processEngineConfiguration);

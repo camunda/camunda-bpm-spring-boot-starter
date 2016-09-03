@@ -28,7 +28,7 @@ public abstract class AbstractCamundaConfiguration implements ProcessEnginePlugi
    *          type of elements
    * @return new non-null list containing all elements of existing and add.
    */
-  public static <T> List<T> join(final List<T> existing, final List<T> add) {
+  public static <T> List<T> join(final List<? extends T> existing, final List<? extends T> add) {
     final List<T> target = new ArrayList<T>();
     if (!CollectionUtils.isEmpty(existing)) {
       target.addAll(existing);
