@@ -162,7 +162,7 @@ public class MyCamundaConfiguration {
 
 	@Bean
 	@Order(Ordering.DEFAULT_ORDER + 1)
-	public static CamundaConfiguration myCustomConfiguration() {
+	public static ProcessEnginePlugin myCustomConfiguration() {
 		return new MyCustomConfiguration();
 	}
 
