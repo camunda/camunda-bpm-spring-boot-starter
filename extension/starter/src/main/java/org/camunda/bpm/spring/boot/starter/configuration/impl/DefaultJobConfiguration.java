@@ -26,7 +26,7 @@ public class DefaultJobConfiguration extends AbstractCamundaConfiguration implem
   protected JobExecutor jobExecutor;
 
   @Autowired(required = false)
-  protected List<JobHandler> customJobHandlers;
+  protected List<JobHandler<?>> customJobHandlers;
 
   @Override
   public void preInit(final SpringProcessEngineConfiguration configuration) {
@@ -36,7 +36,7 @@ public class DefaultJobConfiguration extends AbstractCamundaConfiguration implem
 
   protected void registerCustomJobHandlers(SpringProcessEngineConfiguration configuration) {
     configuration.setCustomJobHandlers(join(configuration.getCustomJobHandlers(), customJobHandlers));
-    for (JobHandler jobHandler : configuration.getCustomJobHandlers()) {
+    for (JobHandler<?> jobHandler : configuration.getCustomJobHandlers()) {
       logger.info("Register Custom JobHandler: '{}'", jobHandler.getType());
     }
   }

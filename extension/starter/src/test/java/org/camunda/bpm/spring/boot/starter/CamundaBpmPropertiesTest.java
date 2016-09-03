@@ -2,6 +2,8 @@ package org.camunda.bpm.spring.boot.starter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import javax.annotation.PostConstruct;
+
 import org.camunda.bpm.engine.ProcessEngineConfiguration;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.junit.Rule;
@@ -10,23 +12,15 @@ import org.junit.experimental.runners.Enclosed;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.test.ConfigFileApplicationContextInitializer;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import javax.annotation.PostConstruct;
 
 @RunWith(Enclosed.class)
 public class CamundaBpmPropertiesTest {
 
   public static class Sanity {
-
 
     @Rule
     public final ExpectedException thrown = ExpectedException.none();
@@ -37,7 +31,7 @@ public class CamundaBpmPropertiesTest {
 
       assertThat(patterns).hasSize(7);
       assertThat(patterns).containsOnly("classpath*:**/*.bpmn", "classpath*:**/*.bpmn20.xml", "classpath*:**/*.dmn", "classpath*:**/*.dmn11.xml",
-        "classpath*:**/*.cmmn", "classpath*:**/*.cmmn10.xml", "classpath*:**/*.cmmn11.xml");
+          "classpath*:**/*.cmmn", "classpath*:**/*.cmmn10.xml", "classpath*:**/*.cmmn11.xml");
     }
 
     @Test
@@ -61,9 +55,7 @@ public class CamundaBpmPropertiesTest {
   }
 
   @RunWith(SpringJUnit4ClassRunner.class)
-  @ContextConfiguration(
-    classes = ParsePropertiesTest.TestConfig.class
-  )
+  @ContextConfiguration(classes = ParsePropertiesTest.TestConfig.class)
   public static abstract class ParsePropertiesTest {
 
     @EnableConfigurationProperties(CamundaBpmProperties.class)
@@ -83,10 +75,7 @@ public class CamundaBpmPropertiesTest {
     }
   }
 
-  @TestPropertySource(properties = {
-    "camunda.bpm.metrics.enabled=false",
-    "camunda.bpm.metrics.db-reporter-activate=false"
-  })
+  @TestPropertySource(properties = { "camunda.bpm.metrics.enabled=false", "camunda.bpm.metrics.db-reporter-activate=false" })
   public static class MetricsPropertiesTest extends ParsePropertiesTest {
 
     @Test
@@ -96,12 +85,8 @@ public class CamundaBpmPropertiesTest {
     }
   }
 
-  @TestPropertySource(properties = {
-    "camunda.bpm.application.delete-upon-undeploy=true",
-    "camunda.bpm.application.scan-for-process-definitions=false",
-    "camunda.bpm.application.deploy-changed-only=true",
-    "camunda.bpm.application.resume-previous-versions=true"
-  })
+  @TestPropertySource(properties = { "camunda.bpm.application.delete-upon-undeploy=true", "camunda.bpm.application.scan-for-process-definitions=false",
+      "camunda.bpm.application.deploy-changed-only=true", "camunda.bpm.application.resume-previous-versions=true" })
   public static class ApplicationPropertiesTest extends ParsePropertiesTest {
 
     @Test
