@@ -15,7 +15,7 @@ import org.springframework.util.CollectionUtils;
 public class GenericPropertiesConfiguration extends AbstractCamundaConfiguration {
 
   @Override
-  protected void preInit(SpringProcessEngineConfiguration springProcessEngineConfiguration) {
+  public void preInit(SpringProcessEngineConfiguration springProcessEngineConfiguration) {
     GenericProperties genericProperties = camundaBpmProperties.getGenericProperties();
     final Map<String, Object> properties = genericProperties.getProperties();
     if (!CollectionUtils.isEmpty(properties)) {
