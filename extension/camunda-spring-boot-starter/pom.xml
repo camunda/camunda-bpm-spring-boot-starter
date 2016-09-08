@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.camunda.bpm.extension</groupId>
     <artifactId>camunda-bpm-spring-boot-starter-extension-root</artifactId>
-    <version>1.3.0</version>
+    <version>1.4.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>camunda-bpm-spring-boot-starter</artifactId>
