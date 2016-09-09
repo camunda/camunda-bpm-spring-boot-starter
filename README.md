@@ -58,7 +58,7 @@ If you have implemented an `CamundaConfiguration` you have to switch to `Process
 
 ### Roadmap
 
-* [Milestone 1.3.0](https://github.com/camunda/camunda-bpm-spring-boot-starter/milestone/4)
+* [Milestone 1.3.0](https://github.com/camunda/camunda-bpm-spring-boot-starter/milestone/4?closed=1)
 * [Milestone 2.0.0](https://github.com/camunda/camunda-bpm-spring-boot-starter/milestone/3) - Java8 + Spring Boot 1.4
 
 ## Maintainer
