@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.util.StringUtils;
 
+import java.util.Optional;
+
 public class DefaultDatasourceConfiguration extends AbstractCamundaConfiguration implements CamundaDatasourceConfiguration {
 
   @Autowired
@@ -27,6 +29,7 @@ public class DefaultDatasourceConfiguration extends AbstractCamundaConfiguration
     final CamundaBpmProperties.Database database = camundaBpmProperties.getDatabase();
 
     configuration.setTransactionManager(transactionManager);
+
     if (camundaDataSource == null) {
       configuration.setDataSource(dataSource);
     } else {

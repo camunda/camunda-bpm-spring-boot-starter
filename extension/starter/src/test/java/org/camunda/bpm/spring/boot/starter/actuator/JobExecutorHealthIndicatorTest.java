@@ -48,7 +48,7 @@ public class JobExecutorHealthIndicatorTest {
     when(jobExecutor.getProcessEngines()).thenReturn(PROCESS_ENGINES);
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test(expected = NullPointerException.class)
   public void nullTest() {
     new JobExecutorHealthIndicator(null);
   }

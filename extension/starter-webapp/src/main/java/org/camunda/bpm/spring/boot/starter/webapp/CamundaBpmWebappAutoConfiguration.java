@@ -33,13 +33,7 @@ public class CamundaBpmWebappAutoConfiguration extends WebMvcConfigurerAdapter {
 
   @Bean(name = "resourceLoaderDependingInitHook")
   public InitHook<ResourceLoaderDependingFilter> resourceLoaderDependingInitHook() {
-    return new InitHook<ResourceLoaderDependingFilter>() {
-
-      @Override
-      public void init(ResourceLoaderDependingFilter filter) {
-        filter.setResourceLoader(resourceLoader);
-      }
-    };
+    return filter -> filter.setResourceLoader(resourceLoader);
   }
 
   @Bean

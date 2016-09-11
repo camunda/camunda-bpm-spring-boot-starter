@@ -1,20 +1,6 @@
 package org.camunda.bpm.spring.boot.starter.webapp;
 
-import static java.util.Collections.singletonMap;
-import static org.glassfish.jersey.servlet.ServletProperties.JAXRS_APPLICATION_CLASS;
-
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.Map;
-
-import javax.servlet.DispatcherType;
-import javax.servlet.Filter;
-import javax.servlet.FilterRegistration;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration;
-import javax.servlet.SessionTrackingMode;
-
+import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.admin.impl.web.AdminApplication;
 import org.camunda.bpm.admin.impl.web.bootstrap.AdminContainerBootstrap;
 import org.camunda.bpm.cockpit.impl.web.CockpitApplication;
@@ -27,18 +13,29 @@ import org.camunda.bpm.tasklist.impl.web.bootstrap.TasklistContainerBootstrap;
 import org.camunda.bpm.webapp.impl.engine.EngineRestApplication;
 import org.camunda.bpm.webapp.impl.security.auth.AuthenticationFilter;
 import org.glassfish.jersey.servlet.ServletContainer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.boot.context.embedded.ServletContextInitializer;
+import org.springframework.boot.web.servlet.ServletContextInitializer;
+
+import javax.servlet.DispatcherType;
+import javax.servlet.Filter;
+import javax.servlet.FilterRegistration;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRegistration;
+import javax.servlet.SessionTrackingMode;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.Map;
+
+import static java.util.Collections.singletonMap;
+import static org.glassfish.jersey.servlet.ServletProperties.JAXRS_APPLICATION_CLASS;
 
 /**
  * Inspired by:
  * https://groups.google.com/forum/#!msg/camunda-bpm-users/BQHdcLIivzs
  * /iNVix8GkhYAJ (Christoph Berg)
  */
+@Slf4j
 public class CamundaBpmWebappInitializer implements ServletContextInitializer {
-
-  private final Logger logger = LoggerFactory.getLogger(CamundaBpmWebappInitializer.class);
 
   private static final EnumSet<DispatcherType> DISPATCHER_TYPES = EnumSet.of(DispatcherType.REQUEST);
 
@@ -81,7 +78,7 @@ public class CamundaBpmWebappInitializer implements ServletContextInitializer {
         filterRegistration.setInitParameters(initParameters);
       }
 
-      logger.debug("Filter {} for URL {} registered.", filterName, urlPatterns);
+      log.debug("Filter {} for URL {} registered.", filterName, urlPatterns);
     }
 
     return filterRegistration;
@@ -95,7 +92,7 @@ public class CamundaBpmWebappInitializer implements ServletContextInitializer {
       servletRegistration.addMapping(urlPatterns);
       servletRegistration.setInitParameters(singletonMap(JAXRS_APPLICATION_CLASS, applicationClass.getName()));
 
-      logger.debug("Servlet {} for URL {} registered.", servletName, urlPatterns);
+      log.debug("Servlet {} for URL {} registered.", servletName, urlPatterns);
     }
 
     return servletRegistration;

@@ -47,27 +47,6 @@ public abstract class AbstractCamundaConfiguration extends SpringProcessEnginePl
     return target;
   }
 
-  /**
-   *
-   * @param obj
-   *          that should be casted
-   * @param type
-   *          to cast
-   * @return optional casted object
-   */
-  @SuppressWarnings("unchecked")
-  public static <T> Optional<T> castIntoOptional(Object obj, Class<T> type) {
-    if (type.isInstance(obj)) {
-      return Optional.of((T) obj);
-    }
-    return Optional.empty();
-  }
-
-  public static Optional<SpringProcessEngineConfiguration> castIntoOptionalSpringProcessEngineConfiguration(
-      ProcessEngineConfiguration processEngineConfiguration) {
-    return castIntoOptional(processEngineConfiguration, SpringProcessEngineConfiguration.class);
-  }
-
   protected final Logger logger = getLogger(this.getClass());
 
   @Autowired

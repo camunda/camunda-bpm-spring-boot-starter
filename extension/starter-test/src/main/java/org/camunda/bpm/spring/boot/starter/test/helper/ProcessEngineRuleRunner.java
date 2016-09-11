@@ -24,11 +24,12 @@ public class ProcessEngineRuleRunner extends BlockJUnit4ClassRunner {
   @Override
   protected List<TestRule> getTestRules(Object target) {
     List<TestRule> testRules = super.getTestRules(target);
-    for (TestRule testRule : testRules) {
-      if (testRule instanceof ProcessEngineRule) {
-        processEngineRules.add((ProcessEngineRule) testRule);
-      }
-    }
+
+    testRules.stream()
+      .filter(t -> t instanceof ProcessEngineRule)
+      .map(t -> (ProcessEngineRule)t)
+      .forEach(processEngineRules::add);
+
     return testRules;
   }
 

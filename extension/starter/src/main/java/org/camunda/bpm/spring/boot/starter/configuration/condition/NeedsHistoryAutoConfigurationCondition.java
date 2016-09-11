@@ -13,8 +13,9 @@ public class NeedsHistoryAutoConfigurationCondition extends SpringBootCondition 
 
   @Override
   public ConditionOutcome getMatchOutcome(ConditionContext context, AnnotatedTypeMetadata metadata) {
-    return needsAdditionalConfiguration(context) ? ConditionOutcome.match("camunda version needs additional configuration for history level auto")
-        : ConditionOutcome.noMatch("camunda version supports history level auto");
+    return needsAdditionalConfiguration(context)
+      ? ConditionOutcome.match("camunda version needs additional configuration for history level auto")
+      : ConditionOutcome.noMatch("camunda version supports history level auto");
   }
 
   protected boolean needsAdditionalConfiguration(ConditionContext context) {

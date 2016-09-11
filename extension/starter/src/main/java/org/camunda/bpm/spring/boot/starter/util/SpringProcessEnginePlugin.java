@@ -1,9 +1,12 @@
 package org.camunda.bpm.spring.boot.starter.util;
 
+import org.camunda.bpm.engine.ProcessEngineConfiguration;
 import org.camunda.bpm.engine.impl.cfg.AbstractProcessEnginePlugin;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 import org.springframework.beans.factory.BeanNameAware;
+
+import java.util.Optional;
 
 /**
  * Convenience class that specializes {@link AbstractProcessEnginePlugin} to
@@ -11,20 +14,39 @@ import org.springframework.beans.factory.BeanNameAware;
  */
 public class SpringProcessEnginePlugin extends AbstractProcessEnginePlugin implements BeanNameAware {
 
+  /**
+   *
+   * @param obj
+   *          that should be casted
+   * @param type
+   *          to cast
+   * @return optional casted object
+   */
+  @SuppressWarnings("unchecked")
+  public static <T> Optional<T> cast(Object obj, Class<T> type) {
+    if (type.isInstance(obj)) {
+      return Optional.of((T) obj);
+    }
+    return Optional.empty();
+  }
+
+  public static Optional<SpringProcessEngineConfiguration> cast(
+    ProcessEngineConfiguration processEngineConfiguration) {
+    return cast(processEngineConfiguration, SpringProcessEngineConfiguration.class);
+  }
+
   private String beanName;
 
   @Override
   public void preInit(ProcessEngineConfigurationImpl processEngineConfiguration) {
-    if (processEngineConfiguration instanceof SpringProcessEngineConfiguration) {
-      preInit((SpringProcessEngineConfiguration) processEngineConfiguration);
-    }
+    cast(processEngineConfiguration)
+      .ifPresent(this::preInit);
   }
 
   @Override
   public void postInit(ProcessEngineConfigurationImpl processEngineConfiguration) {
-    if (processEngineConfiguration instanceof SpringProcessEngineConfiguration) {
-      postInit((SpringProcessEngineConfiguration) processEngineConfiguration);
-    }
+    cast(processEngineConfiguration)
+      .ifPresent(this::postInit);
   }
 
   public void preInit(SpringProcessEngineConfiguration processEngineConfiguration) {
