@@ -23,6 +23,8 @@
     <module>example-testhelper</module>
   </modules>
 
-  <!-- examples should be usable standalone, do not add common deps/buils 
-    here! -->
+  <!--
+     examples should be usable standalone,
+     do not add common dependencies/builds here!
+  -->
 </project>

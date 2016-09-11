@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.camunda.bpm.extension.example</groupId>
@@ -9,7 +8,7 @@
   <artifactId>camunda-bpm-spring-boot-starter-example-war</artifactId>
 
   <packaging>war</packaging>
-  
+
   <properties>
     <cargo.maven.containerId>tomcat8x</cargo.maven.containerId>
     <cargo.maven.containerUrl>http://repo1.maven.org/maven2/org/apache/tomcat/tomcat/8.5.4/tomcat-8.5.4.zip</cargo.maven.containerUrl>

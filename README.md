@@ -1,8 +1,9 @@
 # camunda-bpm-spring-boot-starter
 
-<a href="https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension/camunda-bpm-spring-boot-starter"><img align="right" src="https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension/camunda-bpm-spring-boot-starter/badge.svg"/></a>
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension/camunda-bpm-spring-boot-starter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.camunda.bpm.extension/camunda-bpm-spring-boot-starter)  [![Project Stats](https://www.openhub.net/p/camunda-bpm-spring-boot-starter/widgets/project_thin_badge.gif)](https://www.openhub.net/p/camunda-bpm-spring-boot-starter) [![Travis Build](https://travis-ci.org/camunda/camunda-bpm-spring-boot-starter.svg?branch=master)](https://travis-ci.org/camunda/camunda-bpm-spring-boot-starter)
 
-[![Project Stats](https://www.openhub.net/p/camunda-bpm-spring-boot-starter/widgets/project_thin_badge.gif)](https://www.openhub.net/p/camunda-bpm-spring-boot-starter)
+</tr>
+</table>
 
 ## Get started
 
@@ -12,7 +13,7 @@ The extension is published on maven central, so if you are using maven, just add
 <dependency>
   <groupId>org.camunda.bpm.extension</groupId>
   <artifactId>camunda-bpm-spring-boot-starter([-rest|-webapp])</artifactId>
-  <version>1.2.1</version>
+  <version>1.3.0</version>
 </dependency>
 ```
 
@@ -56,7 +57,7 @@ If you have implemented an `CamundaConfiguration` you have to switch to `Process
 
 ### Roadmap
 
-* [Milestone 1.3.0](https://github.com/camunda/camunda-bpm-spring-boot-starter/milestone/4)
+* [Milestone 1.3.0](https://github.com/camunda/camunda-bpm-spring-boot-starter/milestone/4?closed=1)
 * [Milestone 2.0.0](https://github.com/camunda/camunda-bpm-spring-boot-starter/milestone/3) - Java8 + Spring Boot 1.4
 
 ## Contribution
