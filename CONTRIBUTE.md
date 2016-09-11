@@ -19,7 +19,7 @@ Create a pull request if you would like to have an in-depth discussion about som
 ## Setting up the project locally
 
 The project is using Maven 3 as build tool.  
-To build the project by yourself, g oto our cmd line and enter ```mvn clean install``` on the root of the checked out project.  
+To build the project by yourself, go to our cmd line and enter ```mvn clean install``` on the root of the checked out project.  
 
 *Hint for eclipse users:* clone the repo as `camunda-spring-boot-starter-root`
 
@@ -35,7 +35,9 @@ instead of
 
     mvn clean package
 
-and the wrapper will automatically download and use a fixed maven version (3.1.1).
+and the wrapper will automatically download and use a fixed maven version (3.3.1).
+
+*Info*: since 2.0.0 this project builds with Java-8 only.
 
 ## Creating pull requests
 
