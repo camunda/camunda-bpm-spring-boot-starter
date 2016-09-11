@@ -10,20 +10,17 @@ import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.InitializationError;
 
+/**
+ * Runner that ensures closing process engines after test run.
+ */
 public class ProcessEngineRuleRunner extends BlockJUnit4ClassRunner {
 
-  private final Collection<ProcessEngineRule> processEngineRules = new ArrayList<ProcessEngineRule>();
+  private final Collection<ProcessEngineRule> processEngineRules = new ArrayList<>();
 
   public ProcessEngineRuleRunner(Class<?> klass) throws InitializationError {
     super(klass);
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see
-   * org.junit.runners.BlockJUnit4ClassRunner#getTestRules(java.lang.Object)
-   */
   @Override
   protected List<TestRule> getTestRules(Object target) {
     List<TestRule> testRules = super.getTestRules(target);
@@ -35,12 +32,6 @@ public class ProcessEngineRuleRunner extends BlockJUnit4ClassRunner {
     return testRules;
   }
 
-  /*
-   * (non-Javadoc)
-   * 
-   * @see org.junit.runners.ParentRunner#run(org.junit.runner.notification.
-   * RunNotifier)
-   */
   @Override
   public void run(RunNotifier notifier) {
     super.run(notifier);

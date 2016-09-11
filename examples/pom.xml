@@ -19,7 +19,6 @@
     <module>example-webapp</module>
     <module>example-war</module>
     <module>example-dmn-rest</module>
-    <module>example-testhelper</module>
   </modules>
 
   <!--

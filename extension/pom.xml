@@ -14,6 +14,7 @@
     <module>starter</module>
     <module>starter-rest</module>
     <module>starter-webapp</module>
+    <module>starter-test</module>
   </modules>
 
   <dependencyManagement>
