@@ -7,11 +7,12 @@ import javax.transaction.Transactional;
 import org.camunda.bpm.spring.boot.starter.test.TestNoJobExecutionApplication;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.test.context.junit4.SpringRunner;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = { TestNoJobExecutionApplication.class })
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = { TestNoJobExecutionApplication.class }, webEnvironment = WebEnvironment.NONE)
 @Transactional
 public class CamundaNoJobExecutionAutoConfigurationIT extends AbstractCamundaAutoConfigurationIT {
 
