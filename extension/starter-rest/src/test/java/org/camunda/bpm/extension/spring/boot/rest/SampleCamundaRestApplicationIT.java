@@ -2,23 +2,32 @@ package org.camunda.bpm.extension.spring.boot.rest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+
+import java.io.ByteArrayInputStream;
 
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.rest.dto.runtime.ProcessInstanceDto;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
-import org.junit.Ignore;
+import org.camunda.bpm.engine.runtime.VariableInstance;
+import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.LinkedMultiValueMap;
 
 import my.own.custom.spring.boot.project.SampleCamundaRestApplication;
 
@@ -34,6 +43,9 @@ public class SampleCamundaRestApplicationIT {
 
   @Autowired
   private RuntimeService runtimeService;
+
+  @Autowired
+  private CamundaBpmProperties camundaBpmProperties;
 
   @Test
   public void restApiIsAvailable() throws Exception {
@@ -54,13 +66,28 @@ public class SampleCamundaRestApplicationIT {
     assertEquals(processInstance.getProcessInstanceId(), entity.getBody().getId());
   }
 
-  @Ignore
   @Test
   public void multipartFileUploadCamundaRestIsWorking() throws Exception {
-    ResponseEntity<String> entity = restTemplate.postForEntity("http://localhost:" + port + "/rest/start/process", HttpEntity.EMPTY, String.class);
-    assertEquals(HttpStatus.OK, entity.getStatusCode());
-    assertEquals("1", entity);
+    final String variableName = "testvariable";
+    ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("TestProcess");
+    LinkedMultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
+    map.add("data", new ClassPathResource("/bpmn/test.bpmn"));
+    map.add("valueType", "File");
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+    headers.setContentDispositionFormData("data", "test.bpmn");
 
+    HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<>(map, headers);
+    ResponseEntity<String> exchange = restTemplate.exchange(
+        "http://localhost:{port}/rest/engine/{enginename}/process-instance/{id}/variables/{variableName}/data", HttpMethod.POST, requestEntity, String.class,
+        port, camundaBpmProperties.getProcessEngineName(), processInstance.getId(), variableName);
+
+    assertEquals(HttpStatus.NO_CONTENT, exchange.getStatusCode());
+
+    VariableInstance variableInstance = runtimeService.createVariableInstanceQuery().processInstanceIdIn(processInstance.getId()).variableName(variableName)
+        .singleResult();
+    ByteArrayInputStream byteArrayInputStream = (ByteArrayInputStream) variableInstance.getValue();
+    assertTrue(byteArrayInputStream.available() > 0);
   }
 
 }
