@@ -1,16 +1,6 @@
 package org.camunda.bpm.spring.boot.starter;
 
-import lombok.Data;
-import lombok.Singular;
-import org.camunda.bpm.application.impl.metadata.ProcessArchiveXmlImpl;
-import org.camunda.bpm.application.impl.metadata.spi.ProcessArchiveXml;
-import org.camunda.bpm.engine.ProcessEngineConfiguration;
-import org.camunda.bpm.engine.ProcessEngines;
-import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
-import org.camunda.bpm.engine.repository.ResumePreviousBy;
-import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.util.Assert;
+import static org.springframework.core.io.support.ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,7 +11,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.springframework.core.io.support.ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX;
+import org.camunda.bpm.application.impl.metadata.ProcessArchiveXmlImpl;
+import org.camunda.bpm.application.impl.metadata.spi.ProcessArchiveXml;
+import org.camunda.bpm.engine.ProcessEngineConfiguration;
+import org.camunda.bpm.engine.ProcessEngines;
+import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
+import org.camunda.bpm.engine.repository.ResumePreviousBy;
+import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.util.Assert;
+
+import lombok.Data;
+import lombok.Singular;
 
 @ConfigurationProperties("camunda.bpm")
 @Data

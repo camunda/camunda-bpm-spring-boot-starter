@@ -1,9 +1,9 @@
 package org.camunda.bpm.spring.boot.starter;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.Test;
 import org.springframework.test.context.TestPropertySource;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @TestPropertySource(properties = {"camunda.bpm.application.delete-upon-undeploy=true", "camunda.bpm.application.scan-for-process-definitions=false",
   "camunda.bpm.application.deploy-changed-only=true", "camunda.bpm.application.resume-previous-versions=true"})

@@ -1,9 +1,9 @@
 package org.camunda.bpm.spring.boot.starter;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.Test;
 import org.springframework.test.context.TestPropertySource;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @TestPropertySource(properties = {"camunda.bpm.metrics.enabled=false", "camunda.bpm.metrics.db-reporter-activate=false"})
 public class MetricsPropertiesHelper extends ParsePropertiesHelper {

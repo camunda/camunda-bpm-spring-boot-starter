@@ -2,13 +2,12 @@ package org.camunda.bpm.spring.boot.starter.rest;
 
 import javax.ws.rs.ApplicationPath;
 
-import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.rest.impl.CamundaRestResources;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
+
+import lombok.extern.slf4j.Slf4j;
 
 @ApplicationPath("/rest")
 @Slf4j

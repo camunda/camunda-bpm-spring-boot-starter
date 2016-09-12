@@ -1,5 +1,7 @@
 package org.camunda.bpm.spring.boot.starter.util;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.camunda.bpm.engine.impl.cfg.StandaloneInMemProcessEngineConfiguration;
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
@@ -7,8 +9,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class SpringProcessEnginePluginTest {
 

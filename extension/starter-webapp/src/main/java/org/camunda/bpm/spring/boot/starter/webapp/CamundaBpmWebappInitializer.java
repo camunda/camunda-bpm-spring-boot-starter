@@ -1,6 +1,20 @@
 package org.camunda.bpm.spring.boot.starter.webapp;
 
-import lombok.extern.slf4j.Slf4j;
+import static java.util.Collections.singletonMap;
+import static org.glassfish.jersey.servlet.ServletProperties.JAXRS_APPLICATION_CLASS;
+
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.Map;
+
+import javax.servlet.DispatcherType;
+import javax.servlet.Filter;
+import javax.servlet.FilterRegistration;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRegistration;
+import javax.servlet.SessionTrackingMode;
+
 import org.camunda.bpm.admin.impl.web.AdminApplication;
 import org.camunda.bpm.admin.impl.web.bootstrap.AdminContainerBootstrap;
 import org.camunda.bpm.cockpit.impl.web.CockpitApplication;
@@ -15,19 +29,7 @@ import org.camunda.bpm.webapp.impl.security.auth.AuthenticationFilter;
 import org.glassfish.jersey.servlet.ServletContainer;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 
-import javax.servlet.DispatcherType;
-import javax.servlet.Filter;
-import javax.servlet.FilterRegistration;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration;
-import javax.servlet.SessionTrackingMode;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.Map;
-
-import static java.util.Collections.singletonMap;
-import static org.glassfish.jersey.servlet.ServletProperties.JAXRS_APPLICATION_CLASS;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Inspired by:

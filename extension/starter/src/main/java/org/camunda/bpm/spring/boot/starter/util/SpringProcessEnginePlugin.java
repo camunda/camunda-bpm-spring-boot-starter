@@ -1,12 +1,12 @@
 package org.camunda.bpm.spring.boot.starter.util;
 
+import java.util.Optional;
+
 import org.camunda.bpm.engine.ProcessEngineConfiguration;
 import org.camunda.bpm.engine.impl.cfg.AbstractProcessEnginePlugin;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 import org.springframework.beans.factory.BeanNameAware;
-
-import java.util.Optional;
 
 /**
  * Convenience class that specializes {@link AbstractProcessEnginePlugin} to

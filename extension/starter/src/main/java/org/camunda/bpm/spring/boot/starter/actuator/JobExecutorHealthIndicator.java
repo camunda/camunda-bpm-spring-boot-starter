@@ -1,15 +1,16 @@
 package org.camunda.bpm.spring.boot.starter.actuator;
 
-import lombok.Singular;
-import lombok.Value;
+import static java.util.Objects.requireNonNull;
+
+import java.util.Set;
+
 import org.camunda.bpm.engine.impl.ProcessEngineImpl;
 import org.camunda.bpm.engine.impl.jobexecutor.JobExecutor;
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health.Builder;
 
-import java.util.Set;
-
-import static java.util.Objects.requireNonNull;
+import lombok.Singular;
+import lombok.Value;
 
 public class JobExecutorHealthIndicator extends AbstractHealthIndicator {
 

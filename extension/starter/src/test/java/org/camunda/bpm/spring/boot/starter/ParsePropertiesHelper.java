@@ -1,12 +1,12 @@
 package org.camunda.bpm.spring.boot.starter;
 
+import javax.annotation.PostConstruct;
+
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import javax.annotation.PostConstruct;
 
 /**
  * Created by jangalinski on 11.09.16.
