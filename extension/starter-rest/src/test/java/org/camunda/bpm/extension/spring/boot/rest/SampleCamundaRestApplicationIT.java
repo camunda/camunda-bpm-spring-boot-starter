@@ -15,7 +15,6 @@ import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.io.ClassPathResource;
@@ -25,7 +24,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.LinkedMultiValueMap;
 
@@ -33,13 +31,10 @@ import my.own.custom.spring.boot.project.SampleCamundaRestApplication;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = SampleCamundaRestApplication.class, webEnvironment = RANDOM_PORT)
-@DirtiesContext
 public class SampleCamundaRestApplicationIT {
 
-  private final TestRestTemplate restTemplate = new TestRestTemplate();
-
-  @Value("${local.server.port}")
-  private int port;
+  @Autowired
+  private TestRestTemplate testRestTemplate;
 
   @Autowired
   private RuntimeService runtimeService;
@@ -49,15 +44,14 @@ public class SampleCamundaRestApplicationIT {
 
   @Test
   public void restApiIsAvailable() throws Exception {
-    ResponseEntity<String> entity = restTemplate.getForEntity("http://localhost:" + port + "/rest/engine/", String.class);
+    ResponseEntity<String> entity = testRestTemplate.getForEntity("/rest/engine/", String.class);
     assertEquals(HttpStatus.OK, entity.getStatusCode());
     assertEquals("[{\"name\":\"testEngine\"}]", entity.getBody());
   }
 
   @Test
   public void startProcessInstanceByCustomResource() throws Exception {
-    ResponseEntity<ProcessInstanceDto> entity = restTemplate.postForEntity("http://localhost:" + port + "/rest/process/start", HttpEntity.EMPTY,
-        ProcessInstanceDto.class);
+    ResponseEntity<ProcessInstanceDto> entity = testRestTemplate.postForEntity("/rest/process/start", HttpEntity.EMPTY, ProcessInstanceDto.class);
     assertEquals(HttpStatus.OK, entity.getStatusCode());
     assertNotNull(entity.getBody());
 
@@ -78,9 +72,8 @@ public class SampleCamundaRestApplicationIT {
     headers.setContentDispositionFormData("data", "test.bpmn");
 
     HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<>(map, headers);
-    ResponseEntity<String> exchange = restTemplate.exchange(
-        "http://localhost:{port}/rest/engine/{enginename}/process-instance/{id}/variables/{variableName}/data", HttpMethod.POST, requestEntity, String.class,
-        port, camundaBpmProperties.getProcessEngineName(), processInstance.getId(), variableName);
+    ResponseEntity<String> exchange = testRestTemplate.exchange("/rest/engine/{enginename}/process-instance/{id}/variables/{variableName}/data",
+        HttpMethod.POST, requestEntity, String.class, camundaBpmProperties.getProcessEngineName(), processInstance.getId(), variableName);
 
     assertEquals(HttpStatus.NO_CONTENT, exchange.getStatusCode());
 

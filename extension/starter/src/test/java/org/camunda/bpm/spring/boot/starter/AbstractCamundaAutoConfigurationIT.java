@@ -14,9 +14,7 @@ import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.impl.jobexecutor.JobExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
 
-@DirtiesContext
 public abstract class AbstractCamundaAutoConfigurationIT {
 
   @Autowired
