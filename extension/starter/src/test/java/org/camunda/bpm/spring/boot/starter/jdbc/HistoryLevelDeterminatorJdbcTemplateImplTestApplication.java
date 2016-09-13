@@ -22,8 +22,8 @@ public class HistoryLevelDeterminatorJdbcTemplateImplTestApplication {
   @Bean
   public DataSource dataSource() {
     EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
-    EmbeddedDatabase db = builder.setType(EmbeddedDatabaseType.H2).addScript("/org/camunda/bpm/engine/db/create/activiti.h2.create.engine.sql")
-        .addScript("db/sql/insert-history-data.sql").continueOnError(true).build();
+    EmbeddedDatabase db = builder.setName("testdbForHistoryLevelDetermination").setType(EmbeddedDatabaseType.H2)
+        .addScript("/org/camunda/bpm/engine/db/create/activiti.h2.create.engine.sql").addScript("db/sql/insert-history-data.sql").continueOnError(true).build();
     return db;
   }
 
