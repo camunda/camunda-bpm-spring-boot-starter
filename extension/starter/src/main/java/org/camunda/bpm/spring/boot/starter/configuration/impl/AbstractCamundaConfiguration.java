@@ -5,6 +5,9 @@ import static org.slf4j.LoggerFactory.getLogger;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
+import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties;
 import org.camunda.bpm.spring.boot.starter.configuration.Ordering;
 import org.camunda.bpm.spring.boot.starter.util.SpringProcessEnginePlugin;
@@ -41,5 +44,10 @@ public abstract class AbstractCamundaConfiguration extends SpringProcessEnginePl
   @Autowired
   protected CamundaBpmProperties camundaBpmProperties;
 
+  protected SpringProcessEngineConfiguration springProcessEngineConfigurationTemplate;
 
+  @PostConstruct
+  public void postConstruct() {
+    springProcessEngineConfigurationTemplate = camundaBpmProperties.getProcessEngineConfiguration().build();
+  }
 }

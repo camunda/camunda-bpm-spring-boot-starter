@@ -20,29 +20,30 @@ public class DefaultProcessEngineConfigurationTest {
   @Before
   public void setUp() throws Exception {
     ReflectionTestUtils.setField(instance, "camundaBpmProperties", properties);
+    instance.postConstruct();
   }
 
   @Test
   public void setName_if_not_empty() throws Exception {
-    properties.setProcessEngineName("foo");
+    instance.springProcessEngineConfigurationTemplate.setProcessEngineName("foo");
     instance.preInit(configuration);
     assertThat(configuration.getProcessEngineName()).isEqualTo("foo");
   }
 
   @Test
   public void setName_ignore_empty() throws Exception {
-    properties.setProcessEngineName(null);
+    instance.springProcessEngineConfigurationTemplate.setProcessEngineName(null);
     instance.preInit(configuration);
     assertThat(configuration.getProcessEngineName()).isEqualTo(ProcessEngines.NAME_DEFAULT);
 
-    properties.setProcessEngineName(" ");
+    instance.springProcessEngineConfigurationTemplate.setProcessEngineName(" ");
     instance.preInit(configuration);
     assertThat(configuration.getProcessEngineName()).isEqualTo(ProcessEngines.NAME_DEFAULT);
   }
 
   @Test
   public void setName_ignore_hyphen() throws Exception {
-    properties.setProcessEngineName("foo-bar");
+    instance.springProcessEngineConfigurationTemplate.setProcessEngineName("foo-bar");
     instance.preInit(configuration);
     assertThat(configuration.getProcessEngineName()).isEqualTo(ProcessEngines.NAME_DEFAULT);
   }
@@ -50,7 +51,7 @@ public class DefaultProcessEngineConfigurationTest {
   @Test
   public void setDefaultSerializationFormat() {
     final String defaultSerializationFormat = "testformat";
-    properties.setDefaultSerializationFormat(defaultSerializationFormat);
+    instance.springProcessEngineConfigurationTemplate.setDefaultSerializationFormat(defaultSerializationFormat);
     instance.preInit(configuration);
     assertThat(configuration.getDefaultSerializationFormat()).isSameAs(defaultSerializationFormat);
   }
@@ -58,7 +59,7 @@ public class DefaultProcessEngineConfigurationTest {
   @Test
   public void setDefaultSerializationFormat_ignore_null() {
     final String defaultSerializationFormat = configuration.getDefaultSerializationFormat();
-    properties.setDefaultSerializationFormat(null);
+    instance.springProcessEngineConfigurationTemplate.setDefaultSerializationFormat(null);
     instance.preInit(configuration);
     assertThat(configuration.getDefaultSerializationFormat()).isEqualTo(defaultSerializationFormat);
   }
@@ -66,7 +67,7 @@ public class DefaultProcessEngineConfigurationTest {
   @Test
   public void setDefaultSerializationFormat_ignore_empty() {
     final String defaultSerializationFormat = configuration.getDefaultSerializationFormat();
-    properties.setDefaultSerializationFormat(" ");
+    instance.springProcessEngineConfigurationTemplate.setDefaultSerializationFormat(" ");
     instance.preInit(configuration);
     assertThat(configuration.getDefaultSerializationFormat()).isEqualTo(defaultSerializationFormat);
   }

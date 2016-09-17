@@ -24,6 +24,7 @@ public class DefaultJobConfigurationTest {
   @Before
   public void setUp() {
     setField(jobConfiguration, "camundaBpmProperties", properties);
+    jobConfiguration.postConstruct();
   }
 
   @Test

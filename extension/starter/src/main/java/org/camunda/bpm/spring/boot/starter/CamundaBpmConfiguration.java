@@ -7,7 +7,6 @@ import java.util.List;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.camunda.bpm.engine.impl.cfg.ProcessEnginePlugin;
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
-import org.camunda.bpm.spring.boot.starter.configuration.CamundaAuthorizationConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaDatasourceConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaDeploymentConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaHistoryConfiguration;
@@ -17,7 +16,6 @@ import org.camunda.bpm.spring.boot.starter.configuration.CamundaJpaConfiguration
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaMetricsConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.condition.NeedsHistoryAutoConfigurationCondition;
-import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultAuthorizationConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultDatasourceConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultDeploymentConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultHistoryConfiguration;
@@ -111,12 +109,6 @@ public class CamundaBpmConfiguration {
   public static HistoryLevelDeterminator historyLevelDeterminatorMultiDatabase(CamundaBpmProperties camundaBpmProperties,
       @Qualifier("camundaBpmJdbcTemplate") JdbcTemplate jdbcTemplate) {
     return createHistoryLevelDeterminator(camundaBpmProperties, jdbcTemplate);
-  }
-
-  @Bean
-  @ConditionalOnMissingBean(CamundaAuthorizationConfiguration.class)
-  public static CamundaAuthorizationConfiguration camundaAuthorizationConfiguration() {
-    return new DefaultAuthorizationConfiguration();
   }
 
   @Bean

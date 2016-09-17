@@ -8,14 +8,15 @@ public class DefaultProcessEngineConfiguration extends AbstractCamundaConfigurat
 
   @Override
   public void preInit(SpringProcessEngineConfiguration configuration) {
-    String processEngineName = StringUtils.trimAllWhitespace(camundaBpmProperties.getProcessEngineName());
+    String processEngineName = StringUtils.trimAllWhitespace(springProcessEngineConfigurationTemplate.getProcessEngineName());
     if (!StringUtils.isEmpty(processEngineName) && !processEngineName.contains("-")) {
       configuration.setProcessEngineName(processEngineName);
     } else {
-      logger.warn("Ignoring invalid processEngineName='{}' - must not be null, blank or contain hyphen", camundaBpmProperties.getProcessEngineName());
+      logger.warn("Ignoring invalid processEngineName='{}' - must not be null, blank or contain hyphen",
+          springProcessEngineConfigurationTemplate.getProcessEngineName());
     }
 
-    String defaultSerializationFormat = camundaBpmProperties.getDefaultSerializationFormat();
+    String defaultSerializationFormat = springProcessEngineConfigurationTemplate.getDefaultSerializationFormat();
     if (StringUtils.hasText(defaultSerializationFormat)) {
       configuration.setDefaultSerializationFormat(defaultSerializationFormat);
     } else {

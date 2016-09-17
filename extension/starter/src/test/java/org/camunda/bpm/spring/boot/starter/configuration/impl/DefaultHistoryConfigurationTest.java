@@ -1,5 +1,6 @@
 package org.camunda.bpm.spring.boot.starter.configuration.impl;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -25,11 +26,15 @@ public class DefaultHistoryConfigurationTest {
 
   private DefaultHistoryConfiguration defaultHistoryConfiguration;
 
+  private GenericPropertiesConfiguration genericPropertiesConfiguration;
+
   @Before
   public void before() {
     camundaBpmProperties = new CamundaBpmProperties();
     defaultHistoryConfiguration = new DefaultHistoryConfiguration();
     defaultHistoryConfiguration.camundaBpmProperties = camundaBpmProperties;
+    genericPropertiesConfiguration = new GenericPropertiesConfiguration();
+    genericPropertiesConfiguration.camundaBpmProperties = camundaBpmProperties;
   }
 
   @Test
@@ -40,9 +45,9 @@ public class DefaultHistoryConfigurationTest {
 
   @Test
   public void historyLevelTest() {
-    camundaBpmProperties.setHistoryLevel(HistoryLevel.HISTORY_LEVEL_FULL.getName());
-    defaultHistoryConfiguration.preInit(springProcessEngineConfiguration);
-    verify(springProcessEngineConfiguration).setHistory(HistoryLevel.HISTORY_LEVEL_FULL.getName());
+    SpringProcessEngineConfiguration configuration = new SpringProcessEngineConfiguration();
+    genericPropertiesConfiguration.preInit(configuration);
+    assertThat(configuration.getHistory()).isEqualTo(HistoryLevel.HISTORY_LEVEL_FULL.getName());
   }
 
   @Test

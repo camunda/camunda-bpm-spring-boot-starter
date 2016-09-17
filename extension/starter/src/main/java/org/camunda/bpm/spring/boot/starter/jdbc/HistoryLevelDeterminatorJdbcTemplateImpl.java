@@ -79,7 +79,7 @@ public class HistoryLevelDeterminatorJdbcTemplateImpl implements HistoryLevelDet
   }
 
   protected String getSql() {
-    String tablePrefix = camundaBpmProperties.getDatabase().getTablePrefix();
+    String tablePrefix = camundaBpmProperties.getProcessEngineConfiguration().build().getDatabaseTablePrefix();
     if (tablePrefix == null) {
       tablePrefix = "";
     }

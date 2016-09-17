@@ -2,6 +2,11 @@ package org.camunda.bpm.spring.boot.starter;
 
 import static org.springframework.core.io.support.ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX;
 
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -10,19 +15,27 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.validation.Constraint;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+import javax.validation.Payload;
 
 import org.camunda.bpm.application.impl.metadata.ProcessArchiveXmlImpl;
 import org.camunda.bpm.application.impl.metadata.spi.ProcessArchiveXml;
 import org.camunda.bpm.engine.ProcessEngineConfiguration;
 import org.camunda.bpm.engine.ProcessEngines;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
+import org.camunda.bpm.engine.impl.history.HistoryLevel;
 import org.camunda.bpm.engine.repository.ResumePreviousBy;
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
+import org.camunda.bpm.spring.boot.starter.util.PropertiesToConfigurationBinder;
+import org.springframework.boot.bind.RelaxedNames;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.util.Assert;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import lombok.Data;
-import lombok.Singular;
 
 @ConfigurationProperties("camunda.bpm")
 @Data
@@ -47,16 +60,6 @@ public class CamundaBpmProperties {
   }
 
   /**
-   * name of the process engine
-   */
-  private String processEngineName = ProcessEngines.NAME_DEFAULT;
-
-  /**
-   * the history level to use
-   */
-  private String historyLevel;
-
-  /**
    * the default history level to use when 'historyLevel' is 'auto'
    */
   private String historyLevelDefault;
@@ -72,19 +75,9 @@ public class CamundaBpmProperties {
   private String[] deploymentResourcePattern = initDeploymentResourcePattern();
 
   /**
-   * default serialization format to use
-   */
-  private String defaultSerializationFormat = new SpringProcessEngineConfiguration().getDefaultSerializationFormat();
-
-  /**
    * metrics configuration
    */
   private Metrics metrics = new Metrics();
-
-  /**
-   * database configuration
-   */
-  private Database database = new Database();
 
   /**
    * JPA configuration
@@ -106,40 +99,8 @@ public class CamundaBpmProperties {
    */
   private Application application = new Application();
 
-  private Authorization authorization = new Authorization();
-
-  private GenericProperties genericProperties = new GenericProperties();
-
-  @Data
-  public static class Database {
-    public static final List<String> SCHEMA_UPDATE_VALUES = Arrays.asList(ProcessEngineConfiguration.DB_SCHEMA_UPDATE_TRUE,
-        ProcessEngineConfiguration.DB_SCHEMA_UPDATE_FALSE, ProcessEngineConfigurationImpl.DB_SCHEMA_UPDATE_CREATE,
-        ProcessEngineConfiguration.DB_SCHEMA_UPDATE_CREATE_DROP, ProcessEngineConfigurationImpl.DB_SCHEMA_UPDATE_DROP_CREATE);
-
-    /**
-     * enables automatic schema update
-     */
-    private String schemaUpdate = ProcessEngineConfiguration.DB_SCHEMA_UPDATE_TRUE;
-
-    /**
-     * the database type
-     */
-    private String type;
-
-    /**
-     * the database table prefix to use
-     */
-    private String tablePrefix;
-
-    /**
-     * @param schemaUpdate
-     *          the schemaUpdate to set
-     */
-    public void setSchemaUpdate(String schemaUpdate) {
-      Assert.isTrue(SCHEMA_UPDATE_VALUES.contains(schemaUpdate), String.format("schemaUpdate: '%s' is not valid (%s)", schemaUpdate, SCHEMA_UPDATE_VALUES));
-      this.schemaUpdate = schemaUpdate;
-    }
-  }
+  @NestedConfigurationProperty
+  private GenericProcessEngineConfiguration processEngineConfiguration = new GenericProcessEngineConfiguration();
 
   @Data
   public static class JobExecution {
@@ -148,16 +109,6 @@ public class CamundaBpmProperties {
      * enables job execution
      */
     private boolean enabled;
-
-    /**
-     * activate job execution
-     */
-    private boolean active = true;
-
-    /**
-     * if job execution is deployment aware
-     */
-    private boolean deploymentAware;
 
   }
 
@@ -175,20 +126,6 @@ public class CamundaBpmProperties {
      */
     private boolean enabled;
 
-    /**
-     * the JPA persistence unit name
-     */
-    private String persistenceUnitName;
-
-    /**
-     * close JPA entity manager
-     */
-    private boolean closeEntityManager = true;
-
-    /**
-     * handle transactions by JPA
-     */
-    private boolean handleTransaction = true;
   }
 
   @Data
@@ -253,28 +190,107 @@ public class CamundaBpmProperties {
 
   }
 
+  @org.camunda.bpm.spring.boot.starter.CamundaBpmProperties.GenericProcessEngineConfiguration.ValidProcessEngineConfigurationProperties
   @Data
-  public static class Authorization {
+  public static class GenericProcessEngineConfiguration {
 
-    /**
-     * enables authorization
-     */
-    private boolean enabled = new SpringProcessEngineConfiguration().isAuthorizationEnabled();
+    private static final String DEFAULT_SERIALIZATION_FORMAT = "default-serialization-format";
 
-    /**
-     * enables authorization for custom code
-     */
-    private boolean enabledForCustomCode = new SpringProcessEngineConfiguration().isAuthorizationEnabledForCustomCode();
+    private static final String PROCESS_ENGINE_NAME = "process-engine-name";
 
-    private String authorizationCheckRevokes = new SpringProcessEngineConfiguration().getAuthorizationCheckRevokes();
-  }
+    private static final String JPA_PERSISTENCE_UNIT_NAME = "jpa_persistence-unit-name";
 
-  @Data
-  public static class GenericProperties {
-    @Singular
+    private static final String JPA_CLOSE_ENTITY_MANAGER = "jpa_close-entity-manager";
+
+    private static final String JPA_HANDLE_TRANSACTION = "jpa_handle-transaction";
+
+    public static final String PREFIX = "camunda.bpm.process-engine-configuration.properties";
+
+    private final List<String> FILTER = Arrays.asList(PROCESS_ENGINE_NAME, DEFAULT_SERIALIZATION_FORMAT, JPA_PERSISTENCE_UNIT_NAME, JPA_CLOSE_ENTITY_MANAGER,
+        JPA_HANDLE_TRANSACTION);
+
     private Map<String, Object> properties = new HashMap<String, Object>();
     private boolean ignoreInvalidFields;
     private boolean ignoreUnknownFields;
-  }
 
+    public GenericProcessEngineConfiguration() {
+      addDefaultValues();
+    }
+
+    public SpringProcessEngineConfiguration build() {
+      return PropertiesToConfigurationBinder.bind(this);
+    }
+
+    public SpringProcessEngineConfiguration buildFiltered() {
+      SpringProcessEngineConfiguration springProcessEngineConfiguration = new SpringProcessEngineConfiguration();
+      PropertiesToConfigurationBinder.bind(springProcessEngineConfiguration, getPropertiesFiltered(), false, false);
+      return springProcessEngineConfiguration;
+    }
+
+    private void addDefaultValues() {
+      properties.put(PROCESS_ENGINE_NAME, ProcessEngines.NAME_DEFAULT);
+      properties.put("database-schema-update", ProcessEngineConfiguration.DB_SCHEMA_UPDATE_TRUE);
+      properties.put("history", HistoryLevel.HISTORY_LEVEL_FULL.getName());
+      properties.put(DEFAULT_SERIALIZATION_FORMAT, new SpringProcessEngineConfiguration().getDefaultSerializationFormat());
+      properties.put(JPA_CLOSE_ENTITY_MANAGER, true);
+      properties.put(JPA_HANDLE_TRANSACTION, true);
+    }
+
+    public Map<String, Object> getPropertiesFiltered() {
+      return properties.entrySet().stream().filter(e -> !mustBeFiltered(e.getKey())).collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue()));
+    }
+
+    private boolean mustBeFiltered(String value) {
+      List<String> matches = new ArrayList<>();
+      for (RelaxedNames relaxedFilterNames : FILTER.stream().map(s -> new RelaxedNames(s)).collect(Collectors.toList())) {
+        for (String name : relaxedFilterNames) {
+          if (name.equals(value)) {
+            matches.add(name);
+          }
+        }
+      }
+
+      return !matches.isEmpty();
+    }
+
+    @Documented
+    @Constraint(validatedBy = GenericProcessEngineConfiguration.Validator.class)
+    @Target(ElementType.TYPE)
+    @Retention(RetentionPolicy.RUNTIME)
+    static @interface ValidProcessEngineConfigurationProperties {
+      String message()
+
+      default "";
+
+      Class<?>[] groups() default {};
+
+      Class<? extends Payload>[] payload() default {};
+    }
+
+    public static final class Validator
+        implements ConstraintValidator<GenericProcessEngineConfiguration.ValidProcessEngineConfigurationProperties, GenericProcessEngineConfiguration> {
+
+      public static final List<String> SCHEMA_UPDATE_VALUES = Arrays.asList(ProcessEngineConfiguration.DB_SCHEMA_UPDATE_TRUE,
+          ProcessEngineConfiguration.DB_SCHEMA_UPDATE_FALSE, ProcessEngineConfigurationImpl.DB_SCHEMA_UPDATE_CREATE,
+          ProcessEngineConfiguration.DB_SCHEMA_UPDATE_CREATE_DROP, ProcessEngineConfigurationImpl.DB_SCHEMA_UPDATE_DROP_CREATE);
+
+      @Override
+      public void initialize(GenericProcessEngineConfiguration.ValidProcessEngineConfigurationProperties constraintAnnotation) {
+      }
+
+      @Override
+      public boolean isValid(GenericProcessEngineConfiguration genericProcessEngineConfiguration, ConstraintValidatorContext context) {
+        SpringProcessEngineConfiguration springProcessEngineConfiguration = genericProcessEngineConfiguration.build();
+        final String schemaUpdate = springProcessEngineConfiguration.getDatabaseSchemaUpdate();
+        boolean isValid = SCHEMA_UPDATE_VALUES.contains(schemaUpdate);
+        if (!isValid) {
+          context.disableDefaultConstraintViolation();
+          context.buildConstraintViolationWithTemplate(String.format("schemaUpdate: '%s' is not valid (%s)", schemaUpdate, SCHEMA_UPDATE_VALUES))
+              .addPropertyNode("schemaUpdate").addConstraintViolation();
+        }
+        return isValid;
+      }
+
+    }
+  }
 }

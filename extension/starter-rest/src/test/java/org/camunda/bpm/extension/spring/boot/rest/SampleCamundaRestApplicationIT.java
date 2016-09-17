@@ -7,11 +7,11 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 
 import java.io.ByteArrayInputStream;
 
+import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.rest.dto.runtime.ProcessInstanceDto;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.runtime.VariableInstance;
-import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +40,7 @@ public class SampleCamundaRestApplicationIT {
   private RuntimeService runtimeService;
 
   @Autowired
-  private CamundaBpmProperties camundaBpmProperties;
+  private ProcessEngine processEngine;
 
   @Test
   public void restApiIsAvailable() throws Exception {
@@ -73,7 +73,7 @@ public class SampleCamundaRestApplicationIT {
 
     HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<>(map, headers);
     ResponseEntity<String> exchange = testRestTemplate.exchange("/rest/engine/{enginename}/process-instance/{id}/variables/{variableName}/data",
-        HttpMethod.POST, requestEntity, String.class, camundaBpmProperties.getProcessEngineName(), processInstance.getId(), variableName);
+        HttpMethod.POST, requestEntity, String.class, processEngine.getName(), processInstance.getId(), variableName);
 
     assertEquals(HttpStatus.NO_CONTENT, exchange.getStatusCode());
 

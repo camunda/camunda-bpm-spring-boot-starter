@@ -2,10 +2,10 @@ package org.camunda.bpm.spring.boot.starter.example.dmn.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.RepositoryService;
 import org.camunda.bpm.engine.impl.util.json.JSONArray;
 import org.camunda.bpm.engine.repository.DecisionDefinition;
-import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class DmnRestApplicationTest {
   private TestRestTemplate testRestTemplate;
 
   @Autowired
-  private CamundaBpmProperties camundaBpmProperties;
+  private ProcessEngine processEngine;
 
   @Autowired
   private RepositoryService repositoryService;
@@ -49,7 +49,7 @@ public class DmnRestApplicationTest {
     HttpEntity<String> request = new HttpEntity<String>(JSONInput, headers);
 
     final String check = testRestTemplate.postForObject("/rest/engine/{engineName}/decision-definition/key/{key}/evaluate", request, String.class,
-        camundaBpmProperties.getProcessEngineName(), CHECK_ORDER);
+        processEngine.getName(), CHECK_ORDER);
 
     assertThat(new JSONArray(check).getJSONObject(0).getJSONObject("result").getString("value")).isEqualTo("ok");
 
