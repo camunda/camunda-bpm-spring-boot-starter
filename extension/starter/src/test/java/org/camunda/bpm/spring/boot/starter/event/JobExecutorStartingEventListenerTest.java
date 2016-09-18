@@ -5,6 +5,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.camunda.bpm.engine.impl.jobexecutor.JobExecutor;
+import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
+import org.camunda.bpm.spring.boot.starter.generic.SpringProcessEngineConfigurationTemplate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -18,11 +20,19 @@ public class JobExecutorStartingEventListenerTest {
   @Mock
   private JobExecutor jobExecutor;
 
+  @Mock
+  private SpringProcessEngineConfigurationTemplate springProcessEngineConfigurationTemplate;
+
+  @Mock
+  private SpringProcessEngineConfiguration springProcessEngineConfiguration;
+
   @InjectMocks
   private JobExecutorStartingEventListener jobExecutorStartingEventListener;
 
   @Test
   public void handleProcessApplicationStartedEventTest() {
+    when(springProcessEngineConfigurationTemplate.getTemplate()).thenReturn(springProcessEngineConfiguration);
+    when(springProcessEngineConfiguration.isJobExecutorActivate()).thenReturn(true);
     JobExecutorStartingEventListener spy = Mockito.spy(jobExecutorStartingEventListener);
     spy.handleProcessApplicationStartedEvent(null);
     verify(spy).activate();

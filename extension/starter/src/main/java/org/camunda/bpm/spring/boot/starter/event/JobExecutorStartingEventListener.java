@@ -1,6 +1,7 @@
 package org.camunda.bpm.spring.boot.starter.event;
 
 import org.camunda.bpm.engine.impl.jobexecutor.JobExecutor;
+import org.camunda.bpm.spring.boot.starter.generic.SpringProcessEngineConfigurationTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +14,14 @@ public class JobExecutorStartingEventListener {
   @Autowired
   protected JobExecutor jobExecutor;
 
+  @Autowired
+  protected SpringProcessEngineConfigurationTemplate springProcessEngineConfigurationTemplate;
+
   @EventListener
   public void handleProcessApplicationStartedEvent(ProcessApplicationStartedEvent processApplicationStartedEvent) {
-    activate();
+    if (springProcessEngineConfigurationTemplate.getTemplate().isJobExecutorActivate()) {
+      activate();
+    }
   }
 
   protected void activate() {

@@ -12,7 +12,6 @@ import org.camunda.bpm.spring.boot.starter.configuration.CamundaDatasourceConfig
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.util.Assert;
 
 public class DefaultDatasourceConfiguration extends AbstractCamundaConfiguration implements CamundaDatasourceConfiguration {
 
@@ -32,8 +31,6 @@ public class DefaultDatasourceConfiguration extends AbstractCamundaConfiguration
 
   @Override
   public void preInit(SpringProcessEngineConfiguration configuration) {
-    validate(configuration);
-
     configuration.setTransactionManager(transactionManager);
 
     if (camundaDataSource == null) {
@@ -42,11 +39,6 @@ public class DefaultDatasourceConfiguration extends AbstractCamundaConfiguration
       configuration.setDataSource(camundaDataSource);
     }
 
-  }
-
-  protected void validate(SpringProcessEngineConfiguration springProcessEngineConfiguration) {
-    final String schemaUpdate = springProcessEngineConfiguration.getDatabaseSchemaUpdate();
-    Assert.isTrue(SCHEMA_UPDATE_VALUES.contains(schemaUpdate), String.format("schemaUpdate: '%s' is not valid (%s)", schemaUpdate, SCHEMA_UPDATE_VALUES));
   }
 
 }

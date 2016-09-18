@@ -44,8 +44,10 @@ public class DefaultJobConfiguration extends AbstractCamundaConfiguration implem
   protected void configureJobExecutor(SpringProcessEngineConfiguration configuration) {
     // note: the job executor will be activated in
     // org.camunda.bpm.spring.boot.starter.runlistener.JobExecutorRunListener
+    SpringProcessEngineConfiguration configurationTemplate = getConfigurationTemplate();
+
     configuration.setJobExecutorActivate(false);
-    configuration.setJobExecutorDeploymentAware(springProcessEngineConfigurationTemplate.isJobExecutorDeploymentAware());
+    configuration.setJobExecutorDeploymentAware(configurationTemplate.isJobExecutorDeploymentAware());
     configuration.setJobExecutor(jobExecutor);
 
   }

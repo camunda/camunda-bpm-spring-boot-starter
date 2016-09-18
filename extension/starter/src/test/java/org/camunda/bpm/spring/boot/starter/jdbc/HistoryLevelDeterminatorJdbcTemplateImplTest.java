@@ -13,6 +13,8 @@ import org.camunda.bpm.engine.impl.history.HistoryLevelAudit;
 import org.camunda.bpm.engine.impl.history.event.HistoryEventType;
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties;
+import org.camunda.bpm.spring.boot.starter.generic.SpringProcessEngineConfigurationTemplate;
+import org.camunda.bpm.spring.boot.starter.util.PropertiesToConfigurationBinder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,9 +31,13 @@ public class HistoryLevelDeterminatorJdbcTemplateImplTest {
 
   private CamundaBpmProperties camundaBpmProperties;
 
+  private SpringProcessEngineConfigurationTemplate springProcessEngineConfigurationTemplate;
+
   @Before
   public void before() {
     camundaBpmProperties = new CamundaBpmProperties();
+    springProcessEngineConfigurationTemplate = new SpringProcessEngineConfigurationTemplate(
+        PropertiesToConfigurationBinder.bind(camundaBpmProperties.getProcessEngineConfiguration()));
   }
 
   @Test
@@ -40,6 +46,7 @@ public class HistoryLevelDeterminatorJdbcTemplateImplTest {
     HistoryLevelDeterminatorJdbcTemplateImpl determinator = new HistoryLevelDeterminatorJdbcTemplateImpl();
     determinator.setJdbcTemplate(jdbcTemplate);
     determinator.setCamundaBpmProperties(camundaBpmProperties);
+    determinator.setSpringProcessEngineConfigurationTemplate(springProcessEngineConfigurationTemplate);
     determinator.afterPropertiesSet();
     assertEquals(new SpringProcessEngineConfiguration().getHistory(), determinator.defaultHistoryLevel);
   }
@@ -52,6 +59,7 @@ public class HistoryLevelDeterminatorJdbcTemplateImplTest {
     HistoryLevelDeterminatorJdbcTemplateImpl determinator = new HistoryLevelDeterminatorJdbcTemplateImpl();
     determinator.setJdbcTemplate(jdbcTemplate);
     determinator.setCamundaBpmProperties(camundaBpmProperties);
+    determinator.setSpringProcessEngineConfigurationTemplate(springProcessEngineConfigurationTemplate);
     determinator.afterPropertiesSet();
     assertEquals(historyLevelDefault, determinator.defaultHistoryLevel);
   }
@@ -82,6 +90,7 @@ public class HistoryLevelDeterminatorJdbcTemplateImplTest {
     determinator.setDefaultHistoryLevel(defaultHistoryLevel);
     determinator.setJdbcTemplate(jdbcTemplate);
     determinator.setCamundaBpmProperties(camundaBpmProperties);
+    determinator.setSpringProcessEngineConfigurationTemplate(springProcessEngineConfigurationTemplate);
     determinator.afterPropertiesSet();
     HistoryLevel historyLevel = new HistoryLevelAudit();
     when(jdbcTemplate.queryForObject(determinator.getSql(), Integer.class)).thenReturn(historyLevel.getId());
@@ -96,6 +105,7 @@ public class HistoryLevelDeterminatorJdbcTemplateImplTest {
     determinator.setDefaultHistoryLevel(defaultHistoryLevel);
     determinator.setJdbcTemplate(jdbcTemplate);
     determinator.setCamundaBpmProperties(camundaBpmProperties);
+    determinator.setSpringProcessEngineConfigurationTemplate(springProcessEngineConfigurationTemplate);
     determinator.afterPropertiesSet();
     when(jdbcTemplate.queryForObject(determinator.getSql(), Integer.class)).thenThrow(new DataRetrievalFailureException(""));
     String determineHistoryLevel = determinator.determineHistoryLevel();
@@ -111,6 +121,7 @@ public class HistoryLevelDeterminatorJdbcTemplateImplTest {
     determinator.setDefaultHistoryLevel(defaultHistoryLevel);
     determinator.setJdbcTemplate(jdbcTemplate);
     determinator.setCamundaBpmProperties(camundaBpmProperties);
+    determinator.setSpringProcessEngineConfigurationTemplate(springProcessEngineConfigurationTemplate);
     determinator.afterPropertiesSet();
     when(jdbcTemplate.queryForObject(determinator.getSql(), Integer.class)).thenThrow(new DataRetrievalFailureException(""));
     determinator.determineHistoryLevel();
@@ -120,8 +131,9 @@ public class HistoryLevelDeterminatorJdbcTemplateImplTest {
   public void getSqlTest() {
     HistoryLevelDeterminatorJdbcTemplateImpl determinator = new HistoryLevelDeterminatorJdbcTemplateImpl();
     determinator.setCamundaBpmProperties(camundaBpmProperties);
+    determinator.setSpringProcessEngineConfigurationTemplate(springProcessEngineConfigurationTemplate);
     assertEquals("SELECT VALUE_ FROM ACT_GE_PROPERTY WHERE NAME_='historyLevel'", determinator.getSql());
-    camundaBpmProperties.getProcessEngineConfiguration().getProperties().put("databaseTablePrefix", "TEST_");
+    springProcessEngineConfigurationTemplate.getTemplate().setDatabaseTablePrefix("TEST_");
     assertEquals("SELECT VALUE_ FROM TEST_ACT_GE_PROPERTY WHERE NAME_='historyLevel'", determinator.getSql());
   }
 

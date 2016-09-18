@@ -13,11 +13,13 @@ public class DefaultJpaConfiguration extends AbstractCamundaConfiguration implem
 
   @Override
   public void preInit(SpringProcessEngineConfiguration configuration) {
-    configuration.setJpaPersistenceUnitName(springProcessEngineConfigurationTemplate.getJpaPersistenceUnitName());
+    SpringProcessEngineConfiguration configurationTemplate = getConfigurationTemplate();
+    configuration.setJpaPersistenceUnitName(configurationTemplate.getJpaPersistenceUnitName());
     if (jpaEntityManagerFactory != null) {
       configuration.setJpaEntityManagerFactory(jpaEntityManagerFactory);
     }
-    configuration.setJpaCloseEntityManager(springProcessEngineConfigurationTemplate.isJpaCloseEntityManager());
-    configuration.setJpaHandleTransaction(springProcessEngineConfigurationTemplate.isJpaHandleTransaction());
+    configuration.setJpaCloseEntityManager(configurationTemplate.isJpaCloseEntityManager());
+    configuration.setJpaHandleTransaction(configurationTemplate.isJpaHandleTransaction());
   }
+
 }

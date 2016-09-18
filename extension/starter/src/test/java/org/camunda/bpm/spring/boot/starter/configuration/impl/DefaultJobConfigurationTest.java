@@ -11,6 +11,7 @@ import java.util.Arrays;
 import org.camunda.bpm.engine.impl.jobexecutor.JobHandler;
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties;
+import org.camunda.bpm.spring.boot.starter.generic.SpringProcessEngineConfigurationTemplate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -20,11 +21,13 @@ public class DefaultJobConfigurationTest {
   private final SpringProcessEngineConfiguration processEngineConfiguration = new SpringProcessEngineConfiguration();
   private final DefaultJobConfiguration jobConfiguration = new DefaultJobConfiguration();
   private final CamundaBpmProperties properties = new CamundaBpmProperties();
+  private final SpringProcessEngineConfigurationTemplate springProcessEngineConfigurationTemplate = new SpringProcessEngineConfigurationTemplate(
+      new SpringProcessEngineConfiguration());
 
   @Before
   public void setUp() {
     setField(jobConfiguration, "camundaBpmProperties", properties);
-    jobConfiguration.postConstruct();
+    setField(jobConfiguration, "springProcessEngineConfigurationTemplate", springProcessEngineConfigurationTemplate);
   }
 
   @Test

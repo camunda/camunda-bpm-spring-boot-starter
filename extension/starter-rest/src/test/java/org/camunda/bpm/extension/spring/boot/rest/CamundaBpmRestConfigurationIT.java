@@ -2,9 +2,9 @@ package org.camunda.bpm.extension.spring.boot.rest;
 
 import static org.junit.Assert.assertEquals;
 
+import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.rest.dto.repository.ProcessDefinitionDto;
 import org.camunda.bpm.extension.spring.boot.rest.test.TestRestApplication;
-import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class CamundaBpmRestConfigurationIT {
   private TestRestTemplate testRestTemplate;
 
   @Autowired
-  private CamundaBpmProperties camundaBpmProperties;
+  private ProcessEngine processEngine;
 
   @Test
   public void processDefinitionTest() {
@@ -31,7 +31,7 @@ public class CamundaBpmRestConfigurationIT {
     testRestTemplate.postForEntity("/rest/start/process", HttpEntity.EMPTY, String.class);
 
     ResponseEntity<ProcessDefinitionDto> entity = testRestTemplate.getForEntity("/rest/engine/{engineName}/process-definition/key/TestProcess/",
-        ProcessDefinitionDto.class, camundaBpmProperties.getProcessEngineConfiguration().build().getProcessEngineName());
+        ProcessDefinitionDto.class, processEngine.getName());
 
     assertEquals(HttpStatus.OK, entity.getStatusCode());
     assertEquals("TestProcess", entity.getBody().getKey());

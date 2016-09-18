@@ -10,7 +10,7 @@ import javax.validation.Validator;
 
 import org.camunda.bpm.engine.ProcessEngineConfiguration;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
-import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties.GenericProcessEngineConfiguration;
+import org.camunda.bpm.spring.boot.starter.generic.GenericProcessEngineProperties;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -44,10 +44,10 @@ public class CamundaBpmPropertiesTest {
     assertThat(validateDatabaseSchemaUpdate("foo")).isNotEmpty();
   }
 
-  private Set<ConstraintViolation<GenericProcessEngineConfiguration>> validateDatabaseSchemaUpdate(String value) {
+  private Set<ConstraintViolation<GenericProcessEngineProperties>> validateDatabaseSchemaUpdate(String value) {
     Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
-    GenericProcessEngineConfiguration configuration = new GenericProcessEngineConfiguration();
+    GenericProcessEngineProperties configuration = new GenericProcessEngineProperties();
     configuration.getProperties().put("database-schema-update", value);
 
     return validator.validate(configuration);

@@ -4,6 +4,8 @@ import javax.sql.DataSource;
 
 import org.camunda.bpm.spring.boot.starter.CamundaBpmAutoConfiguration;
 import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties;
+import org.camunda.bpm.spring.boot.starter.generic.SpringProcessEngineConfigurationTemplate;
+import org.camunda.bpm.spring.boot.starter.util.PropertiesToConfigurationBinder;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -20,6 +22,11 @@ public class HistoryLevelDeterminatorJdbcTemplateImplTestApplication {
   }
 
   @Bean
+  public SpringProcessEngineConfigurationTemplate processEngineConfigurationTemplate(CamundaBpmProperties camundaBpmProperties) {
+    return new SpringProcessEngineConfigurationTemplate(PropertiesToConfigurationBinder.bind(camundaBpmProperties.getProcessEngineConfiguration()));
+  }
+
+  @Bean
   public DataSource dataSource() {
     EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
     EmbeddedDatabase db = builder.setName("testdbForHistoryLevelDetermination").setType(EmbeddedDatabaseType.H2)
@@ -33,7 +40,9 @@ public class HistoryLevelDeterminatorJdbcTemplateImplTestApplication {
   }
 
   @Bean
-  public HistoryLevelDeterminator historyLevelDeterminator(JdbcTemplate jdbcTemplate, CamundaBpmProperties camundaBpmProperties) {
-    return HistoryLevelDeterminatorJdbcTemplateImpl.createHistoryLevelDeterminator(camundaBpmProperties, jdbcTemplate);
+  public HistoryLevelDeterminator historyLevelDeterminator(JdbcTemplate jdbcTemplate, CamundaBpmProperties camundaBpmProperties,
+      SpringProcessEngineConfigurationTemplate springProcessEngineConfigurationTemplate) {
+    return HistoryLevelDeterminatorJdbcTemplateImpl.createHistoryLevelDeterminator(camundaBpmProperties, springProcessEngineConfigurationTemplate,
+        jdbcTemplate);
   }
 }
