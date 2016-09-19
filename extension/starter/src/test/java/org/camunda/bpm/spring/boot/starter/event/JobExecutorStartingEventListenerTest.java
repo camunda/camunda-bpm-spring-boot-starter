@@ -6,7 +6,7 @@ import static org.mockito.Mockito.when;
 
 import org.camunda.bpm.engine.impl.jobexecutor.JobExecutor;
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
-import org.camunda.bpm.spring.boot.starter.generic.SpringProcessEngineConfigurationTemplate;
+import org.camunda.bpm.spring.boot.starter.SpringProcessEngineConfigurationTemplate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

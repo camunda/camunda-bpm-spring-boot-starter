@@ -4,7 +4,7 @@ import javax.sql.DataSource;
 
 import org.camunda.bpm.spring.boot.starter.CamundaBpmAutoConfiguration;
 import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties;
-import org.camunda.bpm.spring.boot.starter.generic.SpringProcessEngineConfigurationTemplate;
+import org.camunda.bpm.spring.boot.starter.SpringProcessEngineConfigurationTemplate;
 import org.camunda.bpm.spring.boot.starter.util.PropertiesToConfigurationBinder;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;

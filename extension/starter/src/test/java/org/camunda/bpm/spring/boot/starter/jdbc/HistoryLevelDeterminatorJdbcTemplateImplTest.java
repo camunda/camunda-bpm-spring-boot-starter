@@ -13,7 +13,7 @@ import org.camunda.bpm.engine.impl.history.HistoryLevelAudit;
 import org.camunda.bpm.engine.impl.history.event.HistoryEventType;
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties;
-import org.camunda.bpm.spring.boot.starter.generic.SpringProcessEngineConfigurationTemplate;
+import org.camunda.bpm.spring.boot.starter.SpringProcessEngineConfigurationTemplate;
 import org.camunda.bpm.spring.boot.starter.util.PropertiesToConfigurationBinder;
 import org.junit.Before;
 import org.junit.Test;

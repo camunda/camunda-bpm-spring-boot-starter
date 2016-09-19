@@ -19,7 +19,7 @@ public class GenericPropertiesConfiguration extends AbstractCamundaConfiguration
         : genericProcessEngineConfiguration.getProperties();
     PropertiesToConfigurationBinder.bind(springProcessEngineConfiguration, properties, genericProcessEngineConfiguration.isIgnoreInvalidFields(),
         genericProcessEngineConfiguration.isIgnoreUnknownFields());
-    logger.debug("properties bound to configuration: {}", genericProcessEngineConfiguration);
+    logger.debug("properties bound to configuration: {}", properties);
   }
 
 }

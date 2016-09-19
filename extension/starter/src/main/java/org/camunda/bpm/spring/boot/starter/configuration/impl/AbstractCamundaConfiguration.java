@@ -7,8 +7,8 @@ import java.util.List;
 
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties;
+import org.camunda.bpm.spring.boot.starter.SpringProcessEngineConfigurationTemplate;
 import org.camunda.bpm.spring.boot.starter.configuration.Ordering;
-import org.camunda.bpm.spring.boot.starter.generic.SpringProcessEngineConfigurationTemplate;
 import org.camunda.bpm.spring.boot.starter.util.SpringProcessEnginePlugin;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
