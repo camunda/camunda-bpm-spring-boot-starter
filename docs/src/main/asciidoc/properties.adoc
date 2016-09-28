@@ -5,19 +5,7 @@
 |===
 |Prefix | Property name |Description | Default value
 4+|**General**
-.7+|`{properties-prefix}`
-
-|`.process-engine-name`
-|name of the process engine
-|camunda default value
-
-|`.default-serialization-format`
-|default serialization format
-|camunda default value
-
-|`.history-level`
-|camunda history level
-|camunda default value
+.4+|`{properties-prefix}`
 
 |`.history-level-default`
 |camunda history level to use when `history-level` is `auto` but the level can not determined automatically
@@ -36,56 +24,22 @@
 |read only value e.g. (v7.4.0)
 
 4+|**Job Execution**
-.4+|`{properties-prefix}.job-execution`
-
-|`.active`
-|activate job execution after successful startup
-|`true`
+.2+|`{properties-prefix}.job-execution`
 
 |`.enabled`
 |if set to `false`, no JobExecutor bean is created at all. Maybe used for testing.
 |`true`
 
-|`.deployment-aware`
-|if job executor is deployment aware
-|`false`
-
 |`.deployment-resource-pattern`
 |location for auto deployment
 |`classpath*:**/*.bpmn, classpath*:**/*.bpmn20.xml, classpath*:**/*.dmn, classpath*:**/*.dmn11.xml, classpath*:**/*.cmmn, classpath*:**/*.cmmn10.xml, classpath*:**/*.cmmn11.xml`
 
-4+|**Datasource**
-.3+|`{properties-prefix}.database`
-|`.schema-update`
-|if automatic schema update should be applied, use one of [true, false, create, create-drop, drop-create]
-|`true`
-
-|`.type`
-|type of the underlying database
-|'h2', 'oracle', ...
-
-|`.table-prefix`
-|prefix of the camunda database tables
-|camunda default value
-
 4+|**JPA**
-.4+|`{properties-prefix}.jpa`
+.1+|`{properties-prefix}.jpa`
 
 |`.enabled`
 |enables jpa configuration
 |`true`. Depends on `entityManagerFactory` bean.
-
-|`.persistence-unit-name`
-|JPA persistence unit name
-|-
-
-|`.close-entity-manager`
-|close JPA entity manager
-|`true`
-
-|`.handle-transaction`
-|JPA handle transaction
-|`true`
 
 4+|**Management**
 .1+|`{properties-prefix}.management`
@@ -111,20 +65,5 @@
 |`.index-redirect-enabled`
 |registers a redirect from `/` to camundas bundled `index.html`
 |`true`
-
-4+|**Authorization**
-.3+|`{properties-prefix}.authorization`
-
-|`.enabled`
-|enables authorization
-|camunda default value
-
-|`.enabled-for-custom-code`
-|enables authorization for custom code
-|camunda default value
-
-|`.authorization-check-revokes`
-|configures authorization check revokes
-|camunda default value
 
 |===

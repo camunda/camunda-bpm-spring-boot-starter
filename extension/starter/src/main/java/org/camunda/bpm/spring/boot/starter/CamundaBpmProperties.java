@@ -15,14 +15,14 @@ import org.camunda.bpm.application.impl.metadata.ProcessArchiveXmlImpl;
 import org.camunda.bpm.application.impl.metadata.spi.ProcessArchiveXml;
 import org.camunda.bpm.engine.ProcessEngineConfiguration;
 import org.camunda.bpm.engine.ProcessEngines;
-import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
+import org.camunda.bpm.engine.impl.history.HistoryLevel;
 import org.camunda.bpm.engine.repository.ResumePreviousBy;
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
+import org.camunda.bpm.spring.boot.starter.generic.GenericProcessEngineProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.util.Assert;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import lombok.Data;
-import lombok.Singular;
 
 @ConfigurationProperties("camunda.bpm")
 @Data
@@ -31,6 +31,11 @@ public class CamundaBpmProperties {
   public static final String[] DEFAULT_BPMN_RESOURCE_SUFFIXES = new String[] { "bpmn20.xml", "bpmn" };
   public static final String[] DEFAULT_CMMN_RESOURCE_SUFFIXES = new String[] { "cmmn11.xml", "cmmn10.xml", "cmmn" };
   public static final String[] DEFAULT_DMN_RESOURCE_SUFFIXES = new String[] { "dmn11.xml", "dmn" };
+
+  public static final String PROPERTY_DEFAULT_SERIALIZATION_FORMAT = "default-serialization-format";
+  public static final String PROPERTY_PROCESS_ENGINE_NAME = "process-engine-name";
+  public static final String PROPERTY_HISTORY = "history";
+  public static final String PROPERTY_DATABASE_SCHEMA_UPDATE = "database-schema-update";
 
   static String[] initDeploymentResourcePattern() {
     final Set<String> suffixes = new HashSet<String>();
@@ -47,16 +52,6 @@ public class CamundaBpmProperties {
   }
 
   /**
-   * name of the process engine
-   */
-  private String processEngineName = ProcessEngines.NAME_DEFAULT;
-
-  /**
-   * the history level to use
-   */
-  private String historyLevel;
-
-  /**
    * the default history level to use when 'historyLevel' is 'auto'
    */
   private String historyLevelDefault;
@@ -71,10 +66,8 @@ public class CamundaBpmProperties {
    */
   private String[] deploymentResourcePattern = initDeploymentResourcePattern();
 
-  /**
-   * default serialization format to use
-   */
-  private String defaultSerializationFormat = new SpringProcessEngineConfiguration().getDefaultSerializationFormat();
+  @NestedConfigurationProperty
+  private final GenericProcessEngineProperties processEngineConfiguration = new GenericProcessEngineProperties();
 
   /**
    * metrics configuration
@@ -82,19 +75,14 @@ public class CamundaBpmProperties {
   private Metrics metrics = new Metrics();
 
   /**
-   * database configuration
-   */
-  private Database database = new Database();
-
-  /**
    * JPA configuration
    */
-  private Jpa jpa = new Jpa();
+  private Jpa jpa = new Jpa(processEngineConfiguration);
 
   /**
    * job execution configuration
    */
-  private JobExecution jobExecution = new JobExecution();
+  private JobExecution jobExecution = new JobExecution(processEngineConfiguration);
 
   /**
    * webapp configuration
@@ -106,58 +94,31 @@ public class CamundaBpmProperties {
    */
   private Application application = new Application();
 
-  private Authorization authorization = new Authorization();
-
-  private GenericProperties genericProperties = new GenericProperties();
-
-  @Data
-  public static class Database {
-    public static final List<String> SCHEMA_UPDATE_VALUES = Arrays.asList(ProcessEngineConfiguration.DB_SCHEMA_UPDATE_TRUE,
-        ProcessEngineConfiguration.DB_SCHEMA_UPDATE_FALSE, ProcessEngineConfigurationImpl.DB_SCHEMA_UPDATE_CREATE,
-        ProcessEngineConfiguration.DB_SCHEMA_UPDATE_CREATE_DROP, ProcessEngineConfigurationImpl.DB_SCHEMA_UPDATE_DROP_CREATE);
-
-    /**
-     * enables automatic schema update
-     */
-    private String schemaUpdate = ProcessEngineConfiguration.DB_SCHEMA_UPDATE_TRUE;
-
-    /**
-     * the database type
-     */
-    private String type;
-
-    /**
-     * the database table prefix to use
-     */
-    private String tablePrefix;
-
-    /**
-     * @param schemaUpdate
-     *          the schemaUpdate to set
-     */
-    public void setSchemaUpdate(String schemaUpdate) {
-      Assert.isTrue(SCHEMA_UPDATE_VALUES.contains(schemaUpdate), String.format("schemaUpdate: '%s' is not valid (%s)", schemaUpdate, SCHEMA_UPDATE_VALUES));
-      this.schemaUpdate = schemaUpdate;
-    }
+  public CamundaBpmProperties() {
+    Map<String, Object> properties = processEngineConfiguration.getProperties();
+    List<String> filter = processEngineConfiguration.getPropertiesToFilter();
+    properties.put(PROPERTY_PROCESS_ENGINE_NAME, ProcessEngines.NAME_DEFAULT);
+    properties.put(PROPERTY_HISTORY, HistoryLevel.HISTORY_LEVEL_FULL.getName());
+    properties.put(PROPERTY_DEFAULT_SERIALIZATION_FORMAT, new SpringProcessEngineConfiguration().getDefaultSerializationFormat());
+    properties.put(PROPERTY_DATABASE_SCHEMA_UPDATE, ProcessEngineConfiguration.DB_SCHEMA_UPDATE_TRUE);
+    filter.add(PROPERTY_PROCESS_ENGINE_NAME);
+    filter.add(PROPERTY_DEFAULT_SERIALIZATION_FORMAT);
   }
 
   @Data
   public static class JobExecution {
 
+    public static final String PROPERTY_JOB_EXECUTOR_ACTIVATE = "job-executor-activate";
+
+    public JobExecution(GenericProcessEngineProperties genericProcessEngineProperties) {
+      Map<String, Object> properties = genericProcessEngineProperties.getProperties();
+      properties.put(PROPERTY_JOB_EXECUTOR_ACTIVATE, true);
+    }
+
     /**
      * enables job execution
      */
     private boolean enabled;
-
-    /**
-     * activate job execution
-     */
-    private boolean active = true;
-
-    /**
-     * if job execution is deployment aware
-     */
-    private boolean deploymentAware;
 
   }
 
@@ -170,25 +131,26 @@ public class CamundaBpmProperties {
 
   @Data
   public static class Jpa {
+
+    public static final String PROPERTY_JPA_PERSISTENCE_UNIT_NAME = "jpa_persistence-unit-name";
+    public static final String PROPERTY_JPA_HANDLE_TRANSACTION = "jpa_handle-transaction";
+    public static final String PROPERTY_JPA_CLOSE_ENTITY_MANAGER = "jpa_close-entity-manager";
+
+    public Jpa(GenericProcessEngineProperties processEngineConfiguration) {
+      Map<String, Object> properties = processEngineConfiguration.getProperties();
+      List<String> filter = processEngineConfiguration.getPropertiesToFilter();
+      properties.put(PROPERTY_JPA_CLOSE_ENTITY_MANAGER, true);
+      properties.put(PROPERTY_JPA_HANDLE_TRANSACTION, true);
+      filter.add(PROPERTY_JPA_CLOSE_ENTITY_MANAGER);
+      filter.add(PROPERTY_JPA_HANDLE_TRANSACTION);
+      filter.add(PROPERTY_JPA_PERSISTENCE_UNIT_NAME);
+    }
+
     /**
      * enables JPA
      */
     private boolean enabled;
 
-    /**
-     * the JPA persistence unit name
-     */
-    private String persistenceUnitName;
-
-    /**
-     * close JPA entity manager
-     */
-    private boolean closeEntityManager = true;
-
-    /**
-     * handle transactions by JPA
-     */
-    private boolean handleTransaction = true;
   }
 
   @Data
@@ -252,29 +214,4 @@ public class CamundaBpmProperties {
     }
 
   }
-
-  @Data
-  public static class Authorization {
-
-    /**
-     * enables authorization
-     */
-    private boolean enabled = new SpringProcessEngineConfiguration().isAuthorizationEnabled();
-
-    /**
-     * enables authorization for custom code
-     */
-    private boolean enabledForCustomCode = new SpringProcessEngineConfiguration().isAuthorizationEnabledForCustomCode();
-
-    private String authorizationCheckRevokes = new SpringProcessEngineConfiguration().getAuthorizationCheckRevokes();
-  }
-
-  @Data
-  public static class GenericProperties {
-    @Singular
-    private Map<String, Object> properties = new HashMap<String, Object>();
-    private boolean ignoreInvalidFields;
-    private boolean ignoreUnknownFields;
-  }
-
 }

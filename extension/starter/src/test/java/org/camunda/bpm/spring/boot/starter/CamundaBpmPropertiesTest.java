@@ -2,8 +2,15 @@ package org.camunda.bpm.spring.boot.starter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+
 import org.camunda.bpm.engine.ProcessEngineConfiguration;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
+import org.camunda.bpm.spring.boot.starter.generic.GenericProcessEngineProperties;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -19,7 +26,7 @@ public class CamundaBpmPropertiesTest {
 
     assertThat(patterns).hasSize(7);
     assertThat(patterns).containsOnly("classpath*:**/*.bpmn", "classpath*:**/*.bpmn20.xml", "classpath*:**/*.dmn", "classpath*:**/*.dmn11.xml",
-      "classpath*:**/*.cmmn", "classpath*:**/*.cmmn10.xml", "classpath*:**/*.cmmn11.xml");
+        "classpath*:**/*.cmmn", "classpath*:**/*.cmmn10.xml", "classpath*:**/*.cmmn11.xml");
   }
 
   @Test
@@ -29,17 +36,20 @@ public class CamundaBpmPropertiesTest {
 
   @Test
   public void restrict_allowed_values_for_dbUpdate() {
-    thrown.expect(IllegalArgumentException.class);
-    thrown.expectMessage("foo");
-
-    new CamundaBpmProperties().getDatabase().setSchemaUpdate(ProcessEngineConfiguration.DB_SCHEMA_UPDATE_TRUE);
-    new CamundaBpmProperties().getDatabase().setSchemaUpdate(ProcessEngineConfiguration.DB_SCHEMA_UPDATE_FALSE);
-    new CamundaBpmProperties().getDatabase().setSchemaUpdate(ProcessEngineConfigurationImpl.DB_SCHEMA_UPDATE_CREATE);
-    new CamundaBpmProperties().getDatabase().setSchemaUpdate(ProcessEngineConfiguration.DB_SCHEMA_UPDATE_CREATE_DROP);
-    new CamundaBpmProperties().getDatabase().setSchemaUpdate(ProcessEngineConfigurationImpl.DB_SCHEMA_UPDATE_DROP_CREATE);
-
-    new CamundaBpmProperties().getDatabase().setSchemaUpdate("foo");
+    assertThat(validateDatabaseSchemaUpdate(ProcessEngineConfiguration.DB_SCHEMA_UPDATE_TRUE)).isEmpty();
+    assertThat(validateDatabaseSchemaUpdate(ProcessEngineConfiguration.DB_SCHEMA_UPDATE_FALSE)).isEmpty();
+    assertThat(validateDatabaseSchemaUpdate(ProcessEngineConfigurationImpl.DB_SCHEMA_UPDATE_CREATE)).isEmpty();
+    assertThat(validateDatabaseSchemaUpdate(ProcessEngineConfiguration.DB_SCHEMA_UPDATE_CREATE_DROP)).isEmpty();
+    assertThat(validateDatabaseSchemaUpdate(ProcessEngineConfigurationImpl.DB_SCHEMA_UPDATE_DROP_CREATE)).isEmpty();
+    assertThat(validateDatabaseSchemaUpdate("foo")).isNotEmpty();
   }
 
+  private Set<ConstraintViolation<GenericProcessEngineProperties>> validateDatabaseSchemaUpdate(String value) {
+    Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
+    GenericProcessEngineProperties configuration = new GenericProcessEngineProperties();
+    configuration.getProperties().put("database-schema-update", value);
+
+    return validator.validate(configuration);
+  }
 }

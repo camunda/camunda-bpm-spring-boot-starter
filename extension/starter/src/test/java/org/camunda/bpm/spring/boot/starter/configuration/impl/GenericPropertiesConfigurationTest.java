@@ -25,7 +25,7 @@ public class GenericPropertiesConfigurationTest {
   @Test
   public void genericBindingTestWithType() {
     final int batchPollTimeValue = Integer.MAX_VALUE;
-    camundaBpmProperties.getGenericProperties().getProperties().put("batch-poll-time", batchPollTimeValue);
+    camundaBpmProperties.getProcessEngineConfiguration().getProperties().put("batch-poll-time", batchPollTimeValue);
     genericPropertiesConfiguration.preInit(processEngineConfiguration);
     assertEquals(batchPollTimeValue, processEngineConfiguration.getBatchPollTime());
   }
@@ -33,7 +33,7 @@ public class GenericPropertiesConfigurationTest {
   @Test
   public void genericBindingTestAsString() {
     final int batchPollTimeValue = Integer.MAX_VALUE;
-    camundaBpmProperties.getGenericProperties().getProperties().put("batch-poll-time", Integer.valueOf(batchPollTimeValue).toString());
+    camundaBpmProperties.getProcessEngineConfiguration().getProperties().put("batch-poll-time", Integer.valueOf(batchPollTimeValue).toString());
     genericPropertiesConfiguration.preInit(processEngineConfiguration);
     assertEquals(batchPollTimeValue, processEngineConfiguration.getBatchPollTime());
   }
@@ -41,7 +41,7 @@ public class GenericPropertiesConfigurationTest {
   @Test(expected = NotWritablePropertyException.class)
   public void genericBindingTestWithNotExistingProperty() {
     final int dontExistValue = Integer.MAX_VALUE;
-    camundaBpmProperties.getGenericProperties().getProperties().put("dont-exist", dontExistValue);
+    camundaBpmProperties.getProcessEngineConfiguration().getProperties().put("dont-exist", dontExistValue);
     genericPropertiesConfiguration.preInit(processEngineConfiguration);
   }
 }

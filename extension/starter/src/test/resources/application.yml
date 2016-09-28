@@ -1,0 +1,26 @@
+camunda:
+  bpm:
+    process-engine-configuration:
+      properties:
+        processEngineName: testEngine
+        history-level: auto
+security:
+  user:
+    password: password
+management:
+  security:
+    enabled: false
+---
+spring:
+  profiles: nojpa
+camunda:
+  bpm:
+    jpa:
+      enabled: false
+---
+spring:
+  profiles: nojobexecution
+camunda:
+  bpm:
+    job-execution:
+      enabled: false

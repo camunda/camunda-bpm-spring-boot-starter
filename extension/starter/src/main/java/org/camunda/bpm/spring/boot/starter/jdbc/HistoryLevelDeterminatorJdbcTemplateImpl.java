@@ -8,6 +8,7 @@ import java.util.List;
 import org.camunda.bpm.engine.impl.history.HistoryLevel;
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties;
+import org.camunda.bpm.spring.boot.starter.SpringProcessEngineConfigurationTemplate;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -21,9 +22,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class HistoryLevelDeterminatorJdbcTemplateImpl implements HistoryLevelDeterminator, InitializingBean {
 
-  public static HistoryLevelDeterminator createHistoryLevelDeterminator(CamundaBpmProperties camundaBpmProperties, JdbcTemplate jdbcTemplate) {
+  public static HistoryLevelDeterminator createHistoryLevelDeterminator(CamundaBpmProperties camundaBpmProperties,
+      SpringProcessEngineConfigurationTemplate springProcessEngineConfigurationTemplate, JdbcTemplate jdbcTemplate) {
     final HistoryLevelDeterminatorJdbcTemplateImpl determinator = new HistoryLevelDeterminatorJdbcTemplateImpl();
     determinator.setCamundaBpmProperties(camundaBpmProperties);
+    determinator.setSpringProcessEngineConfigurationTemplate(springProcessEngineConfigurationTemplate);
     determinator.setJdbcTemplate(jdbcTemplate);
     return determinator;
   }
@@ -51,10 +54,15 @@ public class HistoryLevelDeterminatorJdbcTemplateImpl implements HistoryLevelDet
   @Setter
   protected CamundaBpmProperties camundaBpmProperties;
 
+  @Getter
+  @Setter
+  protected SpringProcessEngineConfigurationTemplate springProcessEngineConfigurationTemplate;
+
   @Override
   public void afterPropertiesSet() throws Exception {
     Assert.notNull(jdbcTemplate, "a jdbc template must be set");
     Assert.notNull(camundaBpmProperties, "camunda bpm properties must be set");
+    Assert.notNull(springProcessEngineConfigurationTemplate, "springProcessEngineConfigurationTemplate must be set");
     String historyLevelDefault = camundaBpmProperties.getHistoryLevelDefault();
     if (StringUtils.hasText(historyLevelDefault)) {
       defaultHistoryLevel = historyLevelDefault;
@@ -79,7 +87,7 @@ public class HistoryLevelDeterminatorJdbcTemplateImpl implements HistoryLevelDet
   }
 
   protected String getSql() {
-    String tablePrefix = camundaBpmProperties.getDatabase().getTablePrefix();
+    String tablePrefix = springProcessEngineConfigurationTemplate.getTemplate().getDatabaseTablePrefix();
     if (tablePrefix == null) {
       tablePrefix = "";
     }
