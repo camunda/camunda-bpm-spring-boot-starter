@@ -1,6 +1,5 @@
 package org.camunda.bpm.spring.boot.starter.example.web;
 
-import static org.junit.Assert.assertEquals;
 
 import org.camunda.bpm.engine.rest.dto.repository.ProcessDefinitionDto;
 import org.camunda.bpm.spring.boot.starter.example.web.CamundaBpmRestIT.RestConfig;
@@ -17,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { RestApplication.class, RestConfig.class }, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CamundaBpmRestIT {
@@ -28,8 +29,9 @@ public class CamundaBpmRestIT {
   public void processDefinitionTest() {
     ResponseEntity<ProcessDefinitionDto[]> entity = testRestTemplate.getForEntity("/rest/engine/{engineName}/process-definition", ProcessDefinitionDto[].class,
         "default");
-    assertEquals(HttpStatus.OK, entity.getStatusCode());
-    assertEquals("Sample", entity.getBody()[0].getKey());
+    assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
+    assertThat(entity.getBody()).hasSize(1);
+    assertThat(entity.getBody()[0].getKey()).isEqualTo("Sample");
   }
 
   @TestConfiguration

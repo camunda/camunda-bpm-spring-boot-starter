@@ -28,6 +28,7 @@ import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultJpaConfigur
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultMetricsConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.GenericPropertiesConfiguration;
+import org.camunda.bpm.spring.boot.starter.container.SpringBootRuntimeContainerDelegate;
 import org.camunda.bpm.spring.boot.starter.jdbc.HistoryLevelDeterminator;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -128,5 +129,10 @@ public class CamundaBpmConfiguration {
   @Bean
   public GenericPropertiesConfiguration genericPropertiesConfiguration() {
     return new GenericPropertiesConfiguration();
+  }
+
+  @Bean
+  public SpringBootRuntimeContainerDelegate springBootRuntimeContainerDelegate() {
+    return new SpringBootRuntimeContainerDelegate();
   }
 }

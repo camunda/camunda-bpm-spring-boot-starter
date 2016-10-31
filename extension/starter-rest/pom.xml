@@ -40,9 +40,11 @@
       <optional>true</optional>
     </dependency>
 
+
+    <!-- Test -->
     <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-test</artifactId>
+      <artifactId>camunda-bpm-spring-boot-starter-test</artifactId>
+      <groupId>${project.groupId}</groupId>
       <scope>test</scope>
     </dependency>
 
