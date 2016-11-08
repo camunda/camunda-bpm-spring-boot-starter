@@ -1,21 +1,23 @@
 package org.camunda.bpm.spring.boot.starter;
 
+import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.application.ProcessApplicationInfo;
 import org.camunda.bpm.container.RuntimeContainerDelegate;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.camunda.bpm.engine.spring.application.SpringProcessApplication;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaDeploymentConfiguration;
+import org.camunda.bpm.spring.boot.starter.util.GetProcessApplicationNameFromAnnotation;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
-import lombok.extern.slf4j.Slf4j;
+import java.util.Optional;
 
 @Slf4j
 public class SpringBootProcessApplication extends SpringProcessApplication {
-
-  @Autowired
-  private ProcessEngine processEngine;
 
   @Bean
   public static CamundaDeploymentConfiguration deploymentConfiguration() {
@@ -24,19 +26,27 @@ public class SpringBootProcessApplication extends SpringProcessApplication {
       public void preInit(ProcessEngineConfigurationImpl configuration) {
         log.info("Using ProcessApplication: autoDeployment via springConfiguration is disabled");
       }
-
-      @Override
-      public void postInit(ProcessEngineConfigurationImpl processEngineConfiguration) {
-      }
-
-      @Override
-      public void postProcessEngineBuild(ProcessEngine processEngine) {
-      }
     };
+  }
+
+  @Value("${spring.application.name:null}")
+  protected Optional<String> springApplicationName;
+
+  @Autowired
+  protected ProcessEngine processEngine;
+
+  protected GetProcessApplicationNameFromAnnotation nameFromAnnotation;
+
+  @Override
+  public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    nameFromAnnotation = new GetProcessApplicationNameFromAnnotation(applicationContext);
+    super.setApplicationContext(applicationContext);
   }
 
   @Override
   public void afterPropertiesSet() throws Exception {
+    nameFromAnnotation.apply(springApplicationName).ifPresent(this::setBeanName);
+
     RuntimeContainerDelegate.INSTANCE.get().registerProcessEngine(processEngine);
 
     properties.put(ProcessApplicationInfo.PROP_SERVLET_CONTEXT_PATH, "/");

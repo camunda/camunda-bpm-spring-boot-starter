@@ -15,6 +15,7 @@ public abstract class AbstractProcessEngineRuleTest {
       jobExecutorActivate = false;
       expressionManager = new MockExpressionManager();
       databaseSchemaUpdate = DB_SCHEMA_UPDATE_DROP_CREATE;
+      isDbMetricsReporterActivate = false;
     }
   };
 
