@@ -3,4 +3,4 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=org.camunda.bpm.s
 # Application Listeners
 org.springframework.context.ApplicationListener=org.camunda.bpm.spring.boot.starter.runlistener.PropertiesListener
 
-org.springframework.cloud.bootstrap.BootstrapConfiguration=org.camunda.bpm.spring.boot.starter.CamundaBpmProperties
+org.springframework.cloud.bootstrap.BootstrapConfiguration=org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties

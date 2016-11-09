@@ -3,8 +3,8 @@ package org.camunda.bpm.spring.boot.starter.configuration.impl;
 import javax.persistence.EntityManagerFactory;
 
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
-import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaJpaConfiguration;
+import org.camunda.bpm.spring.boot.starter.property.Jpa;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class DefaultJpaConfiguration extends AbstractCamundaConfiguration implements CamundaJpaConfiguration {
@@ -14,7 +14,7 @@ public class DefaultJpaConfiguration extends AbstractCamundaConfiguration implem
 
   @Override
   public void preInit(SpringProcessEngineConfiguration configuration) {
-    final CamundaBpmProperties.Jpa jpa = camundaBpmProperties.getJpa();
+    final Jpa jpa = camundaBpmProperties.getJpa();
 
     configuration.setJpaPersistenceUnitName(jpa.getPersistenceUnitName());
     if (jpaEntityManagerFactory != null) {

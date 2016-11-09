@@ -3,8 +3,8 @@ package org.camunda.bpm.spring.boot.starter.configuration.impl;
 import javax.sql.DataSource;
 
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
-import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaDatasourceConfiguration;
+import org.camunda.bpm.spring.boot.starter.property.Database;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -24,7 +24,7 @@ public class DefaultDatasourceConfiguration extends AbstractCamundaConfiguration
 
   @Override
   public void preInit(SpringProcessEngineConfiguration configuration) {
-    final CamundaBpmProperties.Database database = camundaBpmProperties.getDatabase();
+    final Database database = camundaBpmProperties.getDatabase();
 
     configuration.setTransactionManager(transactionManager);
 

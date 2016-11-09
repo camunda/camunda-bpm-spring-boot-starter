@@ -1,7 +1,7 @@
 package org.camunda.bpm.spring.boot.starter.configuration.impl;
 
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
-import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties.Authorization;
+import org.camunda.bpm.spring.boot.starter.property.Authorization;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaAuthorizationConfiguration;
 
 public class DefaultAuthorizationConfiguration extends AbstractCamundaConfiguration implements CamundaAuthorizationConfiguration {

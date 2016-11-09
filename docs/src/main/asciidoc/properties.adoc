@@ -127,4 +127,20 @@
 |configures authorization check revokes
 |camunda default value
 
+4+|**Admin User**
+.3+|`{properties-prefix}.admin-user`
+
+|`.id`
+|the username (e.g. 'admin')
+|-
+
+|`.password`
+|the initial password
+|-
+
+|`.firstName`, `.lastName`, `.email`
+|additional (optional) user attributes
+|defaults to value of 'id'
+
+
 |===
