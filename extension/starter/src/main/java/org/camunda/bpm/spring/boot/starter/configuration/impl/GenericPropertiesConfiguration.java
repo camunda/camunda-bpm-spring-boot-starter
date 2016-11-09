@@ -3,7 +3,7 @@ package org.camunda.bpm.spring.boot.starter.configuration.impl;
 import java.util.Map;
 
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
-import org.camunda.bpm.spring.boot.starter.CamundaBpmProperties.GenericProperties;
+import org.camunda.bpm.spring.boot.starter.property.GenericProperties;
 import org.camunda.bpm.spring.boot.starter.configuration.Ordering;
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.PropertyValues;

@@ -1,9 +1,10 @@
-package org.camunda.bpm.spring.boot.starter;
+package org.camunda.bpm.spring.boot.starter.property;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.camunda.bpm.engine.ProcessEngineConfiguration;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
+import org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;

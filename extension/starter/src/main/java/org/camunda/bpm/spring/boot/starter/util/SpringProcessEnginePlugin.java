@@ -11,6 +11,8 @@ import org.springframework.beans.factory.BeanNameAware;
 /**
  * Convenience class that specializes {@link AbstractProcessEnginePlugin} to
  * use {@link SpringProcessEngineConfiguration} (to save casting).
+ *
+ * FIXME: extend springProcessEnginePlugin from engine-cdi when switching to 7.6
  */
 public class SpringProcessEnginePlugin extends AbstractProcessEnginePlugin implements BeanNameAware {
 

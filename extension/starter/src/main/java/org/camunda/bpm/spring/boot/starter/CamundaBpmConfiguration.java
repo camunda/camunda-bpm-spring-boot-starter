@@ -1,9 +1,5 @@
 package org.camunda.bpm.spring.boot.starter;
 
-import static org.camunda.bpm.spring.boot.starter.jdbc.HistoryLevelDeterminatorJdbcTemplateImpl.createHistoryLevelDeterminator;
-
-import java.util.List;
-
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.camunda.bpm.engine.impl.cfg.ProcessEnginePlugin;
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
@@ -17,6 +13,7 @@ import org.camunda.bpm.spring.boot.starter.configuration.CamundaJpaConfiguration
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaMetricsConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.condition.NeedsHistoryAutoConfigurationCondition;
+import org.camunda.bpm.spring.boot.starter.configuration.impl.CreateAdminUserConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultAuthorizationConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultDatasourceConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultDeploymentConfiguration;
@@ -29,6 +26,7 @@ import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultMetricsConf
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.GenericPropertiesConfiguration;
 import org.camunda.bpm.spring.boot.starter.jdbc.HistoryLevelDeterminator;
+import org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -37,6 +35,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.JdbcTemplate;
+
+import java.util.List;
+
+import static org.camunda.bpm.spring.boot.starter.jdbc.HistoryLevelDeterminatorJdbcTemplateImpl.createHistoryLevelDeterminator;
 
 @Import(JobConfiguration.class)
 public class CamundaBpmConfiguration {
@@ -99,17 +101,17 @@ public class CamundaBpmConfiguration {
   }
 
   @Bean(name = "historyLevelDeterminator")
-  @ConditionalOnMissingBean(name = { "camundaBpmJdbcTemplate", "historyLevelDeterminator" })
+  @ConditionalOnMissingBean(name = {"camundaBpmJdbcTemplate", "historyLevelDeterminator"})
   @ConditionalOnBean(name = "historyLevelAutoConfiguration")
   public static HistoryLevelDeterminator historyLevelDeterminator(CamundaBpmProperties camundaBpmProperties, JdbcTemplate jdbcTemplate) {
     return createHistoryLevelDeterminator(camundaBpmProperties, jdbcTemplate);
   }
 
   @Bean(name = "historyLevelDeterminator")
-  @ConditionalOnBean(name = { "camundaBpmJdbcTemplate", "historyLevelAutoConfiguration", "historyLevelDeterminator" })
+  @ConditionalOnBean(name = {"camundaBpmJdbcTemplate", "historyLevelAutoConfiguration", "historyLevelDeterminator"})
   @ConditionalOnMissingBean(name = "historyLevelDeterminator")
   public static HistoryLevelDeterminator historyLevelDeterminatorMultiDatabase(CamundaBpmProperties camundaBpmProperties,
-      @Qualifier("camundaBpmJdbcTemplate") JdbcTemplate jdbcTemplate) {
+                                                                               @Qualifier("camundaBpmJdbcTemplate") JdbcTemplate jdbcTemplate) {
     return createHistoryLevelDeterminator(camundaBpmProperties, jdbcTemplate);
   }
 
@@ -128,5 +130,11 @@ public class CamundaBpmConfiguration {
   @Bean
   public GenericPropertiesConfiguration genericPropertiesConfiguration() {
     return new GenericPropertiesConfiguration();
+  }
+
+  @Bean
+  @ConditionalOnProperty(prefix = "camunda.bpm.admin-user", name = "id")
+  public CreateAdminUserConfiguration createAdminUserConfiguration() {
+    return new CreateAdminUserConfiguration();
   }
 }
