@@ -13,10 +13,6 @@
   <groupId>org.camunda.bpm.extension.springboot.example</groupId>
   <artifactId>camunda-bpm-spring-boot-starter-example-webjar</artifactId>
 
-  <properties>
-    <webjar.path>/</webjar.path>
-  </properties>
-
   <dependencyManagement>
 
     <dependencies>
@@ -63,6 +59,7 @@
         <groupId>org.camunda.bpm.extension.springboot.maven</groupId>
         <artifactId>camunda-bpm-spring-boot-webjar-maven-plugin</artifactId>
         <version>${project.version}</version>
+
         <executions>
           <execution>
             <id>create-webjar</id>
