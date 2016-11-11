@@ -38,6 +38,12 @@
       </dependency>
 
       <dependency>
+        <artifactId>camunda-bpm-spring-boot-starter-webapp-core</artifactId>
+        <groupId>${project.groupId}</groupId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
         <artifactId>camunda-bpm-spring-boot-starter-test</artifactId>
         <groupId>${project.groupId}</groupId>
         <version>${project.version}</version>

@@ -13,8 +13,9 @@
   <modules>
     <module>starter</module>
     <module>starter-rest</module>
-    <module>starter-webapp</module>
+    <module>starter-webapp-core</module>
     <module>starter-test</module>
+    <module>starter-webapp</module>
   </modules>
 
   <dependencyManagement>
