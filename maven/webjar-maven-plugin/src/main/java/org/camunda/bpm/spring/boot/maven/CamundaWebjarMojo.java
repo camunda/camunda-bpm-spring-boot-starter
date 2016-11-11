@@ -25,6 +25,7 @@ import static org.twdata.maven.mojoexecutor.MojoExecutor.*;
   defaultPhase = GENERATE_SOURCES,
   requiresDependencyResolution = COMPILE_PLUS_RUNTIME
 )
+@SuppressWarnings("WeakerAccess")
 public class CamundaWebjarMojo extends AbstractMojo {
 
   public static final String WEBJAR_PATH = "/META-INF/resources/webjars/camunda";
