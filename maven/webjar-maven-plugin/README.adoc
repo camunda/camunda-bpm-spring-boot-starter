@@ -1,0 +1,4 @@
+
+Run this for local testing
+
+    mvn org.camunda.bpm.extension.springboot.maven:camunda-bpm-spring-boot-webjar-maven-plugin:2.0.0-SNAPSHOT:create

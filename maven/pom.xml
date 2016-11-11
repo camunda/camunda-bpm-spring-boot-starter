@@ -9,22 +9,11 @@
     <version>2.0.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>camunda-bpm-spring-boot-starter-example-root</artifactId>
+  <artifactId>camunda-bpm-spring-boot-starter-maven-root</artifactId>
   <packaging>pom</packaging>
 
   <modules>
-    <module>example-simple</module>
-    <module>example-web</module>
-    <module>example-cloud</module>
-    <module>example-webapp</module>
-    <module>example-war</module>
-    <module>example-dmn-rest</module>
-    <module>example-twitter</module>
-    <module>example-webjar</module>
+    <module>webjar-maven-plugin</module>
   </modules>
 
-  <!--
-     examples should be usable standalone,
-     do not add common dependencies/builds here!
-  -->
 </project>
