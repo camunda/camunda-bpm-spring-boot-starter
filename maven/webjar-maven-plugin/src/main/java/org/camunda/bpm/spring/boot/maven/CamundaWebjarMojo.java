@@ -1,7 +1,6 @@
 package org.camunda.bpm.spring.boot.maven;
 
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.AbstractMojo;
@@ -12,13 +11,11 @@ import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
-import org.twdata.maven.mojoexecutor.MojoExecutor;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-import static java.io.File.separator;
 import static org.apache.maven.plugins.annotations.LifecyclePhase.GENERATE_SOURCES;
 import static org.apache.maven.plugins.annotations.ResolutionScope.COMPILE_PLUS_RUNTIME;
 import static org.twdata.maven.mojoexecutor.MojoExecutor.*;
@@ -30,14 +27,19 @@ import static org.twdata.maven.mojoexecutor.MojoExecutor.*;
 )
 public class CamundaWebjarMojo extends AbstractMojo {
 
+  public static final String WEBJAR_PATH = "/META-INF/resources/webjars/camunda";
+
   @Parameter(property = "project", required = true, readonly = true)
   protected MavenProject project;
 
   @Parameter(property = "camunda.version", required = true)
   protected String camundaVersion;
 
-  @Parameter(property = "webjar.path", required = true, defaultValue = "/META-INF/resources/webjars/camunda")
+  @Parameter(property = "webjar.path", required = true, defaultValue = WEBJAR_PATH)
   protected String webjarPath;
+
+  @Parameter(property = "webjar.outputDirectory")
+  protected String webJarOutputDirectory;
 
   @Parameter(property = "session", required = true, readonly = true)
   protected MavenSession session;
@@ -49,9 +51,10 @@ public class CamundaWebjarMojo extends AbstractMojo {
 
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
-    String outputDir = project.getBuild().getOutputDirectory();
-    String target = outputDir + webjarPath;
+
+    final String target = target(Optional.ofNullable(webJarOutputDirectory), project.getBuild().getOutputDirectory(), webjarPath);
     getLog().info("Creating camunda-webjar: " + target);
+
     executeMojo(plugin(groupId("org.apache.maven.plugins"), artifactId("maven-dependency-plugin"), version("2.10"), dependencies), goal("unpack"),
       configuration(
         element("artifactItems",
@@ -83,5 +86,12 @@ public class CamundaWebjarMojo extends AbstractMojo {
           )
         )
       ), executionEnvironment(project, session, buildPluginManager));
+  }
+
+  static String target(Optional<String> configuredOutput, String defaultOutput, String webjarPath) {
+    return Optional.of(webjarPath)
+      .map(s -> !s.startsWith("/") ? "/" + s : s)
+      .map(s -> configuredOutput.orElse(defaultOutput) + s)
+      .get();
   }
 }
