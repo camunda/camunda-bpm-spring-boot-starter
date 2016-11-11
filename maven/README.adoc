@@ -1,4 +1,4 @@
-# Camunda spring boot maven
+# camunda spring boot maven
 
 Here we provide tools for easier setup of spring boot starter projectes via maven.
 
