@@ -28,6 +28,8 @@ import static org.twdata.maven.mojoexecutor.MojoExecutor.*;
 public class CamundaWebjarMojo extends AbstractMojo {
 
   public static final String WEBJAR_PATH = "/META-INF/resources/webjars/camunda";
+  public static final String CAMUNDA_SECURITY_FILTER_RULES_JSON = "securityFilterRules.json";
+  public static final String DEFAULT_SECURITY_FILTER_RULES_JSON = "defaultSecurityFilterRules.json";
 
   @Parameter(property = "project", required = true, readonly = true)
   protected MavenProject project;
@@ -37,6 +39,9 @@ public class CamundaWebjarMojo extends AbstractMojo {
 
   @Parameter(property = "webjar.path", required = true, defaultValue = WEBJAR_PATH)
   protected String webjarPath;
+
+  @Parameter(property = "webjar.securityFilterRules", required = true, defaultValue = DEFAULT_SECURITY_FILTER_RULES_JSON)
+  protected String securityFilterRules;
 
   @Parameter(property = "webjar.outputDirectory")
   protected String webJarOutputDirectory;
@@ -54,6 +59,8 @@ public class CamundaWebjarMojo extends AbstractMojo {
 
     final String target = target(Optional.ofNullable(webJarOutputDirectory), project.getBuild().getOutputDirectory(), webjarPath);
     getLog().info("Creating camunda-webjar: " + target);
+    getLog().info(String.format("   withProperties: camundaVersion=%s, webjarPath=%s, securityFilterRules=%s, warJarOutputDirectory=%s", camundaVersion, webjarPath, securityFilterRules, webJarOutputDirectory));
+
 
     executeMojo(plugin(groupId("org.apache.maven.plugins"), artifactId("maven-dependency-plugin"), version("2.10"), dependencies), goal("unpack"),
       configuration(
@@ -75,8 +82,8 @@ public class CamundaWebjarMojo extends AbstractMojo {
         element("target",
           element("move",
             attributes(
-              attribute("file", target + "/WEB-INF/securityFilterRules.json"),
-              attribute("toDir", target)
+              attribute("file", target + "/WEB-INF/"+ CAMUNDA_SECURITY_FILTER_RULES_JSON),
+              attribute("toFile", target + "/" + securityFilterRules)
             )
           ),
           element("delete",
@@ -88,6 +95,14 @@ public class CamundaWebjarMojo extends AbstractMojo {
       ), executionEnvironment(project, session, buildPluginManager));
   }
 
+  /**
+   * Determine the maven target path for webjar generation.
+   *
+   * @param configuredOutput optional configured outPutPath
+   * @param defaultOutput default output (target/classes)
+   * @param webjarPath internal webjar path, see WEBJAR_PATH
+   * @return target director for build (target/classes/&lt;WEBJAR_PATH>
+   */
   static String target(Optional<String> configuredOutput, String defaultOutput, String webjarPath) {
     return Optional.of(webjarPath)
       .map(s -> !s.startsWith("/") ? "/" + s : s)
