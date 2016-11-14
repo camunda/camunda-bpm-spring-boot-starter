@@ -1,6 +1,5 @@
 package org.camunda.bpm.spring.boot.starter.annotation;
 
-import org.camunda.bpm.application.ProcessApplication;
 import org.camunda.bpm.spring.boot.starter.SpringBootProcessApplication;
 import org.springframework.context.annotation.Import;
 
@@ -14,7 +13,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Import(SpringBootProcessApplication.class)
-@ProcessApplication
 @Documented
 @Inherited
 public @interface EnableProcessApplication {
