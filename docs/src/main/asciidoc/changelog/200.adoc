@@ -1,0 +1,5 @@
+Version 2.0.0 requires:
+
+* Java 8
+* Spring Boot 1.4.x
+* Camunda 7.5.0
