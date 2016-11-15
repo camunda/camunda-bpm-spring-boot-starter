@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplicat
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.util.Assert;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -25,6 +26,11 @@ public class CamundaBpmWebappAutoConfiguration extends WebMvcConfigurerAdapter {
 
   @Value("${camunda.bpm.webapp.index-redirect-enabled:true}")
   private boolean isIndexRedirectEnabled;
+
+  //@Value("${camunda.bpm.webapp.class-path:/META-INF/resources/webjars/camunda}")
+  @Value("${camunda.bpm.webapp.class-path:''}")
+  private String webjarClasspath;
+
 
   @Bean
   public CamundaBpmWebappInitializer camundaBpmWebappInitializer() {
@@ -43,6 +49,7 @@ public class CamundaBpmWebappAutoConfiguration extends WebMvcConfigurerAdapter {
 
   @Override
   public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    final String classpath = "classpath:" + webjarClasspath;
     registry.addResourceHandler("/lib/**").addResourceLocations("classpath:/lib/");
     registry.addResourceHandler("/api/**").addResourceLocations("classpath:/api/");
     registry.addResourceHandler("/app/**").addResourceLocations("classpath:/app/");

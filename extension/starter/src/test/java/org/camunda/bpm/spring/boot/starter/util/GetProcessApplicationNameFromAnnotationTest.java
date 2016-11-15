@@ -24,7 +24,7 @@ public class GetProcessApplicationNameFromAnnotationTest {
   }
 
   private final ApplicationContext applicationContext = mock(ApplicationContext.class);
-  private final GetProcessApplicationNameFromAnnotation function = new GetProcessApplicationNameFromAnnotation(applicationContext);
+  private final GetProcessApplicationNameFromAnnotation function = GetProcessApplicationNameFromAnnotation.processApplicationNameFromAnnotation(applicationContext);
 
   @Test
   public void getBean_WithName() throws Exception {

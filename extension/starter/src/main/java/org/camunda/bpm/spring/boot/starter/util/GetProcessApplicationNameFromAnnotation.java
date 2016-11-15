@@ -14,9 +14,13 @@ import java.util.function.UnaryOperator;
 
 public class GetProcessApplicationNameFromAnnotation implements Supplier<Optional<String>>, UnaryOperator<Optional<String>> {
 
+  public static GetProcessApplicationNameFromAnnotation processApplicationNameFromAnnotation(final ApplicationContext applicationContext) {
+    return new GetProcessApplicationNameFromAnnotation(applicationContext);
+  }
+
   private final ApplicationContext applicationContext;
 
-  public GetProcessApplicationNameFromAnnotation(final ApplicationContext applicationContext) {
+  private GetProcessApplicationNameFromAnnotation(final ApplicationContext applicationContext) {
     this.applicationContext = applicationContext;
   }
 

@@ -44,7 +44,8 @@ public class CamundaBpmWebappInitializer implements ServletContextInitializer {
 
   private ServletContext servletContext;
 
-  @Value("${camunda.bpm.webapp.security-config-file:/META-INF/resources/webjars/camunda/securityFilterRules.json}")
+  //@Value("${camunda.bpm.webapp.security-config-file:/META-INF/resources/webjars/camunda/securityFilterRules.json}")
+  @Value("${camunda.bpm.webapp.security-config-file:/securityFilterRules.json}")
   private String securityConfigFile;
 
   @Override
