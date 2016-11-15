@@ -1,0 +1,36 @@
+## webjar maven plugin
+
+[NOTE]
+====
+allows generation and customizing of required webjar files during build (generate sources)
+====
+
+Run this for local testing
+
+    mvn org.camunda.bpm.extension.springboot.maven:camunda-bpm-spring-boot-webjar-maven-plugin:2.0.0-SNAPSHOT:create
+
+### Configuration
+
+### Usage
+
+Include the plugin in your `build/plugins`section:
+
+[[app-listing]]
+[source,xml]
+----
+<plugin>
+  <groupId>org.camunda.bpm.extension.springboot.maven</groupId>
+  <artifactId>camunda-bpm-spring-boot-webjar-maven-plugin</artifactId>
+  <version>${project.version}</version>
+
+  <executions>
+    <execution>
+      <id>create-webjar</id>
+      <phase>generate-resources</phase>
+      <goals>
+        <goal>create</goal>
+      </goals>
+    </execution>
+  </executions>
+</plugin>
+----

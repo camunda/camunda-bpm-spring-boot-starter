@@ -72,4 +72,26 @@
     </dependency>
 
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.camunda.bpm.extension.springboot.maven</groupId>
+        <artifactId>camunda-bpm-spring-boot-webjar-maven-plugin</artifactId>
+        <version>${project.version}</version>
+        <configuration>
+          <webJarOutputDirectory>${project.build.testOutputDirectory}</webJarOutputDirectory>
+        </configuration>
+        <executions>
+          <execution>
+            <id>create-webjar</id>
+            <phase>generate-test-resources</phase>
+            <goals>
+              <goal>create</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>

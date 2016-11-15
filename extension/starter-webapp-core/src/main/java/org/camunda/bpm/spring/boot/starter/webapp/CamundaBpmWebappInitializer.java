@@ -27,6 +27,7 @@ import org.camunda.bpm.tasklist.impl.web.bootstrap.TasklistContainerBootstrap;
 import org.camunda.bpm.webapp.impl.engine.EngineRestApplication;
 import org.camunda.bpm.webapp.impl.security.auth.AuthenticationFilter;
 import org.glassfish.jersey.servlet.ServletContainer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 
 import lombok.extern.slf4j.Slf4j;
@@ -43,6 +44,9 @@ public class CamundaBpmWebappInitializer implements ServletContextInitializer {
 
   private ServletContext servletContext;
 
+  @Value("${camunda.bpm.webapp.security-config-file:/META-INF/resources/webjars/camunda/securityFilterRules.json}")
+  private String securityConfigFile;
+
   @Override
   public void onStartup(ServletContext servletContext) throws ServletException {
     this.servletContext = servletContext;
@@ -53,7 +57,7 @@ public class CamundaBpmWebappInitializer implements ServletContextInitializer {
 
     registerFilter("Authentication Filter", AuthenticationFilter.class, "/*");
 
-    registerFilter("Security Filter", LazySecurityFilter.class, singletonMap("configFile", "/securityFilterRules.json"), "/*");
+    registerFilter("Security Filter", LazySecurityFilter.class, singletonMap("configFile", securityConfigFile), "/*");
 
     registerFilter("Engines Filter", LazyProcessEnginesFilter.class, "/app/*");
     registerFilter("CacheControlFilter", CacheControlFilter.class, "/api/*");
