@@ -4,6 +4,8 @@ package org.camunda.bpm.spring.boot.starter.util;
 import org.camunda.bpm.engine.identity.User;
 import org.camunda.commons.logging.BaseLogger;
 
+import java.net.URL;
+
 public class SpringBootProcessEngineLogger extends BaseLogger {
   static final String PROJECT_CODE = "STARTER";
   static final String PROJECT_ID = "SB";
@@ -21,5 +23,9 @@ public class SpringBootProcessEngineLogger extends BaseLogger {
 
   public void skipAutoDeployment() {
     logInfo("020", "ProcessApplication enabled: autoDeployment via springConfiguration#deploymentResourcePattern is disabled");
+  }
+
+  public void enterLicenseKey(URL licenseKeyFile) {
+    logInfo("030", "Setting up license key: {}", licenseKeyFile);
   }
 }

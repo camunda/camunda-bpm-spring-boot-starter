@@ -3,18 +3,20 @@ package org.camunda.bpm.spring.boot.starter.property;
 import lombok.Data;
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 
+import static org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties.DEFAULTS;
+
 @Data
 public class Authorization {
 
   /**
    * enables authorization
    */
-  private boolean enabled = new SpringProcessEngineConfiguration().isAuthorizationEnabled();
+  private boolean enabled = DEFAULTS.isAuthorizationEnabled();
 
   /**
    * enables authorization for custom code
    */
-  private boolean enabledForCustomCode = new SpringProcessEngineConfiguration().isAuthorizationEnabledForCustomCode();
+  private boolean enabledForCustomCode = DEFAULTS.isAuthorizationEnabledForCustomCode();
 
-  private String authorizationCheckRevokes = new SpringProcessEngineConfiguration().getAuthorizationCheckRevokes();
+  private String authorizationCheckRevokes = DEFAULTS.getAuthorizationCheckRevokes();
 }

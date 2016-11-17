@@ -1,6 +1,7 @@
 package org.camunda.bpm.spring.boot.starter.property;
 
 import lombok.Data;
+import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.ProcessEngines;
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.property.AdminUser;
@@ -15,6 +16,7 @@ import org.camunda.bpm.spring.boot.starter.property.Webapp;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
+import java.net.URL;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,6 +26,13 @@ import static org.springframework.core.io.support.ResourcePatternResolver.CLASSP
 @ConfigurationProperties("camunda.bpm")
 @Data
 public class CamundaBpmProperties {
+
+  public static SpringProcessEngineConfiguration DEFAULTS = new SpringProcessEngineConfiguration(){
+    @Override
+    public ProcessEngine buildProcessEngine() {
+      throw new UnsupportedOperationException("use only for default values!");
+    }
+  };
 
   public static final String[] DEFAULT_BPMN_RESOURCE_SUFFIXES = new String[] { "bpmn20.xml", "bpmn" };
   public static final String[] DEFAULT_CMMN_RESOURCE_SUFFIXES = new String[] { "cmmn11.xml", "cmmn10.xml", "cmmn" };
@@ -71,7 +80,9 @@ public class CamundaBpmProperties {
   /**
    * default serialization format to use
    */
-  private String defaultSerializationFormat = new SpringProcessEngineConfiguration().getDefaultSerializationFormat();
+  private String defaultSerializationFormat = DEFAULTS.getDefaultSerializationFormat();
+
+  private URL licenseFile;
 
   /**
    * metrics configuration
