@@ -24,7 +24,7 @@ public class DefaultDeploymentConfiguration extends AbstractCamundaConfiguration
   }
 
   protected Resource[] getDeploymentResources() {
-    final Set<Resource> resources = new HashSet<Resource>();
+    final Set<Resource> resources = new HashSet<>();
     final ResourceArrayPropertyEditor resolver = new ResourceArrayPropertyEditor();
 
     try {

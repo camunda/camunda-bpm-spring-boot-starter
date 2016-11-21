@@ -4,6 +4,7 @@ import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties;
 import org.camunda.bpm.spring.boot.starter.util.CamundaBpmVersion;
+import org.camunda.bpm.spring.boot.starter.util.CamundaBpmVersionTest;
 import org.junit.Test;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
@@ -19,6 +20,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class EnterLicenseKeyConfigurationTest {
+
+  private final DataSource dataSource = new EmbeddedDatabaseBuilder()
+      .generateUniqueName(true)
+      .setType(EmbeddedDatabaseType.H2)
+      .addScript("/org/camunda/bpm/engine/db/create/activiti.h2.create.engine.sql")
+      .build();
 
   @Test
   public void load_url_string() throws Exception {
@@ -37,10 +44,7 @@ public class EnterLicenseKeyConfigurationTest {
 
   @Test
   public void save_licenseKey() throws Exception {
-    DataSource dataSource = new EmbeddedDatabaseBuilder()
-      .setType(EmbeddedDatabaseType.H2)
-      .addScript("/org/camunda/bpm/engine/db/create/activiti.h2.create.engine.sql")
-      .build();
+
 
     final URL licenseFileUrl = EnterLicenseKeyConfiguration.class.getClassLoader().getResource("camunda-license-dummy.txt");
 
@@ -51,12 +55,10 @@ public class EnterLicenseKeyConfigurationTest {
     CamundaBpmProperties properties = new CamundaBpmProperties();
     properties.setLicenseFile(licenseFileUrl);
 
+    CamundaBpmVersion version = CamundaBpmVersionTest.camundaBpmVersion("123-ee");
     EnterLicenseKeyConfiguration enterLicenseKeyConfiguration = new EnterLicenseKeyConfiguration();
-
+    ReflectionTestUtils.setField(enterLicenseKeyConfiguration, "version", version);
     ReflectionTestUtils.setField(enterLicenseKeyConfiguration, "camundaBpmProperties", properties);
-
-    CamundaBpmVersion version = CamundaBpmVersion.INSTANCE;
-    ReflectionTestUtils.setField(version, "version", Optional.of("123-ee"));
 
     enterLicenseKeyConfiguration.postProcessEngineBuild(processEngine);
 
