@@ -22,7 +22,7 @@
     <module>example-twitter</module>
 
     <!-- requires enterprise credentials and license key -->
-    <module>example-webapp-ee</module>
+    <!--module>example-webapp-ee</module-->
   </modules>
 
   <!--
