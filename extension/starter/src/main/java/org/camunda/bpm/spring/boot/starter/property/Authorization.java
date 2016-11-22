@@ -9,12 +9,12 @@ public class Authorization {
   /**
    * enables authorization
    */
-  private boolean enabled = new SpringProcessEngineConfiguration().isAuthorizationEnabled();
+  private boolean enabled = Defaults.INSTANCE.isAuthorizationEnabled();
 
   /**
    * enables authorization for custom code
    */
-  private boolean enabledForCustomCode = new SpringProcessEngineConfiguration().isAuthorizationEnabledForCustomCode();
+  private boolean enabledForCustomCode = Defaults.INSTANCE.isAuthorizationEnabledForCustomCode();
 
-  private String authorizationCheckRevokes = new SpringProcessEngineConfiguration().getAuthorizationCheckRevokes();
+  private String authorizationCheckRevokes = Defaults.INSTANCE.getAuthorizationCheckRevokes();
 }

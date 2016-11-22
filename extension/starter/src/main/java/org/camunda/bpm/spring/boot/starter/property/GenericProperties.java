@@ -9,7 +9,7 @@ import java.util.Map;
 @Data
 public class GenericProperties {
   @Singular
-  private Map<String, Object> properties = new HashMap<String, Object>();
+  private Map<String, Object> properties = new HashMap<>();
   private boolean ignoreInvalidFields;
   private boolean ignoreUnknownFields;
 }

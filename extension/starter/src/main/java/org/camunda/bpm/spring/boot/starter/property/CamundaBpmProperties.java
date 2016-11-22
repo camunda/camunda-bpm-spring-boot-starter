@@ -2,28 +2,21 @@ package org.camunda.bpm.spring.boot.starter.property;
 
 import lombok.Data;
 import org.camunda.bpm.engine.ProcessEngines;
-import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
-import org.camunda.bpm.spring.boot.starter.property.AdminUser;
-import org.camunda.bpm.spring.boot.starter.property.Application;
-import org.camunda.bpm.spring.boot.starter.property.Authorization;
-import org.camunda.bpm.spring.boot.starter.property.Database;
-import org.camunda.bpm.spring.boot.starter.property.GenericProperties;
-import org.camunda.bpm.spring.boot.starter.property.JobExecution;
-import org.camunda.bpm.spring.boot.starter.property.Jpa;
-import org.camunda.bpm.spring.boot.starter.property.Metrics;
-import org.camunda.bpm.spring.boot.starter.property.Webapp;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
+import java.net.URL;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
 import static org.springframework.core.io.support.ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX;
 
-@ConfigurationProperties("camunda.bpm")
+@ConfigurationProperties(CamundaBpmProperties.PREFIX)
 @Data
 public class CamundaBpmProperties {
+
+  public static final String PREFIX = "camunda.bpm";
 
   public static final String[] DEFAULT_BPMN_RESOURCE_SUFFIXES = new String[] { "bpmn20.xml", "bpmn" };
   public static final String[] DEFAULT_CMMN_RESOURCE_SUFFIXES = new String[] { "cmmn11.xml", "cmmn10.xml", "cmmn" };
@@ -71,7 +64,9 @@ public class CamundaBpmProperties {
   /**
    * default serialization format to use
    */
-  private String defaultSerializationFormat = new SpringProcessEngineConfiguration().getDefaultSerializationFormat();
+  private String defaultSerializationFormat = Defaults.INSTANCE.getDefaultSerializationFormat();
+
+  private URL licenseFile;
 
   /**
    * metrics configuration

@@ -20,6 +20,9 @@
     <module>example-war</module>
     <module>example-dmn-rest</module>
     <module>example-twitter</module>
+
+    <!-- requires enterprise credentials and license key -->
+    <!--module>example-webapp-ee</module-->
   </modules>
 
   <!--

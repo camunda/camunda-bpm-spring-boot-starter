@@ -3,30 +3,37 @@ package org.camunda.bpm.spring.boot.starter.runlistener;
 import org.camunda.bpm.spring.boot.starter.util.CamundaBpmVersion;
 import org.springframework.boot.context.event.ApplicationEnvironmentPreparedEvent;
 import org.springframework.context.ApplicationListener;
-import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.core.env.PropertiesPropertySource;
 
-import java.util.Properties;
-
-import static org.apache.commons.lang.StringUtils.trimToEmpty;
-
+/**
+ * Adds camunda.bpm.version properties to environment.
+ */
 public class PropertiesListener implements ApplicationListener<ApplicationEnvironmentPreparedEvent> {
 
-  private static final String VERSION_FORMAT = "(v%s)";
+  private final CamundaBpmVersion version;
 
-  @Override
-  public void onApplicationEvent(ApplicationEnvironmentPreparedEvent event) {
-    ConfigurableEnvironment environment = event.getEnvironment();
-    Properties props = new Properties();
-    String camundaVersion = trimToEmpty(CamundaBpmVersion.INSTANCE.get());
-    props.put("camunda.bpm.version", camundaVersion);
-    props.put("camunda.bpm.formatted-version", formatVersion(camundaVersion));
-    environment.getPropertySources().addFirst(new PropertiesPropertySource("camunda-bpm-version-properties", props));
-
+  /**
+   * Default constructor, used when initializing via spring.factories.
+   *
+   * @see PropertiesListener#PropertiesListener(CamundaBpmVersion)
+   */
+  public PropertiesListener() {
+    this(new CamundaBpmVersion());
   }
 
-  private String formatVersion(String version) {
-    return String.format(VERSION_FORMAT, version);
+  /**
+   * Initialize with version.
+   *
+   * @param version the current camundaBpmVersion instance.
+   */
+  PropertiesListener(CamundaBpmVersion version) {
+    this.version = version;
+  }
+
+  @Override
+  public void onApplicationEvent(final ApplicationEnvironmentPreparedEvent event) {
+    event.getEnvironment()
+      .getPropertySources()
+      .addFirst(version.getPropertiesPropertySource());
   }
 
 }
