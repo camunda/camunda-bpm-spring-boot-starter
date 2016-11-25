@@ -3,29 +3,10 @@ package org.camunda.bpm.spring.boot.starter;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.camunda.bpm.engine.impl.cfg.ProcessEnginePlugin;
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
-import org.camunda.bpm.spring.boot.starter.configuration.CamundaAuthorizationConfiguration;
-import org.camunda.bpm.spring.boot.starter.configuration.CamundaDatasourceConfiguration;
-import org.camunda.bpm.spring.boot.starter.configuration.CamundaDeploymentConfiguration;
-import org.camunda.bpm.spring.boot.starter.configuration.CamundaHistoryConfiguration;
-import org.camunda.bpm.spring.boot.starter.configuration.CamundaHistoryLevelAutoHandlingConfiguration;
-import org.camunda.bpm.spring.boot.starter.configuration.CamundaJobConfiguration;
-import org.camunda.bpm.spring.boot.starter.configuration.CamundaJpaConfiguration;
-import org.camunda.bpm.spring.boot.starter.configuration.CamundaMetricsConfiguration;
-import org.camunda.bpm.spring.boot.starter.configuration.CamundaProcessEngineConfiguration;
+import org.camunda.bpm.spring.boot.starter.configuration.*;
 import org.camunda.bpm.spring.boot.starter.configuration.condition.NeedsHistoryAutoConfigurationCondition;
-import org.camunda.bpm.spring.boot.starter.configuration.impl.CreateAdminUserConfiguration;
-import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultAuthorizationConfiguration;
-import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultDatasourceConfiguration;
-import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultDeploymentConfiguration;
-import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultHistoryConfiguration;
-import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultHistoryLevelAutoHandlingConfiguration;
-import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultJobConfiguration;
+import org.camunda.bpm.spring.boot.starter.configuration.impl.*;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultJobConfiguration.JobConfiguration;
-import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultJpaConfiguration;
-import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultMetricsConfiguration;
-import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultProcessEngineConfiguration;
-import org.camunda.bpm.spring.boot.starter.configuration.impl.EnterLicenseKeyConfiguration;
-import org.camunda.bpm.spring.boot.starter.configuration.impl.GenericPropertiesConfiguration;
 import org.camunda.bpm.spring.boot.starter.jdbc.HistoryLevelDeterminator;
 import org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties;
 import org.camunda.bpm.spring.boot.starter.util.CamundaBpmVersion;
@@ -145,4 +126,11 @@ public class CamundaBpmConfiguration {
   public EnterLicenseKeyConfiguration enterLicenseKeyConfiguration() {
     return new EnterLicenseKeyConfiguration();
   }
+
+  @Bean
+  @ConditionalOnMissingBean(CamundaFailedJobConfiguration.class)
+  public static CamundaFailedJobConfiguration failedJobConfiguration() {
+    return new DefaultFailedJobConfiguration();
+  }
+
 }
