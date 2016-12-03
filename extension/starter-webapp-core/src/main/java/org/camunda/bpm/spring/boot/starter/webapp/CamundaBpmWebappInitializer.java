@@ -26,6 +26,7 @@ import org.camunda.bpm.tasklist.impl.web.TasklistApplication;
 import org.camunda.bpm.tasklist.impl.web.bootstrap.TasklistContainerBootstrap;
 import org.camunda.bpm.webapp.impl.engine.EngineRestApplication;
 import org.camunda.bpm.webapp.impl.security.auth.AuthenticationFilter;
+import org.camunda.bpm.welcome.impl.web.bootstrap.WelcomeContainerBootstrap;
 import org.glassfish.jersey.servlet.ServletContainer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
@@ -52,6 +53,7 @@ public class CamundaBpmWebappInitializer implements ServletContextInitializer {
   public void onStartup(ServletContext servletContext) throws ServletException {
     this.servletContext = servletContext;
     servletContext.setSessionTrackingModes(Collections.singleton(SessionTrackingMode.COOKIE));
+    servletContext.addListener(new WelcomeContainerBootstrap());
     servletContext.addListener(new CockpitContainerBootstrap());
     servletContext.addListener(new AdminContainerBootstrap());
     servletContext.addListener(new TasklistContainerBootstrap());
