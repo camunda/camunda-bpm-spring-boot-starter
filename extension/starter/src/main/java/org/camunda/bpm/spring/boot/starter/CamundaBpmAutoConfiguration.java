@@ -3,6 +3,7 @@ package org.camunda.bpm.spring.boot.starter;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.camunda.bpm.engine.impl.interceptor.CommandExecutor;
 import org.camunda.bpm.engine.spring.ProcessEngineFactoryBean;
+import org.camunda.bpm.engine.spring.SpringProcessEngineServicesConfiguration;
 import org.camunda.bpm.spring.boot.starter.event.ProcessApplicationEventPublisher;
 import org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties;
 import org.camunda.bpm.spring.boot.starter.util.CamundaBpmVersion;
@@ -22,7 +23,7 @@ import org.springframework.context.annotation.Primary;
   CamundaBpmConfiguration.class,
   CamundaBpmActuatorConfiguration.class,
   CamundaBpmPluginsConfiguration.class,
-  ExportingProcessEngineServicesConfiguration.class
+  SpringProcessEngineServicesConfiguration.class
 })
 @AutoConfigureAfter(HibernateJpaAutoConfiguration.class)
 public class CamundaBpmAutoConfiguration {
