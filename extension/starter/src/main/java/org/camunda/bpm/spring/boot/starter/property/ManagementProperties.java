@@ -1,9 +1,9 @@
-package org.camunda.bpm.spring.boot.starter;
+package org.camunda.bpm.spring.boot.starter.property;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties("management")
-public class CamundaBpmManagementProperties {
+public class ManagementProperties {
 
   private Health health = new Health();
 

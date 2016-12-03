@@ -10,12 +10,12 @@ import org.junit.Test;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-public class SpringProcessEnginePluginTest {
+public class SpringBootProcessEnginePluginTest {
 
   @Rule
   public final MockitoRule mockito = MockitoJUnit.rule();
 
-  private class DummySpringPlugin extends SpringProcessEnginePlugin {
+  private class DummySpringPlugin extends SpringBootProcessEnginePlugin {
 
 
     public boolean preInit;

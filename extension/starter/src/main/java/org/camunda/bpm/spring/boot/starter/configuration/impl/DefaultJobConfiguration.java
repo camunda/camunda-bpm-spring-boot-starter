@@ -1,7 +1,5 @@
 package org.camunda.bpm.spring.boot.starter.configuration.impl;
 
-import java.util.List;
-
 import org.camunda.bpm.engine.impl.jobexecutor.CallerRunsRejectedJobsHandler;
 import org.camunda.bpm.engine.impl.jobexecutor.JobExecutor;
 import org.camunda.bpm.engine.impl.jobexecutor.JobHandler;
@@ -16,6 +14,10 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+
+import java.util.List;
+
+import static org.camunda.bpm.spring.boot.starter.util.CamundaSpringBootUtil.join;
 
 /**
  * Prepares JobExecutor and registeres all known custom JobHandlers.

@@ -1,12 +1,12 @@
 package org.camunda.bpm.spring.boot.starter.configuration.impl;
 
-import static java.util.Arrays.asList;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.camunda.bpm.spring.boot.starter.configuration.impl.AbstractCamundaConfiguration.join;
+import org.junit.Test;
 
 import java.util.ArrayList;
 
-import org.junit.Test;
+import static java.util.Arrays.asList;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.camunda.bpm.spring.boot.starter.util.CamundaSpringBootUtil.join;
 
 public class AbstractCamundaConfigurationTest {
 
