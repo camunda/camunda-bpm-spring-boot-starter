@@ -20,11 +20,10 @@ public final class CamundaSpringBootUtil {
    * @return optional casted object
    */
   @SuppressWarnings("unchecked")
-  public static <T> Optional<T> cast(Object obj, Class<T> type) {
-    if (type.isInstance(obj)) {
-      return Optional.of((T) obj);
-    }
-    return Optional.empty();
+  public static <T> Optional<T> cast(final Object obj, Class<T> type) {
+    return Optional.ofNullable(obj)
+      .filter(type::isInstance)
+      .map(type::cast);
   }
 
   public static SpringProcessEngineConfiguration springProcessEngineConfiguration() {
@@ -63,15 +62,11 @@ public final class CamundaSpringBootUtil {
   }
 
   public static Optional<ProcessEngineImpl> processEngineImpl(ProcessEngine processEngine) {
-    Optional<ProcessEngineImpl> engine = CamundaSpringBootUtil.cast(processEngine, ProcessEngineImpl.class);
-
-    return engine;
+    return cast(processEngine, ProcessEngineImpl.class);
   }
 
   public static Optional<SpringProcessEngineConfiguration> springProcessEngineConfiguration(ProcessEngineConfiguration configuration) {
-    final Optional<SpringProcessEngineConfiguration> cast = cast(configuration, SpringProcessEngineConfiguration.class);
-
-    return cast;
+    return cast(configuration, SpringProcessEngineConfiguration.class);
   }
 
   public static SpringProcessEngineConfiguration get(ProcessEngine processEngine) {
@@ -79,12 +74,9 @@ public final class CamundaSpringBootUtil {
   }
 
   /**
-   * @param existing
-   *          the current values (may be null or empty)
-   * @param add
-   *          the additional values (may be null or empty)
-   * @param <T>
-   *          type of elements
+   * @param existing the current values (may be null or empty)
+   * @param add      the additional values (may be null or empty)
+   * @param <T>      type of elements
    * @return new non-null list containing all elements of existing and add.
    */
   public static <T> List<T> join(final List<? extends T> existing, final List<? extends T> add) {
@@ -98,5 +90,6 @@ public final class CamundaSpringBootUtil {
     return target;
   }
 
-  private CamundaSpringBootUtil() {}
+  private CamundaSpringBootUtil() {
+  }
 }

@@ -2,44 +2,8 @@
 
 == What is camunda-bpm-spring-boot-starter?
 
-== Getting started
 
-If you are not familiar with link:http://projects.spring.io/spring-boot/[Spring Boot^] read the reference documentation link:http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#getting-started[getting started^] guide.
-
-To enable camunda bpm auto configuration add the following dependency:
-
-[source,xml,subs="verbatim,attributes"]
-.pom.xml
-----
-<dependency>
-  <groupId>org.camunda.bpm.extension</groupId>
-  <artifactId>camunda-bpm-spring-boot-starter</artifactId>
-  <version>{project-version}</version>
-</dependency>
-----
-
-This will add the camunda version `{camunda-version}` to your dependencies. If you want to override the version add `camunda.version` property with the camunda version you want to use and add the camunda bom to the dependency management:
-[source,xml,subs="verbatim,attributes"]
-.pom.xml
-----
-<properties>
-  <camunda.version>{camunda-version}</camunda.version>
-</properties>
-
-<dependencyManagement>
-  <dependencies>
-    <dependency>
-      <!-- Import dependency management from camunda -->
-      <groupId>org.camunda.bpm</groupId>
-      <artifactId>camunda-bom</artifactId>
-      <version>${camunda.version}</version>
-      <scope>import</scope>
-      <type>pom</type>
-    </dependency>
-  </dependencies>
-</dependencyManagement>
-
-----
+include::_gettingstarted.adoc[]
 
 == Process engine configuration
 The auto starter uses the  `org.camunda.bpm.engine.impl.cfg.ProcessEnginePlugin` mechanism to configure the engine.
@@ -272,4 +236,4 @@ The default camunda URLs are:
 include::_processapplication.adoc[]
 
 
-include::properties.adoc[]
+include::_properties.adoc[]

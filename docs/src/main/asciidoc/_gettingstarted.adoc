@@ -1,0 +1,46 @@
+== Getting started
+
+If you are not familiar with link:http://projects.spring.io/spring-boot/[Spring Boot^] read the reference documentation link:http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#getting-started[getting started^] guide.
+
+To enable camunda bpm auto configuration add the following dependency:
+
+[source,xml,subs="verbatim,attributes"]
+.pom.xml
+----
+<dependency>
+  <groupId>org.camunda.bpm.extension</groupId>
+  <artifactId>camunda-bpm-spring-boot-starter</artifactId>
+  <version>{project-version}</version>
+</dependency>
+----
+
+This will add the camunda version `{camunda-version}` to your dependencies. If you want to override the version add `camunda.version` property with the camunda version you want to use and add the camunda bom to the dependency management:
+[source,xml,subs="verbatim,attributes"]
+.pom.xml
+----
+<properties>
+  <camunda.version>{camunda-version}</camunda.version>
+</properties>
+
+<dependencyManagement>
+  <dependencies>
+    <dependency>
+      <!-- Import dependency management from camunda -->
+      <groupId>org.camunda.bpm</groupId>
+      <artifactId>camunda-bom</artifactId>
+      <version>${camunda.version}</version>
+      <scope>import</scope>
+      <type>pom</type>
+    </dependency>
+  </dependencies>
+</dependencyManagement>
+
+----
+
+=== Examples
+
+You can find examples to learn the usage of the camunda bpm starter
+ here:
+
+* https://github.com/osteinhauer/camunda-spring-boot-starter-examples
+* https://github.com/camunda/camunda-bpm-spring-boot-starter/issues
