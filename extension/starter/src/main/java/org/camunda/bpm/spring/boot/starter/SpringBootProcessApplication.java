@@ -37,8 +37,6 @@ public class SpringBootProcessApplication extends SpringProcessApplication {
   @Autowired
   protected ProcessEngine processEngine;
 
-  protected GetProcessApplicationNameFromAnnotation nameFromAnnotation;
-
   @Override
   public void afterPropertiesSet() throws Exception {
     processApplicationNameFromAnnotation(applicationContext)
