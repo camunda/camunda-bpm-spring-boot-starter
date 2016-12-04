@@ -6,6 +6,7 @@ import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaAuthorizationConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaDatasourceConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaDeploymentConfiguration;
+import org.camunda.bpm.spring.boot.starter.configuration.CamundaFailedJobConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaHistoryConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaHistoryLevelAutoHandlingConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaJobConfiguration;
@@ -17,6 +18,7 @@ import org.camunda.bpm.spring.boot.starter.configuration.impl.CreateAdminUserCon
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultAuthorizationConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultDatasourceConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultDeploymentConfiguration;
+import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultFailedJobConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultHistoryConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultHistoryLevelAutoHandlingConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultJobConfiguration;
@@ -145,4 +147,11 @@ public class CamundaBpmConfiguration {
   public EnterLicenseKeyConfiguration enterLicenseKeyConfiguration() {
     return new EnterLicenseKeyConfiguration();
   }
+
+  @Bean
+  @ConditionalOnMissingBean(CamundaFailedJobConfiguration.class)
+  public static CamundaFailedJobConfiguration failedJobConfiguration() {
+    return new DefaultFailedJobConfiguration();
+  }
+
 }
