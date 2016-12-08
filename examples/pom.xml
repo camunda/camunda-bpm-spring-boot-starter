@@ -21,6 +21,7 @@
     <module>example-dmn-rest</module>
     <module>example-twitter</module>
     <module>example-autodeployment</module>
+    <module>example-koala</module>
 
   </modules>
 
