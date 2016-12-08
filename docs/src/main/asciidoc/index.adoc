@@ -235,5 +235,6 @@ The default camunda URLs are:
 
 include::_processapplication.adoc[]
 
+include::_camunda-enterprise.adoc[]
 
 include::_properties.adoc[]

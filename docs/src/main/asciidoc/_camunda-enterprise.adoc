@@ -1,0 +1,15 @@
+[[camunda-enterprise]]
+== Using camunda enterprise
+
+With 2.0.0 some enhancements for usage of camunda-spring-boot-starter and
+the camunda enterprise webapp.
+
+Have a look at the example-webapp-ee https://github.com/camunda/camunda-bpm-spring-boot-starter/tree/master/examples/example-webapp-ee.
+
+To enable the project, run maven with the `-Penterprise` flag.
+
+If using enterprise, you can also use the `camunda.bpm.license-file` property to provide a license file
+that is inserted on application start. Or copy your license file under the name `camunda-license.txt`
+ to your `src/main/resources`.
+
+

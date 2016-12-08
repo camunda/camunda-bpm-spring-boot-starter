@@ -5,7 +5,7 @@
 |===
 |Prefix | Property name |Description | Default value
 4+|**General**
-.7+|`{properties-prefix}`
+.8+|`{properties-prefix}`
 
 |`.process-engine-name`
 |name of the process engine
@@ -27,6 +27,11 @@
 |if processes should be auto deployed. This is disabled when using the SpringBootProcessApplication
 |`true`
 
+|`.license-file`
+|Provide an URL to your camunda license file and is automatically inserted to the DB when the application starts (but only if no license key is found in the DB).
+|-
+
+
 |`.version`
 |version of the process engine
 |read only value e.g. 7.4.0
@@ -36,7 +41,7 @@
 |read only value e.g. (v7.4.0)
 
 4+|**Job Execution**
-.4+|`{properties-prefix}.job-execution`
+.5+|`{properties-prefix}.job-execution`
 
 |`.active`
 |activate job execution after successful startup
@@ -53,6 +58,10 @@
 |`.deployment-resource-pattern`
 |location for auto deployment
 |`classpath*:**/*.bpmn, classpath*:**/*.bpmn20.xml, classpath*:**/*.dmn, classpath*:**/*.dmn11.xml, classpath*:**/*.cmmn, classpath*:**/*.cmmn10.xml, classpath*:**/*.cmmn11.xml`
+
+|`.core-pool-size`
+|set to value > 1 to activate parallel job execution.
+|`1`
 
 4+|**Datasource**
 .3+|`{properties-prefix}.database`

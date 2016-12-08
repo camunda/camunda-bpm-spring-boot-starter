@@ -1,3 +1,4 @@
+[[processapplication]]
 == Using the ProcessApplication
 
 By default, the camunda-spring-boot-starter is configured to use the SpringProcessEngineConfiguration auto deployment feature.
