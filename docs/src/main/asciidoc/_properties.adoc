@@ -74,7 +74,7 @@
 |'h2', 'oracle', ...
 
 |`.table-prefix`
-|prefix of the camunda database tables
+|prefix of the camunda database tables. Attention: The table prefix will *not* be applied if you  are using `schema-update`!
 |camunda default value
 
 4+|**JPA**
@@ -151,5 +151,11 @@
 |additional (optional) user attributes
 |defaults to value of 'id'
 
+4+|**Filter**
+.1+|`{properties-prefix}.filter`
+
+|`.create`
+|name of a "show all filter". If set, on start a new filter will be created that displayes all tasks. Useful for testing on h2 db.
+|-
 
 |===
