@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @Data
-public class Application {
+public class ApplicationProperty {
   /**
    * Indicates whether the undeployment of the process archive should trigger
    * deleting the process engine deployment. If the process engine deployment

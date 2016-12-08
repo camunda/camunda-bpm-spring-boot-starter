@@ -4,7 +4,7 @@ import lombok.Data;
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 
 @Data
-public class Authorization {
+public class AuthorizationProperty {
 
   /**
    * enables authorization

@@ -21,12 +21,20 @@
     <module>example-dmn-rest</module>
     <module>example-twitter</module>
 
-    <!-- requires enterprise credentials and license key -->
-    <!--module>example-webapp-ee</module-->
   </modules>
 
   <!--
      examples should be usable standalone,
      do not add common dependencies/builds here!
   -->
+
+  <!-- requires enterprise credentials and license key -->
+  <profiles>
+    <profile>
+      <id>ee</id>
+      <modules>
+        <module>example-webapp-ee</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>

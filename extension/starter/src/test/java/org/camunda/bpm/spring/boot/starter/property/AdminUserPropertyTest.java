@@ -7,7 +7,7 @@ import org.junit.rules.ExpectedException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class AdminUserTest {
+public class AdminUserPropertyTest {
 
   @Rule
   public final ExpectedException thrown = ExpectedException.none();
@@ -50,8 +50,8 @@ public class AdminUserTest {
     assertThat(adminUser.getEmail()).isEqualTo("admin@localhost");
   }
 
-  private AdminUser adminUser(String id, String password, String first, String last, String mail) {
-    final AdminUser adminUser = new AdminUser();
+  private AdminUserProperty adminUser(String id, String password, String first, String last, String mail) {
+    final AdminUserProperty adminUser = new AdminUserProperty();
     adminUser.setId(id);
     adminUser.setEmail(mail);
     adminUser.setFirstName(first);

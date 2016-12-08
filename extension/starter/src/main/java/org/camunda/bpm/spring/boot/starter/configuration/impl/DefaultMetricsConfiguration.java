@@ -1,14 +1,14 @@
 package org.camunda.bpm.spring.boot.starter.configuration.impl;
 
-import javax.annotation.PostConstruct;
-
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaMetricsConfiguration;
-import org.camunda.bpm.spring.boot.starter.property.Metrics;
+import org.camunda.bpm.spring.boot.starter.property.MetricsProperty;
+
+import javax.annotation.PostConstruct;
 
 public class DefaultMetricsConfiguration extends AbstractCamundaConfiguration implements CamundaMetricsConfiguration {
 
-  private Metrics metrics;
+  private MetricsProperty metrics;
 
   @PostConstruct
   void init() {

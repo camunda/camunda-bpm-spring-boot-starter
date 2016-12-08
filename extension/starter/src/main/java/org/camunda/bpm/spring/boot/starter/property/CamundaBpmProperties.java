@@ -18,9 +18,9 @@ public class CamundaBpmProperties {
 
   public static final String PREFIX = "camunda.bpm";
 
-  public static final String[] DEFAULT_BPMN_RESOURCE_SUFFIXES = new String[] { "bpmn20.xml", "bpmn" };
-  public static final String[] DEFAULT_CMMN_RESOURCE_SUFFIXES = new String[] { "cmmn11.xml", "cmmn10.xml", "cmmn" };
-  public static final String[] DEFAULT_DMN_RESOURCE_SUFFIXES = new String[] { "dmn11.xml", "dmn" };
+  public static final String[] DEFAULT_BPMN_RESOURCE_SUFFIXES = new String[]{"bpmn20.xml", "bpmn"};
+  public static final String[] DEFAULT_CMMN_RESOURCE_SUFFIXES = new String[]{"cmmn11.xml", "cmmn10.xml", "cmmn"};
+  public static final String[] DEFAULT_DMN_RESOURCE_SUFFIXES = new String[]{"dmn11.xml", "dmn"};
 
   static String[] initDeploymentResourcePattern() {
     final Set<String> suffixes = new HashSet<String>();
@@ -72,45 +72,47 @@ public class CamundaBpmProperties {
    * metrics configuration
    */
   @NestedConfigurationProperty
-  private Metrics metrics = new Metrics();
+  private MetricsProperty metrics = new MetricsProperty();
 
   /**
    * database configuration
    */
   @NestedConfigurationProperty
-  private Database database = new Database();
+  private DatabaseProperty database = new DatabaseProperty();
 
   /**
    * JPA configuration
    */
   @NestedConfigurationProperty
-  private Jpa jpa = new Jpa();
+  private JpaProperty jpa = new JpaProperty();
 
   /**
    * job execution configuration
    */
   @NestedConfigurationProperty
-  private JobExecution jobExecution = new JobExecution();
+  private JobExecutionProperty jobExecution = new JobExecutionProperty();
 
   /**
    * webapp configuration
    */
   @NestedConfigurationProperty
-  private Webapp webapp = new Webapp();
+  private WebappProperty webapp = new WebappProperty();
 
   /**
    * process application/processes.xml configuration
    */
   @NestedConfigurationProperty
-  private Application application = new Application();
+  private ApplicationProperty application = new ApplicationProperty();
 
   @NestedConfigurationProperty
-  private Authorization authorization = new Authorization();
+  private AuthorizationProperty authorization = new AuthorizationProperty();
 
   @NestedConfigurationProperty
   private GenericProperties genericProperties = new GenericProperties();
 
   @NestedConfigurationProperty
-  private AdminUser adminUser = new AdminUser();
+  private AdminUserProperty adminUser = new AdminUserProperty();
 
+  @NestedConfigurationProperty
+  private FilterProperty filter = new FilterProperty();
 }

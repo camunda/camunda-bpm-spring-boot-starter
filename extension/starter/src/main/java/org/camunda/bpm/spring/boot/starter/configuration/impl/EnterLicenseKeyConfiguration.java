@@ -32,9 +32,12 @@ public class EnterLicenseKeyConfiguration extends AbstractCamundaConfiguration {
       return;
     }
 
-    Optional<String> licenseKey = readLicenseKeyFromUrl(camundaBpmProperties.getLicenseFile());
+    URL fileUrl = camundaBpmProperties.getLicenseFile();
+
+    Optional<String> licenseKey = readLicenseKeyFromUrl(fileUrl);
     if (!licenseKey.isPresent()) {
-      licenseKey = readLicenseKeyFromUrl(EnterLicenseKeyConfiguration.class.getClassLoader().getResource(defaultLicenseFile));
+      fileUrl = EnterLicenseKeyConfiguration.class.getClassLoader().getResource(defaultLicenseFile);
+      licenseKey = readLicenseKeyFromUrl(fileUrl);
     }
 
     if (!licenseKey.isPresent()) {
@@ -48,7 +51,7 @@ public class EnterLicenseKeyConfiguration extends AbstractCamundaConfiguration {
       try (PreparedStatement statement = connection.prepareStatement(INSERT_SQL)) {
         statement.setString(1, licenseKey.get());
         statement.execute();
-        LOG.enterLicenseKey(camundaBpmProperties.getLicenseFile());
+        LOG.enterLicenseKey(fileUrl);
       }
     }
   }

@@ -1,5 +1,6 @@
 package org.camunda.bpm.spring.boot.starter;
 
+import org.camunda.bpm.engine.impl.cfg.CompositeProcessEnginePlugin;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.camunda.bpm.engine.impl.cfg.ProcessEnginePlugin;
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
@@ -15,6 +16,7 @@ import org.camunda.bpm.spring.boot.starter.configuration.CamundaMetricsConfigura
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.condition.NeedsHistoryAutoConfigurationCondition;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.CreateAdminUserConfiguration;
+import org.camunda.bpm.spring.boot.starter.configuration.impl.CreateFilterConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultAuthorizationConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultDatasourceConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultDeploymentConfiguration;
@@ -52,7 +54,8 @@ public class CamundaBpmConfiguration {
   public ProcessEngineConfigurationImpl processEngineConfigurationImpl(List<ProcessEnginePlugin> processEnginePlugins) {
     final SpringProcessEngineConfiguration configuration = new SpringProcessEngineConfiguration();
 
-    configuration.setProcessEnginePlugins(processEnginePlugins);
+
+    configuration.getProcessEnginePlugins().add(new CompositeProcessEnginePlugin(processEnginePlugins));
 
     return configuration;
   }
@@ -154,4 +157,9 @@ public class CamundaBpmConfiguration {
     return new DefaultFailedJobConfiguration();
   }
 
+  @Bean
+  @ConditionalOnProperty(prefix = "camunda.bpm.filter", name ="create")
+  public CreateFilterConfiguration createFilterConfiguration(){
+    return new CreateFilterConfiguration();
+  }
 }

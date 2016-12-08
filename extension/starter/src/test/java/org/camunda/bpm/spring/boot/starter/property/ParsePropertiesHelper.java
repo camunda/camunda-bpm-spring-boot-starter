@@ -19,8 +19,8 @@ public abstract class ParsePropertiesHelper {
   @Autowired
   protected CamundaBpmProperties properties;
 
-  protected Metrics metrics;
-  protected Application application;
+  protected MetricsProperty metrics;
+  protected ApplicationProperty application;
 
   @PostConstruct
   public void init() {

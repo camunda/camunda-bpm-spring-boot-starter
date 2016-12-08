@@ -8,6 +8,7 @@ import org.camunda.bpm.engine.spring.components.jobexecutor.SpringJobExecutor;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaJobConfiguration;
 import org.camunda.bpm.spring.boot.starter.event.JobExecutorStartingEventListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -57,17 +58,26 @@ public class DefaultJobConfiguration extends AbstractCamundaConfiguration implem
     @Bean
     @ConditionalOnMissingBean(TaskExecutor.class)
     @ConditionalOnProperty(prefix = "camunda.bpm.job-execution", name = "enabled", havingValue = "true", matchIfMissing = true)
-    public static TaskExecutor taskExecutor() {
-      return new ThreadPoolTaskExecutor();
+    public static TaskExecutor taskExecutor(@Value("${camunda.bpm.job-execution.core-pool-size:1}") int corePoolSize) {
+      final ThreadPoolTaskExecutor threadPoolTaskExecutor = new ThreadPoolTaskExecutor();
+
+      if (corePoolSize > 1) {
+        threadPoolTaskExecutor.setCorePoolSize(corePoolSize);
+      }
+
+      LOG.configureJobExecutorPool(corePoolSize);
+      return threadPoolTaskExecutor;
     }
 
     @Bean
     @ConditionalOnMissingBean(JobExecutor.class)
     @ConditionalOnProperty(prefix = "camunda.bpm.job-execution", name = "enabled", havingValue = "true", matchIfMissing = true)
-    public static JobExecutor jobExecutor(TaskExecutor taskExecutor) {
-      SpringJobExecutor springJobExecutor = new SpringJobExecutor();
+    public static JobExecutor jobExecutor(final TaskExecutor taskExecutor) {
+      final SpringJobExecutor springJobExecutor = new SpringJobExecutor();
       springJobExecutor.setTaskExecutor(taskExecutor);
       springJobExecutor.setRejectedJobsHandler(new CallerRunsRejectedJobsHandler());
+
+
       return springJobExecutor;
     }
 

@@ -15,7 +15,7 @@ import static org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl.DB_
 import static org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl.DB_SCHEMA_UPDATE_DROP_CREATE;
 
 @Data
-public class Database {
+public class DatabaseProperty {
   public static final List<String> SCHEMA_UPDATE_VALUES = Arrays.asList(
     DB_SCHEMA_UPDATE_TRUE,
     DB_SCHEMA_UPDATE_FALSE,

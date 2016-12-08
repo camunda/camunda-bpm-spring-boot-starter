@@ -25,6 +25,11 @@ public class SpringBootProcessApplication extends SpringProcessApplication {
       public void preInit(ProcessEngineConfigurationImpl configuration) {
         LOG.skipAutoDeployment();
       }
+
+      @Override
+      public String toString() {
+        return "disableDeploymentResourcePattern";
+      }
     };
   }
 

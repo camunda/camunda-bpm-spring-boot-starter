@@ -3,7 +3,7 @@ package org.camunda.bpm.spring.boot.starter.property;
 import lombok.Data;
 
 @Data
-public class JobExecution {
+public class JobExecutionProperty {
 
   /**
    * enables job execution
@@ -19,5 +19,7 @@ public class JobExecution {
    * if job execution is deployment aware
    */
   private boolean deploymentAware;
+
+  private int corePoolSize = 1;
 
 }
