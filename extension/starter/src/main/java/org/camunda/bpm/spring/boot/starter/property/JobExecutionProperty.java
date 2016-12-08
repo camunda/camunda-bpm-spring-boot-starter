@@ -20,6 +20,8 @@ public class JobExecutionProperty {
    */
   private boolean deploymentAware;
 
-  private int corePoolSize = 1;
+  private int corePoolSize = Defaults.TASK_EXECUTOR.getCorePoolSize();
+  //private int maxPoolSize = Defaults.TASK_EXECUTOR.getMaxPoolSize();
+  //private int keepAliveSeconds = Defaults.TASK_EXECUTOR.getKeepAliveSeconds();
 
 }
