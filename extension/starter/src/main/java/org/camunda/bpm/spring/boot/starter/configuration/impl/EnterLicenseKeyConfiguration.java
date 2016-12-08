@@ -74,7 +74,8 @@ public class EnterLicenseKeyConfiguration extends AbstractCamundaConfiguration {
       return Optional.of(new Scanner(licenseFileUrl.openStream(), "UTF-8").useDelimiter("\\A"))
         .filter(Scanner::hasNext).map(Scanner::next)
         .map(s -> s.split("---------------")[2])
-        .map(s -> s.replaceAll("\\n", ""));
+        .map(s -> s.replaceAll("\\n", ""))
+        .map(String::trim);
     } catch (IOException e) {
       return Optional.empty();
     }
