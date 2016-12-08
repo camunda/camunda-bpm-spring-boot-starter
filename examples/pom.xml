@@ -20,6 +20,7 @@
     <module>example-war</module>
     <module>example-dmn-rest</module>
     <module>example-twitter</module>
+    <module>example-autodeployment</module>
 
   </modules>
 

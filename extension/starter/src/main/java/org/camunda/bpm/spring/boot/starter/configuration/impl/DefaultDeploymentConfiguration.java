@@ -1,17 +1,21 @@
 package org.camunda.bpm.spring.boot.starter.configuration.impl;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaDeploymentConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.core.io.support.ResourceArrayPropertyEditor;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static java.util.Collections.EMPTY_SET;
 
 public class DefaultDeploymentConfiguration extends AbstractCamundaConfiguration implements CamundaDeploymentConfiguration {
   private final Logger logger = LoggerFactory.getLogger(DefaultDeploymentConfiguration.class);
@@ -19,12 +23,15 @@ public class DefaultDeploymentConfiguration extends AbstractCamundaConfiguration
   @Override
   public void preInit(SpringProcessEngineConfiguration configuration) {
     if (camundaBpmProperties.isAutoDeploymentEnabled()) {
-      configuration.setDeploymentResources(getDeploymentResources());
+      final Set<Resource> resources = getDeploymentResources();
+      configuration.setDeploymentResources(resources.toArray(new Resource[resources.size()]));
+      LOG.autoDeployResources(resources);
     }
   }
 
-  protected Resource[] getDeploymentResources() {
-    final Set<Resource> resources = new HashSet<>();
+  @Override
+  public Set<Resource> getDeploymentResources() {
+
     final ResourceArrayPropertyEditor resolver = new ResourceArrayPropertyEditor();
 
     try {
@@ -32,24 +39,24 @@ public class DefaultDeploymentConfiguration extends AbstractCamundaConfiguration
       logger.debug("resolving deployment resources for pattern {}", (Object[]) resourcePattern);
       resolver.setValue(resourcePattern);
 
-      for (Resource resource : (Resource[]) resolver.getValue()) {
-        logger.debug("processing deployment resource {}", resource);
-        if (isFile(resource)) {
-          resources.add(resource);
-          logger.debug("added deployment resource {}", resource);
-        }
-      }
+      return Arrays.stream((Resource[])resolver.getValue())
+        .peek(resource -> logger.debug("processing deployment resource {}", resource))
+        .filter(this::isFile)
+        .peek(resource -> logger.debug("added deployment resource {}", resource))
+        .collect(Collectors.toSet());
 
-      logger.debug("resolved {}", resources);
-    } catch (RuntimeException e) {
+    } catch (final RuntimeException e) {
       logger.error("unable to resolve resources", e);
     }
-    return resources.toArray(new Resource[resources.size()]);
+    return EMPTY_SET;
   }
 
+
+
   private boolean isFile(Resource resource) {
+
     if (resource.isReadable()) {
-      if (resource instanceof UrlResource) {
+      if (resource instanceof UrlResource || resource instanceof ClassPathResource) {
         try {
           URL url = resource.getURL();
           return !url.toString().endsWith("/");
@@ -67,5 +74,6 @@ public class DefaultDeploymentConfiguration extends AbstractCamundaConfiguration
     logger.warn("unable to determine if resource {} is a deployable resource", resource);
     return false;
   }
+
 
 }

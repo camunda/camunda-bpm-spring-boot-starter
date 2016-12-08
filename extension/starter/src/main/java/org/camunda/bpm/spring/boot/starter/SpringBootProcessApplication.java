@@ -5,13 +5,15 @@ import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.camunda.bpm.engine.spring.application.SpringProcessApplication;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaDeploymentConfiguration;
-import org.camunda.bpm.spring.boot.starter.util.GetProcessApplicationNameFromAnnotation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.Resource;
 
 import java.util.Optional;
+import java.util.Set;
 
+import static java.util.Collections.EMPTY_SET;
 import static org.camunda.bpm.application.ProcessApplicationInfo.PROP_SERVLET_CONTEXT_PATH;
 import static org.camunda.bpm.spring.boot.starter.util.GetProcessApplicationNameFromAnnotation.processApplicationNameFromAnnotation;
 import static org.camunda.bpm.spring.boot.starter.util.SpringBootProcessEngineLogger.LOG;
@@ -21,6 +23,11 @@ public class SpringBootProcessApplication extends SpringProcessApplication {
   @Bean
   public static CamundaDeploymentConfiguration deploymentConfiguration() {
     return new CamundaDeploymentConfiguration() {
+      @Override
+      public Set<Resource> getDeploymentResources() {
+        return EMPTY_SET;
+      }
+
       @Override
       public void preInit(ProcessEngineConfigurationImpl configuration) {
         LOG.skipAutoDeployment();
