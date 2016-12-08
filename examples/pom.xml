@@ -31,7 +31,7 @@
   <!-- requires enterprise credentials and license key -->
   <profiles>
     <profile>
-      <id>ee</id>
+      <id>enterprise</id>
       <modules>
         <module>example-webapp-ee</module>
       </modules>
