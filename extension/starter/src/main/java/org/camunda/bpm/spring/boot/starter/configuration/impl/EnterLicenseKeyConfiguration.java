@@ -1,9 +1,8 @@
 package org.camunda.bpm.spring.boot.starter.configuration.impl;
 
 
-import lombok.SneakyThrows;
 import org.camunda.bpm.engine.ProcessEngine;
-import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
+import org.camunda.bpm.spring.boot.starter.CamundaBpmNestedRuntimeException;
 import org.camunda.bpm.spring.boot.starter.util.CamundaBpmVersion;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -13,6 +12,7 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -26,7 +26,6 @@ public class EnterLicenseKeyConfiguration extends AbstractCamundaConfiguration {
   private String defaultLicenseFile = "camunda-license.txt";
 
   @Override
-  @SneakyThrows
   public void postProcessEngineBuild(ProcessEngine processEngine) {
     if (!version.isEnterprise()) {
       return;
@@ -53,6 +52,8 @@ public class EnterLicenseKeyConfiguration extends AbstractCamundaConfiguration {
         statement.execute();
         LOG.enterLicenseKey(fileUrl);
       }
+    } catch (SQLException ex) {
+      throw new CamundaBpmNestedRuntimeException(ex.getMessage(), ex);
     }
   }
 
@@ -60,8 +61,7 @@ public class EnterLicenseKeyConfiguration extends AbstractCamundaConfiguration {
     return processEngine.getProcessEngineConfiguration().getDataSource();
   }
 
-  @SneakyThrows
-  static Optional<String> readLicenseKeyFromDatasource(Connection connection) {
+  static Optional<String> readLicenseKeyFromDatasource(Connection connection) throws SQLException {
     final ResultSet resultSet = connection.createStatement().executeQuery(SELECT_SQL);
     return resultSet.next() ? Optional.ofNullable(resultSet.getString(1)) : Optional.empty();
   }
