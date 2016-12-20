@@ -1,12 +1,12 @@
 package org.camunda.bpm.spring.boot.starter.util;
 
-import lombok.Value;
 import org.apache.commons.lang.StringUtils;
 import org.camunda.bpm.spring.boot.starter.annotation.EnableProcessApplication;
 import org.springframework.context.ApplicationContext;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -24,14 +24,55 @@ public class GetProcessApplicationNameFromAnnotation implements Supplier<Optiona
     this.applicationContext = applicationContext;
   }
 
-  @Value(staticConstructor="of")
   public static class AnnotatedBean {
 
     String name;
     EnableProcessApplication annotation;
 
+    public AnnotatedBean(String name, EnableProcessApplication annotation) {
+      this.name = name;
+      this.annotation = annotation;
+    }
+
+    public static AnnotatedBean of(String name, EnableProcessApplication annotation) {
+      return new AnnotatedBean(name, annotation);
+    }
+
     public static AnnotatedBean of(String name, Object instance) {
       return of(name, instance.getClass().getAnnotation(EnableProcessApplication.class));
+    }
+
+    public String getName() {
+      return name;
+    }
+
+    public EnableProcessApplication getAnnotation() {
+      return annotation;
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hash(name, annotation);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+      if (this == obj) {
+        return true;
+      }
+      if (obj == null) {
+        return false;
+      }
+      if (!(obj instanceof AnnotatedBean)) {
+        return false;
+      }
+      AnnotatedBean other = (AnnotatedBean) obj;
+      return Objects.equals(name, other.name) && Objects.equals(annotation, other.annotation);
+    }
+
+    @Override
+    public String toString() {
+      return "AnnotatedBean [name=" + name + ", annotation=" + annotation + "]";
     }
 
   }

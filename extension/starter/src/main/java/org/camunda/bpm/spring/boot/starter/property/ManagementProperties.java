@@ -22,6 +22,11 @@ public class ManagementProperties {
     this.health = health;
   }
 
+  @Override
+  public String toString() {
+    return "ManagementProperties [health=" + health + "]";
+  }
+
   public static class Health {
 
     private Camunda camunda = new Camunda();
@@ -39,6 +44,11 @@ public class ManagementProperties {
      */
     public void setCamunda(Camunda camunda) {
       this.camunda = camunda;
+    }
+
+    @Override
+    public String toString() {
+      return "Health [camunda=" + camunda + "]";
     }
 
     public class Camunda {
@@ -59,6 +69,12 @@ public class ManagementProperties {
         this.enabled = enabled;
       }
 
+      @Override
+      public String toString() {
+        return "Camunda [enabled=" + enabled + "]";
+      }
+
     }
   }
+
 }

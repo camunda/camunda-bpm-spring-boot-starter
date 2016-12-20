@@ -1,8 +1,5 @@
 package org.camunda.bpm.spring.boot.starter.property;
 
-import lombok.Data;
-import org.camunda.bpm.engine.ProcessEngineConfiguration;
-import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.springframework.util.Assert;
 
 import java.util.Arrays;
@@ -14,7 +11,6 @@ import static org.camunda.bpm.engine.ProcessEngineConfiguration.DB_SCHEMA_UPDATE
 import static org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl.DB_SCHEMA_UPDATE_CREATE;
 import static org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl.DB_SCHEMA_UPDATE_DROP_CREATE;
 
-@Data
 public class DatabaseProperty {
   public static final List<String> SCHEMA_UPDATE_VALUES = Arrays.asList(
     DB_SCHEMA_UPDATE_TRUE,
@@ -38,6 +34,10 @@ public class DatabaseProperty {
    */
   private String tablePrefix;
 
+  public String getSchemaUpdate() {
+    return schemaUpdate;
+  }
+
   /**
    * @param schemaUpdate the schemaUpdate to set
    */
@@ -45,4 +45,27 @@ public class DatabaseProperty {
     Assert.isTrue(SCHEMA_UPDATE_VALUES.contains(schemaUpdate), String.format("schemaUpdate: '%s' is not valid (%s)", schemaUpdate, SCHEMA_UPDATE_VALUES));
     this.schemaUpdate = schemaUpdate;
   }
+
+  public String getType() {
+    return type;
+  }
+
+  public void setType(String type) {
+    this.type = type;
+  }
+
+  public String getTablePrefix() {
+    return tablePrefix;
+  }
+
+  public void setTablePrefix(String tablePrefix) {
+    this.tablePrefix = tablePrefix;
+  }
+
+  @Override
+  public String toString() {
+    return "DatabaseProperty [schemaUpdate=" + schemaUpdate + ", type=" + type + ", tablePrefix="
+        + tablePrefix + "]";
+  }
+
 }

@@ -5,13 +5,13 @@ import javax.ws.rs.ApplicationPath;
 import org.camunda.bpm.engine.rest.impl.CamundaRestResources;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 
-import lombok.extern.slf4j.Slf4j;
-
 @ApplicationPath("/rest")
-@Slf4j
 public class CamundaJerseyResourceConfig extends ResourceConfig implements InitializingBean {
+
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(CamundaJerseyResourceConfig.class);
 
   @Override
   public void afterPropertiesSet() throws Exception {

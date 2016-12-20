@@ -8,18 +8,16 @@ import java.util.List;
 import org.camunda.bpm.engine.impl.history.HistoryLevel;
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 public class HistoryLevelDeterminatorJdbcTemplateImpl implements HistoryLevelDeterminator, InitializingBean {
+  
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(HistoryLevelDeterminatorJdbcTemplateImpl.class);
 
   public static HistoryLevelDeterminator createHistoryLevelDeterminator(CamundaBpmProperties camundaBpmProperties, JdbcTemplate jdbcTemplate) {
     final HistoryLevelDeterminatorJdbcTemplateImpl determinator = new HistoryLevelDeterminatorJdbcTemplateImpl();
@@ -35,21 +33,45 @@ public class HistoryLevelDeterminatorJdbcTemplateImpl implements HistoryLevelDet
   protected final List<HistoryLevel> historyLevels = new ArrayList<HistoryLevel>(Arrays.asList(new HistoryLevel[] { HistoryLevel.HISTORY_LEVEL_ACTIVITY,
       HistoryLevel.HISTORY_LEVEL_AUDIT, HistoryLevel.HISTORY_LEVEL_FULL, HistoryLevel.HISTORY_LEVEL_NONE }));
 
-  @Getter
-  @Setter
   protected String defaultHistoryLevel = new SpringProcessEngineConfiguration().getHistory();
 
-  @Getter
-  @Setter
   protected JdbcTemplate jdbcTemplate;
 
-  @Getter
-  @Setter
   protected boolean ignoreDataAccessException = true;
 
-  @Getter
-  @Setter
   protected CamundaBpmProperties camundaBpmProperties;
+
+  public String getDefaultHistoryLevel() {
+    return defaultHistoryLevel;
+  }
+
+  public void setDefaultHistoryLevel(String defaultHistoryLevel) {
+    this.defaultHistoryLevel = defaultHistoryLevel;
+  }
+
+  public JdbcTemplate getJdbcTemplate() {
+    return jdbcTemplate;
+  }
+
+  public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+    this.jdbcTemplate = jdbcTemplate;
+  }
+
+  public boolean isIgnoreDataAccessException() {
+    return ignoreDataAccessException;
+  }
+
+  public void setIgnoreDataAccessException(boolean ignoreDataAccessException) {
+    this.ignoreDataAccessException = ignoreDataAccessException;
+  }
+
+  public CamundaBpmProperties getCamundaBpmProperties() {
+    return camundaBpmProperties;
+  }
+
+  public void setCamundaBpmProperties(CamundaBpmProperties camundaBpmProperties) {
+    this.camundaBpmProperties = camundaBpmProperties;
+  }
 
   @Override
   public void afterPropertiesSet() throws Exception {

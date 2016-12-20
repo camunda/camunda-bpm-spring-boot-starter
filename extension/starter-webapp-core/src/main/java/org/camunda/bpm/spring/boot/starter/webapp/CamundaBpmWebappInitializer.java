@@ -28,18 +28,18 @@ import org.camunda.bpm.webapp.impl.engine.EngineRestApplication;
 import org.camunda.bpm.webapp.impl.security.auth.AuthenticationFilter;
 import org.camunda.bpm.welcome.impl.web.bootstrap.WelcomeContainerBootstrap;
 import org.glassfish.jersey.servlet.ServletContainer;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
-
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * Inspired by:
  * https://groups.google.com/forum/#!msg/camunda-bpm-users/BQHdcLIivzs
  * /iNVix8GkhYAJ (Christoph Berg)
  */
-@Slf4j
 public class CamundaBpmWebappInitializer implements ServletContextInitializer {
+
+  private static final Logger log = org.slf4j.LoggerFactory.getLogger(CamundaBpmWebappInitializer.class);
 
   private static final EnumSet<DispatcherType> DISPATCHER_TYPES = EnumSet.of(DispatcherType.REQUEST);
 

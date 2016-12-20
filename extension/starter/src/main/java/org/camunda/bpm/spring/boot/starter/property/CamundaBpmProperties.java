@@ -1,6 +1,5 @@
 package org.camunda.bpm.spring.boot.starter.property;
 
-import lombok.Data;
 import org.camunda.bpm.engine.ProcessEngines;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
@@ -13,7 +12,6 @@ import java.util.Set;
 import static org.springframework.core.io.support.ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX;
 
 @ConfigurationProperties(CamundaBpmProperties.PREFIX)
-@Data
 public class CamundaBpmProperties {
 
   public static final String PREFIX = "camunda.bpm";
@@ -115,4 +113,154 @@ public class CamundaBpmProperties {
 
   @NestedConfigurationProperty
   private FilterProperty filter = new FilterProperty();
+
+  public String getProcessEngineName() {
+    return processEngineName;
+  }
+
+  public void setProcessEngineName(String processEngineName) {
+    this.processEngineName = processEngineName;
+  }
+
+  public String getHistoryLevel() {
+    return historyLevel;
+  }
+
+  public void setHistoryLevel(String historyLevel) {
+    this.historyLevel = historyLevel;
+  }
+
+  public String getHistoryLevelDefault() {
+    return historyLevelDefault;
+  }
+
+  public void setHistoryLevelDefault(String historyLevelDefault) {
+    this.historyLevelDefault = historyLevelDefault;
+  }
+
+  public boolean isAutoDeploymentEnabled() {
+    return autoDeploymentEnabled;
+  }
+
+  public void setAutoDeploymentEnabled(boolean autoDeploymentEnabled) {
+    this.autoDeploymentEnabled = autoDeploymentEnabled;
+  }
+
+  public String[] getDeploymentResourcePattern() {
+    return deploymentResourcePattern;
+  }
+
+  public void setDeploymentResourcePattern(String[] deploymentResourcePattern) {
+    this.deploymentResourcePattern = deploymentResourcePattern;
+  }
+
+  public String getDefaultSerializationFormat() {
+    return defaultSerializationFormat;
+  }
+
+  public void setDefaultSerializationFormat(String defaultSerializationFormat) {
+    this.defaultSerializationFormat = defaultSerializationFormat;
+  }
+
+  public URL getLicenseFile() {
+    return licenseFile;
+  }
+
+  public void setLicenseFile(URL licenseFile) {
+    this.licenseFile = licenseFile;
+  }
+
+  public MetricsProperty getMetrics() {
+    return metrics;
+  }
+
+  public void setMetrics(MetricsProperty metrics) {
+    this.metrics = metrics;
+  }
+
+  public DatabaseProperty getDatabase() {
+    return database;
+  }
+
+  public void setDatabase(DatabaseProperty database) {
+    this.database = database;
+  }
+
+  public JpaProperty getJpa() {
+    return jpa;
+  }
+
+  public void setJpa(JpaProperty jpa) {
+    this.jpa = jpa;
+  }
+
+  public JobExecutionProperty getJobExecution() {
+    return jobExecution;
+  }
+
+  public void setJobExecution(JobExecutionProperty jobExecution) {
+    this.jobExecution = jobExecution;
+  }
+
+  public WebappProperty getWebapp() {
+    return webapp;
+  }
+
+  public void setWebapp(WebappProperty webapp) {
+    this.webapp = webapp;
+  }
+
+  public ApplicationProperty getApplication() {
+    return application;
+  }
+
+  public void setApplication(ApplicationProperty application) {
+    this.application = application;
+  }
+
+  public AuthorizationProperty getAuthorization() {
+    return authorization;
+  }
+
+  public void setAuthorization(AuthorizationProperty authorization) {
+    this.authorization = authorization;
+  }
+
+  public GenericProperties getGenericProperties() {
+    return genericProperties;
+  }
+
+  public void setGenericProperties(GenericProperties genericProperties) {
+    this.genericProperties = genericProperties;
+  }
+
+  public AdminUserProperty getAdminUser() {
+    return adminUser;
+  }
+
+  public void setAdminUser(AdminUserProperty adminUser) {
+    this.adminUser = adminUser;
+  }
+
+  public FilterProperty getFilter() {
+    return filter;
+  }
+
+  public void setFilter(FilterProperty filter) {
+    this.filter = filter;
+  }
+
+  @Override
+  public String toString() {
+    return "CamundaBpmProperties [processEngineName=" + processEngineName + ", historyLevel="
+        + historyLevel + ", historyLevelDefault=" + historyLevelDefault + ", autoDeploymentEnabled="
+        + autoDeploymentEnabled + ", deploymentResourcePattern="
+        + Arrays.toString(deploymentResourcePattern) + ", defaultSerializationFormat="
+        + defaultSerializationFormat + ", licenseFile=" + licenseFile + ", metrics=" + metrics
+        + ", database=" + database + ", jpa=" + jpa + ", jobExecution=" + jobExecution + ", webapp="
+        + webapp + ", application=" + application + ", authorization=" + authorization
+        + ", genericProperties=" + genericProperties + ", adminUser=" + adminUser + ", filter="
+        + filter + "]";
+  }
+
 }
