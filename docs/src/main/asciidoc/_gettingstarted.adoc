@@ -8,7 +8,7 @@ To enable camunda bpm auto configuration add the following dependency:
 .pom.xml
 ----
 <dependency>
-  <groupId>org.camunda.bpm.extension</groupId>
+  <groupId>org.camunda.bpm.extension.springboot</groupId>
   <artifactId>camunda-bpm-spring-boot-starter</artifactId>
   <version>{project-version}</version>
 </dependency>
