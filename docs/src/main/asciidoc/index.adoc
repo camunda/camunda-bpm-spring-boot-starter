@@ -171,13 +171,13 @@ public class MyCustomConfiguration extends AbstractCamundaConfiguration {
 
 == REST API
 
-To enable link:https://docs.camunda.org/manual/7.5/reference/rest/[REST API^] you can use
+To enable link:https://docs.camunda.org/manual/7.6/reference/rest/[REST API^] you can use
 
 [source,xml,subs="verbatim,attributes"]
 .pom.xml
 ----
 <dependency>
-  <groupId>org.camunda.bpm.extension</groupId>
+  <groupId>org.camunda.bpm.extension.springboot</groupId>
   <artifactId>camunda-bpm-spring-boot-starter-rest</artifactId>
   <version>{project-version}</version>
 </dependency>
@@ -212,7 +212,7 @@ To enable link:https://docs.camunda.org/manual/7.4/webapps/[Web Applications^]
 .pom.xml
 ----
 <dependency>
-  <groupId>org.camunda.bpm.extension</groupId>
+  <groupId>org.camunda.bpm.extension.springboot</groupId>
   <artifactId>camunda-bpm-spring-boot-starter-webapp</artifactId>
   <version>{project-version}</version>
 </dependency>
