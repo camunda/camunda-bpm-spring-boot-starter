@@ -8,7 +8,6 @@ import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,38 +26,7 @@ public final class CamundaSpringBootUtil {
   }
 
   public static SpringProcessEngineConfiguration springProcessEngineConfiguration() {
-    final SpringProcessEngineConfiguration configuration = new SpringProcessEngineConfiguration();
-    return init(configuration);
-  }
-
-  /**
-   * Initializes empty collections.
-   *
-   * @param configuration the configuration to modify
-   * @return the configuration
-   */
-  public static SpringProcessEngineConfiguration init(SpringProcessEngineConfiguration configuration) {
-    if (configuration.getProcessEnginePlugins() == null) {
-      configuration.setProcessEnginePlugins(new ArrayList<>());
-    }
-
-    if (configuration.getBatchHandlers() == null) {
-      configuration.setBatchHandlers(new HashMap<>());
-    }
-
-    if (configuration.getBeans() == null) {
-      configuration.setBeans(new HashMap<>());
-    }
-
-    if (configuration.getCommandCheckers() == null) {
-      configuration.setCommandCheckers(new ArrayList<>());
-    }
-
-    if (configuration.getCustomPostBPMNParseListeners() == null) {
-      configuration.setCustomPostBPMNParseListeners(new ArrayList<>());
-    }
-
-    return configuration;
+    return new SpringProcessEngineConfiguration();
   }
 
   public static Optional<ProcessEngineImpl> processEngineImpl(ProcessEngine processEngine) {
