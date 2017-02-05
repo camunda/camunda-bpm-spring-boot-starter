@@ -13,7 +13,7 @@
 
   <properties>
     <camunda-bpm-assert.version>2.0-alpha1</camunda-bpm-assert.version>
-    <camunda-bpm-mockito.version>2.2</camunda-bpm-mockito.version>
+    <camunda-bpm-mockito.version>3.0.0</camunda-bpm-mockito.version>
   </properties>
 
   <dependencies>
@@ -37,7 +37,7 @@
     </dependency>
 
     <dependency>
-      <groupId>org.camunda.bpm.extension</groupId>
+      <groupId>org.camunda.bpm.extension.mockito</groupId>
       <artifactId>camunda-bpm-mockito</artifactId>
       <version>${camunda-bpm-mockito.version}</version>
     </dependency>
