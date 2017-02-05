@@ -45,17 +45,9 @@
       <scope>test</scope>
     </dependency>
 
-
     <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-test</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.assertj</groupId>
-      <artifactId>assertj-core</artifactId>
-      <scope>test</scope>
+      <artifactId>camunda-bpm-spring-boot-starter-test</artifactId>
+      <groupId>${project.groupId}</groupId>
     </dependency>
 
     <dependency>
@@ -79,26 +71,4 @@
     </dependency>
 
   </dependencies>
-
-  <build>
-    <plugins>
-      <!--plugin>
-        <groupId>org.camunda.bpm.extension.springboot.maven</groupId>
-        <artifactId>camunda-bpm-spring-boot-webjar-maven-plugin</artifactId>
-        <version>${project.version}</version>
-        <configuration>
-          <webJarOutputDirectory>${project.build.testOutputDirectory}</webJarOutputDirectory>
-        </configuration>
-        <executions>
-          <execution>
-            <id>create-webjar</id>
-            <phase>generate-test-resources</phase>
-            <goals>
-              <goal>create</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin-->
-    </plugins>
-  </build>
 </project>
