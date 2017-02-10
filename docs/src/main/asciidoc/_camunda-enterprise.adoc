@@ -12,4 +12,5 @@ If using enterprise, you can also use the `camunda.bpm.license-file` property to
 that is inserted on application start. Or copy your license file under the name `camunda-license.txt`
  to your `src/main/resources`.
 
+Attention: due to the nature of the maven build plugin, using the enterprise edition webjar is currently not supported if you use gradle!
 
