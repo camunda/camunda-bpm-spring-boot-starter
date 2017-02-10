@@ -9,9 +9,12 @@ import org.camunda.bpm.engine.authorization.Resources;
 import org.camunda.bpm.engine.identity.Group;
 import org.camunda.bpm.engine.identity.User;
 import org.camunda.bpm.engine.impl.persistence.entity.AuthorizationEntity;
+import org.camunda.bpm.spring.boot.starter.property.AdminUserProperty;
 import org.springframework.beans.BeanUtils;
 
 import javax.annotation.PostConstruct;
+import java.util.Collections;
+import java.util.Optional;
 
 import static java.util.Objects.requireNonNull;
 import static org.camunda.bpm.engine.authorization.Authorization.ANY;
@@ -25,11 +28,15 @@ public class CreateAdminUserConfiguration extends AbstractCamundaConfiguration {
 
   @PostConstruct
   void init() {
-    adminUser = requireNonNull(camundaBpmProperties.getAdminUser(), "adminUser not configured!").init();
+    adminUser = Optional.ofNullable(camundaBpmProperties.getAdminUser())
+      .map(AdminUserProperty::init)
+      .orElseThrow(fail("adminUser not configured!"));
   }
 
   @Override
   public void postProcessEngineBuild(final ProcessEngine processEngine) {
+    requireNonNull(adminUser);
+
     final IdentityService identityService = processEngine.getIdentityService();
     final AuthorizationService authorizationService = processEngine.getAuthorizationService();
 
@@ -81,4 +88,8 @@ public class CreateAdminUserConfiguration extends AbstractCamundaConfiguration {
     return newUser;
   }
 
+  @Override
+  public String toString() {
+    return createToString(Collections.singletonMap("adminUser", adminUser));
+  }
 }
