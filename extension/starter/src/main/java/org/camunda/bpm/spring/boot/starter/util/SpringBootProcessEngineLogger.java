@@ -1,14 +1,12 @@
 package org.camunda.bpm.spring.boot.starter.util;
 
 import org.camunda.bpm.engine.filter.Filter;
-import org.springframework.core.io.Resource;
 import org.camunda.bpm.engine.identity.User;
 import org.camunda.commons.logging.BaseLogger;
+import org.springframework.core.io.Resource;
 
 import java.net.URL;
-import java.util.Arrays;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class SpringBootProcessEngineLogger extends BaseLogger {
   static final String PROJECT_CODE = "STARTER";
