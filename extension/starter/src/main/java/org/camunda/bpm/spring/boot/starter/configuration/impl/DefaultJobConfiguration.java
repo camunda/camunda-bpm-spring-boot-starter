@@ -21,7 +21,7 @@ import java.util.List;
 import static org.camunda.bpm.spring.boot.starter.util.CamundaSpringBootUtil.join;
 
 /**
- * Prepares JobExecutor and registeres all known custom JobHandlers.
+ * Prepares JobExecutor and registers all known custom JobHandlers.
  */
 public class DefaultJobConfiguration extends AbstractCamundaConfiguration implements CamundaJobConfiguration {
 
