@@ -6,8 +6,8 @@ import org.springframework.boot.SpringApplication;
 
 @org.springframework.boot.autoconfigure.SpringBootApplication
 @ProcessApplication
-public class SpringBootApplication {
+public class EnterpriseWebappExampleApplication {
     public static void main(String[] args) {
-        SpringApplication.run(SpringBootApplication.class, args);
+        SpringApplication.run(EnterpriseWebappExampleApplication.class, args);
     }
 }
