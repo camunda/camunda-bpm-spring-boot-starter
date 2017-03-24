@@ -9,4 +9,4 @@ It is designed for camunda enterprise edition. To access the camunda enterprise 
 
 Also, you will need a valid license key.
 
-Run from the command line with `gradle bootRun`.
+Build from the command line with `./gradlew clean build` and run with `./gradlew bootRun`.
