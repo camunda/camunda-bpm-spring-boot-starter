@@ -1,4 +1,4 @@
-package de.holisticon.camunda.spring.boot.example.gradle;
+package org.camunda.bpm.spring.boot.example.webapp.ee.gradle;
 
 
 import org.camunda.bpm.application.ProcessApplication;
