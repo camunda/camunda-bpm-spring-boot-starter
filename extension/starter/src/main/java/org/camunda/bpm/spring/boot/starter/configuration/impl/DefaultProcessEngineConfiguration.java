@@ -1,5 +1,6 @@
 package org.camunda.bpm.spring.boot.starter.configuration.impl;
 
+import org.camunda.bpm.engine.impl.persistence.StrongUuidGenerator;
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaProcessEngineConfiguration;
 import org.springframework.util.StringUtils;
@@ -21,6 +22,8 @@ public class DefaultProcessEngineConfiguration extends AbstractCamundaConfigurat
     } else {
       logger.warn("Ignoring invalid defaultSerializationFormat='{}'", defaultSerializationFormat);
     }
+    
+    configuration.setIdGenerator(new StrongUuidGenerator());
   }
 
 }

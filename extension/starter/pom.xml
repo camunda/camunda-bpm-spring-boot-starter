@@ -73,6 +73,10 @@
       <groupId>${project.groupId}</groupId>
     </dependency>
     <dependency>
+      <groupId>com.fasterxml.uuid</groupId>
+      <artifactId>java-uuid-generator</artifactId>
+    </dependency>
+    <dependency>
       <groupId>javax.transaction</groupId>
       <artifactId>javax.transaction-api</artifactId>
       <scope>test</scope>
