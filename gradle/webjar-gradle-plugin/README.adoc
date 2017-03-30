@@ -31,6 +31,16 @@ buildscript {
 
 apply plugin: 'camunda-webjar-plugin'
 
+camundaWebjarPlugin {
+  camundaVersion = "7.6.3-ee"
+}
+
+...
+
+dependencies {
+  compile 'org.camunda.bpm.webapp:camunda-webapp-ee-plugins:7.6.3-ee:classes'
+}
+
 ...
 
 jar.dependsOn resolveCamundaEnterpriseWebjar
