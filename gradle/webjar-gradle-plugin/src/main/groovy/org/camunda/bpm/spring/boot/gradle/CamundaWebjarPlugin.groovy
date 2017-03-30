@@ -6,19 +6,19 @@ import org.gradle.api.Project
 class CamundaWebjarPlugin implements Plugin<Project> {
 
   void apply(Project project) {
+    def myExt = project.extensions.create("camundaWebjarPlugin", CamundaWebjarPluginExtension)
+
     project.configurations {
-      camundaEE
-    }
-    project.dependencies {
-      camundaEE 'org.camunda.bpm.webapp:camunda-webapp-ee-plugins:7.6.3-ee@war'
-      compile 'org.camunda.bpm.webapp:camunda-webapp-ee-plugins:7.6.3-ee:classes'
+      camundaEE {
+        extendsFrom compile
+      }
     }
 
     project.task("resolveCamundaEnterpriseWebjar") {
-      dependsOn:
-      project.configurations.camundaEE
 
       doLast {
+        project.configurations.camundaEE.dependencies.add(project.dependencies.create("org.camunda.bpm.webapp:camunda-webapp-ee-plugins:$myExt.camundaVersion@war"))
+
         project.copy {
           from project.configurations.camundaEE.collect { project.zipTree(it) }
           into "$project.buildDir/resources/main"
@@ -35,4 +35,8 @@ class CamundaWebjarPlugin implements Plugin<Project> {
       }
     }
   }
+}
+
+class CamundaWebjarPluginExtension {
+  String camundaVersion
 }
