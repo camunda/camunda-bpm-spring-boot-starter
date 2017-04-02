@@ -5,7 +5,7 @@
 |===
 |Prefix | Property name |Description | Default value
 4+|**General**
-.8+|`{properties-prefix}`
+.9+|`{properties-prefix}`
 
 |`.process-engine-name`
 |name of the process engine
@@ -31,6 +31,9 @@
 |Provide an URL to your camunda license file and is automatically inserted to the DB when the application starts (but only if no license key is found in the DB).
 |-
 
+|`.id-generator`
+|configure idGenerator. Allowed values: `simple`, `strong`
+|`simple`
 
 |`.version`
 |version of the process engine
@@ -39,6 +42,7 @@
 |`.formatted-version`
 |formatted version of the process engine
 |read only value e.g. (v7.4.0)
+
 
 4+|**Job Execution**
 .5+|`{properties-prefix}.job-execution`
