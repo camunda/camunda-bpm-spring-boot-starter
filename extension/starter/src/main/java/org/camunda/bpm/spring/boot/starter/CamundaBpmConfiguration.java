@@ -15,6 +15,7 @@ import org.camunda.bpm.spring.boot.starter.configuration.CamundaJpaConfiguration
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaMetricsConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.condition.NeedsHistoryAutoConfigurationCondition;
+import org.camunda.bpm.spring.boot.starter.configuration.id.IdGeneratorConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.CreateAdminUserConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.CreateFilterConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultAuthorizationConfiguration;
@@ -46,7 +47,10 @@ import java.util.List;
 
 import static org.camunda.bpm.spring.boot.starter.jdbc.HistoryLevelDeterminatorJdbcTemplateImpl.createHistoryLevelDeterminator;
 
-@Import(JobConfiguration.class)
+@Import({
+  JobConfiguration.class,
+  IdGeneratorConfiguration.class
+})
 public class CamundaBpmConfiguration {
 
   @Bean
@@ -158,8 +162,8 @@ public class CamundaBpmConfiguration {
   }
 
   @Bean
-  @ConditionalOnProperty(prefix = "camunda.bpm.filter", name ="create")
-  public CreateFilterConfiguration createFilterConfiguration(){
+  @ConditionalOnProperty(prefix = "camunda.bpm.filter", name = "create")
+  public CreateFilterConfiguration createFilterConfiguration() {
     return new CreateFilterConfiguration();
   }
 }
