@@ -7,9 +7,8 @@ import org.camunda.bpm.spring.boot.starter.configuration.CamundaFailedJobConfigu
 
 import java.util.ArrayList;
 
-
 /**
- * Register parselistener to setup failed job retry specification
+ * Register parseListener to setup failed job retry specification.
  */
 public class DefaultFailedJobConfiguration extends AbstractCamundaConfiguration implements CamundaFailedJobConfiguration {
 

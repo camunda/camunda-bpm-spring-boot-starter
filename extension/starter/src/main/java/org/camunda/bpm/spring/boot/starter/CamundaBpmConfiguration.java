@@ -34,6 +34,7 @@ import org.camunda.bpm.spring.boot.starter.configuration.impl.GenericPropertiesC
 import org.camunda.bpm.spring.boot.starter.jdbc.HistoryLevelDeterminator;
 import org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties;
 import org.camunda.bpm.spring.boot.starter.util.CamundaBpmVersion;
+import org.camunda.bpm.spring.boot.starter.util.CamundaSpringBootUtil;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -56,7 +57,7 @@ public class CamundaBpmConfiguration {
   @Bean
   @ConditionalOnMissingBean(ProcessEngineConfigurationImpl.class)
   public ProcessEngineConfigurationImpl processEngineConfigurationImpl(List<ProcessEnginePlugin> processEnginePlugins) {
-    final SpringProcessEngineConfiguration configuration = new SpringProcessEngineConfiguration();
+    final SpringProcessEngineConfiguration configuration = CamundaSpringBootUtil.springProcessEngineConfiguration();
 
 
     configuration.getProcessEnginePlugins().add(new CompositeProcessEnginePlugin(processEnginePlugins));
