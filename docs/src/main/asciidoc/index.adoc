@@ -2,6 +2,14 @@
 
 == What is camunda-bpm-spring-boot-starter?
 
+Spring starters allow to enable behavior of your spring-boot application by adding dependencies
+to the classpath.
+
+These starters will pre-configure camunda process engine, rest-api and webapp so
+they can easily be used in a standalone process application.
+
+
+include::_known-issues.adoc[]
 
 include::_gettingstarted.adoc[]
 

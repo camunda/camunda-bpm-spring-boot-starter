@@ -1,13 +1,12 @@
 package org.camunda.bpm.spring.boot.starter.util;
 
-import org.springframework.core.io.Resource;
+import org.camunda.bpm.engine.filter.Filter;
 import org.camunda.bpm.engine.identity.User;
 import org.camunda.commons.logging.BaseLogger;
+import org.springframework.core.io.Resource;
 
 import java.net.URL;
-import java.util.Arrays;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class SpringBootProcessEngineLogger extends BaseLogger {
   static final String PROJECT_CODE = "STARTER";
@@ -22,6 +21,10 @@ public class SpringBootProcessEngineLogger extends BaseLogger {
 
   public void skipAdminUserCreation(User existingUser) {
     logInfo("011", "skip creating initital Admin User, user does exist: {}", existingUser);
+  }
+
+  public void createInitialFilter(Filter filter) {
+    logInfo("015", "create initial filter: id={} name={}", filter.getId(), filter.getName());
   }
 
   public void skipAutoDeployment() {

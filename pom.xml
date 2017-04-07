@@ -24,7 +24,7 @@
   </modules>
 
   <properties>
-    <spring-boot.version>1.4.3.RELEASE</spring-boot.version>
+    <spring-boot.version>1.5.2.RELEASE</spring-boot.version>
     <camunda.version>7.6.0</camunda.version>
 
     <version.java>1.8</version.java>
@@ -139,13 +139,4 @@
     </repository>
   </repositories>
 
-  <!-- requires enterprise credentials and license key -->
-  <profiles>
-    <profile>
-      <id>ee</id>
-      <modules>
-        <module>examples/example-webapp-ee</module>
-      </modules>
-    </profile>
-  </profiles>
 </project>
