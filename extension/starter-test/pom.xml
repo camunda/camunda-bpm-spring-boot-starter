@@ -12,7 +12,6 @@
   <artifactId>camunda-bpm-spring-boot-starter-test</artifactId>
 
   <properties>
-    <camunda-bpm-assert.version>2.0-alpha1</camunda-bpm-assert.version>
     <camunda-bpm-mockito.version>3.1.0</camunda-bpm-mockito.version>
   </properties>
 
@@ -22,18 +21,6 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>compile</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.camunda.bpm.extension</groupId>
-      <artifactId>camunda-bpm-assert</artifactId>
-      <version>${camunda-bpm-assert.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.assertj</groupId>
-          <artifactId>assertj-core</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
 
     <dependency>
