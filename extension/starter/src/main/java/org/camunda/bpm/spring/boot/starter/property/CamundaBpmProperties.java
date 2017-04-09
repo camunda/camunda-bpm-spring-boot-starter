@@ -261,7 +261,6 @@ public class CamundaBpmProperties {
     this.idGenerator = idGenerator;
   }
 
-
   @Override
   public String toString() {
     return "CamundaBpmProperties ["
