@@ -1,0 +1,47 @@
+## webjar gradle plugin
+
+[NOTE]
+====
+allows generation and customizing of required webjar files during build
+====
+
+### Configuration
+
+### Usage
+
+Include the following into your `build.gradle`
+
+Include the plugin in your `build/plugins`section:
+
+[[app-listing]]
+[source,groovy]
+----
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'org.camunda.bpm.extension.springboot.gradle:camunda-bpm-spring-boot-webjar-gradle-plugin:2.1.0-SNAPSHOT'
+    }
+}
+
+...
+
+apply plugin: 'camunda-webjar-plugin'
+
+camundaWebjarPlugin {
+  camundaVersion = "7.6.3-ee"
+}
+
+...
+
+dependencies {
+  compile 'org.camunda.bpm.webapp:camunda-webapp-ee-plugins:7.6.3-ee:classes'
+}
+
+...
+
+jar.dependsOn resolveCamundaEnterpriseWebjar
+----

@@ -1,0 +1,29 @@
+group='org.camunda.bpm.extension.springboot.gradle'
+version='1.0.0-SNAPSHOT'
+
+apply plugin: 'groovy'
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  compile gradleApi(), localGroovy()
+  testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+task copyPluginClasses() {
+  doLast {
+    copy {
+      from zipTree("$buildDir/libs/camunda-bpm-spring-boot-webjar-gradle-plugin-1.0.0-SNAPSHOT.jar")
+      into "$buildDir/unpacked"
+    }
+
+    copy {
+      from "$buildDir/unpacked/org/"
+      into "$buildDir/../target/classes/org/"
+    }
+  }
+}
+
+build.dependsOn copyPluginClasses
