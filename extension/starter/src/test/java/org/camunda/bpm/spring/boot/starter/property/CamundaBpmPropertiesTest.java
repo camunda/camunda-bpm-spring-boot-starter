@@ -1,13 +1,12 @@
 package org.camunda.bpm.spring.boot.starter.property;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.camunda.bpm.engine.ProcessEngineConfiguration;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
-import org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class CamundaBpmPropertiesTest {
 
@@ -30,14 +29,14 @@ public class CamundaBpmPropertiesTest {
 
   @Test
   public void restrict_allowed_values_for_dbUpdate() {
-    thrown.expect(IllegalArgumentException.class);
-    thrown.expectMessage("foo");
-
     new CamundaBpmProperties().getDatabase().setSchemaUpdate(ProcessEngineConfiguration.DB_SCHEMA_UPDATE_TRUE);
     new CamundaBpmProperties().getDatabase().setSchemaUpdate(ProcessEngineConfiguration.DB_SCHEMA_UPDATE_FALSE);
     new CamundaBpmProperties().getDatabase().setSchemaUpdate(ProcessEngineConfigurationImpl.DB_SCHEMA_UPDATE_CREATE);
     new CamundaBpmProperties().getDatabase().setSchemaUpdate(ProcessEngineConfiguration.DB_SCHEMA_UPDATE_CREATE_DROP);
     new CamundaBpmProperties().getDatabase().setSchemaUpdate(ProcessEngineConfigurationImpl.DB_SCHEMA_UPDATE_DROP_CREATE);
+
+    thrown.expect(IllegalArgumentException.class);
+    thrown.expectMessage("foo");
 
     new CamundaBpmProperties().getDatabase().setSchemaUpdate("foo");
   }

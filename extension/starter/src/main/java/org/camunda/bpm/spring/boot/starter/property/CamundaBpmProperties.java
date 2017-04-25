@@ -1,6 +1,7 @@
 package org.camunda.bpm.spring.boot.starter.property;
 
 import org.camunda.bpm.engine.ProcessEngines;
+import org.camunda.bpm.spring.boot.starter.configuration.id.IdGeneratorConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
@@ -38,6 +39,8 @@ public class CamundaBpmProperties {
    * name of the process engine
    */
   private String processEngineName = ProcessEngines.NAME_DEFAULT;
+
+  private String idGenerator = IdGeneratorConfiguration.SIMPLE;
 
   /**
    * the history level to use
@@ -250,17 +253,36 @@ public class CamundaBpmProperties {
     this.filter = filter;
   }
 
+  public String getIdGenerator() {
+    return idGenerator;
+  }
+
+  public void setIdGenerator(String idGenerator) {
+    this.idGenerator = idGenerator;
+  }
+
   @Override
   public String toString() {
-    return "CamundaBpmProperties [processEngineName=" + processEngineName + ", historyLevel="
-        + historyLevel + ", historyLevelDefault=" + historyLevelDefault + ", autoDeploymentEnabled="
-        + autoDeploymentEnabled + ", deploymentResourcePattern="
-        + Arrays.toString(deploymentResourcePattern) + ", defaultSerializationFormat="
-        + defaultSerializationFormat + ", licenseFile=" + licenseFile + ", metrics=" + metrics
-        + ", database=" + database + ", jpa=" + jpa + ", jobExecution=" + jobExecution + ", webapp="
-        + webapp + ", application=" + application + ", authorization=" + authorization
-        + ", genericProperties=" + genericProperties + ", adminUser=" + adminUser + ", filter="
-        + filter + "]";
+    return "CamundaBpmProperties ["
+      + "processEngineName=" + processEngineName
+      + ", historyLevel=" + historyLevel
+      + ", historyLevelDefault=" + historyLevelDefault
+      + ", autoDeploymentEnabled=" + autoDeploymentEnabled
+      + ", deploymentResourcePattern=" + Arrays.toString(deploymentResourcePattern)
+      + ", defaultSerializationFormat=" + defaultSerializationFormat
+      + ", licenseFile=" + licenseFile
+      + ", metrics=" + metrics
+      + ", database=" + database
+      + ", jpa=" + jpa
+      + ", jobExecution=" + jobExecution
+      + ", webapp=" + webapp
+      + ", application=" + application
+      + ", authorization=" + authorization
+      + ", genericProperties=" + genericProperties
+      + ", adminUser=" + adminUser
+      + ", filter=" + filter
+      + ", idGenerator=" + idGenerator
+      + "]";
   }
 
 }

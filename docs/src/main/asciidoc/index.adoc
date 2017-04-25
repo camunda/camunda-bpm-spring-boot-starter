@@ -2,6 +2,14 @@
 
 == What is camunda-bpm-spring-boot-starter?
 
+Spring starters allow to enable behavior of your spring-boot application by adding dependencies
+to the classpath.
+
+These starters will pre-configure camunda process engine, rest-api and webapp so
+they can easily be used in a standalone process application.
+
+
+include::_known-issues.adoc[]
 
 include::_gettingstarted.adoc[]
 
@@ -169,39 +177,7 @@ public class MyCustomConfiguration extends AbstractCamundaConfiguration {
 }
 ----
 
-== REST API
-
-To enable link:https://docs.camunda.org/manual/7.6/reference/rest/[REST API^] you can use
-
-[source,xml,subs="verbatim,attributes"]
-.pom.xml
-----
-<dependency>
-  <groupId>org.camunda.bpm.extension.springboot</groupId>
-  <artifactId>camunda-bpm-spring-boot-starter-rest</artifactId>
-  <version>{project-version}</version>
-</dependency>
-----
-
-By default the application path is `rest`.
-
-Because we are using jersey one can use spring boot's link:http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html[common application properties]. For example to change the application path use `spring.jersey.application-path=myapplicationpath`.
-
-To modify the configuration or register additional resources one can provide a bean which extends from `org.camunda.bpm.spring.boot.starter.rest.CamundaJerseyResourceConfig`:
-
-[source,java]
-----
-@Component
-@ApplicationPath("/rest")
-public class JerseyConfig extends CamundaJerseyResourceConfig {
-
-  @Override
-  protected void registerAdditionalResources() {
-    register(...);
-  }
-
-}
-----
+include::_using-rest-api.adoc[]
 
 == Web Applications
 

@@ -3,23 +3,25 @@ package org.camunda.bpm.spring.boot.starter.configuration.impl;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.camunda.bpm.engine.ProcessEngines;
+import org.camunda.bpm.engine.impl.cfg.IdGenerator;
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.util.Optional;
+
 public class DefaultProcessEngineConfigurationTest {
 
   private final DefaultProcessEngineConfiguration instance = new DefaultProcessEngineConfiguration();
-
   private final SpringProcessEngineConfiguration configuration = new SpringProcessEngineConfiguration();
-
   private final CamundaBpmProperties properties = new CamundaBpmProperties();
 
   @Before
   public void setUp() throws Exception {
     ReflectionTestUtils.setField(instance, "camundaBpmProperties", properties);
+    initIdGenerator(null);
   }
 
   @Test
@@ -69,5 +71,9 @@ public class DefaultProcessEngineConfigurationTest {
     properties.setDefaultSerializationFormat(" ");
     instance.preInit(configuration);
     assertThat(configuration.getDefaultSerializationFormat()).isEqualTo(defaultSerializationFormat);
+  }
+
+  private void initIdGenerator(IdGenerator idGenerator) {
+    ReflectionTestUtils.setField(instance, "idGenerator", Optional.ofNullable(idGenerator));
   }
 }

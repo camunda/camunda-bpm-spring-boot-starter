@@ -15,6 +15,7 @@ import org.camunda.bpm.spring.boot.starter.configuration.CamundaJpaConfiguration
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaMetricsConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.condition.NeedsHistoryAutoConfigurationCondition;
+import org.camunda.bpm.spring.boot.starter.configuration.id.IdGeneratorConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.CreateAdminUserConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.CreateFilterConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultAuthorizationConfiguration;
@@ -33,6 +34,7 @@ import org.camunda.bpm.spring.boot.starter.configuration.impl.GenericPropertiesC
 import org.camunda.bpm.spring.boot.starter.jdbc.HistoryLevelDeterminator;
 import org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties;
 import org.camunda.bpm.spring.boot.starter.util.CamundaBpmVersion;
+import org.camunda.bpm.spring.boot.starter.util.CamundaSpringBootUtil;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -46,13 +48,16 @@ import java.util.List;
 
 import static org.camunda.bpm.spring.boot.starter.jdbc.HistoryLevelDeterminatorJdbcTemplateImpl.createHistoryLevelDeterminator;
 
-@Import(JobConfiguration.class)
+@Import({
+  JobConfiguration.class,
+  IdGeneratorConfiguration.class
+})
 public class CamundaBpmConfiguration {
 
   @Bean
   @ConditionalOnMissingBean(ProcessEngineConfigurationImpl.class)
   public ProcessEngineConfigurationImpl processEngineConfigurationImpl(List<ProcessEnginePlugin> processEnginePlugins) {
-    final SpringProcessEngineConfiguration configuration = new SpringProcessEngineConfiguration();
+    final SpringProcessEngineConfiguration configuration = CamundaSpringBootUtil.springProcessEngineConfiguration();
 
 
     configuration.getProcessEnginePlugins().add(new CompositeProcessEnginePlugin(processEnginePlugins));
@@ -158,8 +163,8 @@ public class CamundaBpmConfiguration {
   }
 
   @Bean
-  @ConditionalOnProperty(prefix = "camunda.bpm.filter", name ="create")
-  public CreateFilterConfiguration createFilterConfiguration(){
+  @ConditionalOnProperty(prefix = "camunda.bpm.filter", name = "create")
+  public CreateFilterConfiguration createFilterConfiguration() {
     return new CreateFilterConfiguration();
   }
 }
