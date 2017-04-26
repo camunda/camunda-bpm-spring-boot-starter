@@ -1,6 +1,6 @@
 
 
-INFO https://github.com/camunda/camunda-bpm-spring-boot-starter/milestone/6?closed=1[Milestone 2.1.0]
+INFO link:https://github.com/camunda/camunda-bpm-spring-boot-starter/milestone/6?closed=1[Milestone 2.1.0]
 
 
 Version 2.1.0 requires:
@@ -8,3 +8,15 @@ Version 2.1.0 requires:
 * Java 8
 * Spring Boot 1.5.x (1.4 supported)
 * Camunda 7.6.0
+
+*Features*
+
+* configurable idGenerators
+* support of spring boot 1.5.x
+* create default filter only if it does not exist
+* webapp-ee plugin for gradle
+
+*Fixes*
+
+* Init only custom collections in processengineConfiguration to avoid breaking default behavior
+* remove lombok
