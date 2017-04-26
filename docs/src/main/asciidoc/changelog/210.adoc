@@ -1,6 +1,6 @@
 
 
-INFO https://github.com/camunda/camunda-bpm-spring-boot-starter/milestone/6?closed=1[Release Notes 2.1.0]
+INFO https://github.com/camunda/camunda-bpm-spring-boot-starter/milestone/6?closed=1[Milestone 2.1.0]
 
 
 Version 2.1.0 requires:
