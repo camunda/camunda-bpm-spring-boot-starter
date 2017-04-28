@@ -9,7 +9,7 @@ class CamundaWebjarPlugin implements Plugin<Project> {
     def myExt = project.extensions.create("camundaWebjarPlugin", CamundaWebjarPluginExtension)
 
     project.configurations {
-      extendsFrom compile
+      camundaEE
     }
 
     project.task("resolveCamundaEnterpriseWebjar") {
