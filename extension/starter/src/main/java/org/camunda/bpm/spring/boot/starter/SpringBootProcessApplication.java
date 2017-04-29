@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.Resource;
 
+import javax.servlet.ServletContext;
 import java.util.Optional;
 import java.util.Set;
 
@@ -43,11 +44,14 @@ public class SpringBootProcessApplication extends SpringProcessApplication {
   @Value("${spring.application.name:null}")
   protected Optional<String> springApplicationName;
 
-  @Value("${server.contextPath:/}")
+  @Value("${server.contextPath:}")
   protected String contextPath;
 
   @Autowired
   protected ProcessEngine processEngine;
+
+  @Autowired
+  private ServletContext servletContext;
 
   @Override
   public void afterPropertiesSet() throws Exception {
@@ -57,7 +61,15 @@ public class SpringBootProcessApplication extends SpringProcessApplication {
 
     RuntimeContainerDelegate.INSTANCE.get().registerProcessEngine(processEngine);
 
-    properties.put(PROP_SERVLET_CONTEXT_PATH, contextPath);
+    if (contextPath.isEmpty()) {
+      if (servletContext.getContextPath().isEmpty()) {
+        this.properties.put(PROP_SERVLET_CONTEXT_PATH, "/");
+      } else {
+        this.properties.put(PROP_SERVLET_CONTEXT_PATH, servletContext.getContextPath());
+      }
+    } else {
+      this.properties.put(PROP_SERVLET_CONTEXT_PATH, this.contextPath);
+    }
     super.afterPropertiesSet();
   }
 
