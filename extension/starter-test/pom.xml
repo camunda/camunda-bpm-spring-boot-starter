@@ -14,7 +14,7 @@
   <properties>
     <camunda-bpm-mockito.version>3.1.0</camunda-bpm-mockito.version>
 
-    <camunda-assert.version>2.0-alpha1</camunda-assert.version>
+    <camunda-assert.version>2.0-alpha2</camunda-assert.version>
     <camunda-assert.sources>${project.build.directory}/camunda-bpm-assert</camunda-assert.sources>
   </properties>
 
