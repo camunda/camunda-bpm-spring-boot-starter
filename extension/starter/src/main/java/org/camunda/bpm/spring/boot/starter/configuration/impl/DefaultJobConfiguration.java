@@ -1,5 +1,9 @@
 package org.camunda.bpm.spring.boot.starter.configuration.impl;
 
+import static org.camunda.bpm.spring.boot.starter.util.CamundaSpringBootUtil.join;
+
+import java.util.List;
+
 import org.camunda.bpm.engine.impl.jobexecutor.CallerRunsRejectedJobsHandler;
 import org.camunda.bpm.engine.impl.jobexecutor.JobExecutor;
 import org.camunda.bpm.engine.impl.jobexecutor.JobHandler;
@@ -8,6 +12,7 @@ import org.camunda.bpm.engine.spring.components.jobexecutor.SpringJobExecutor;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaJobConfiguration;
 import org.camunda.bpm.spring.boot.starter.event.JobExecutorStartingEventListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -15,10 +20,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-
-import java.util.List;
-
-import static org.camunda.bpm.spring.boot.starter.util.CamundaSpringBootUtil.join;
 
 /**
  * Prepares JobExecutor and registers all known custom JobHandlers.
@@ -55,10 +56,12 @@ public class DefaultJobConfiguration extends AbstractCamundaConfiguration implem
 
   public static class JobConfiguration {
 
-    @Bean
-    @ConditionalOnMissingBean(TaskExecutor.class)
+    public static final String CAMUNDA_TASK_EXECUTOR_QUALIFIER = "camundaTaskExecutor";
+
+    @Bean(name = CAMUNDA_TASK_EXECUTOR_QUALIFIER)
+    @ConditionalOnMissingBean(name = CAMUNDA_TASK_EXECUTOR_QUALIFIER)
     @ConditionalOnProperty(prefix = "camunda.bpm.job-execution", name = "enabled", havingValue = "true", matchIfMissing = true)
-    public static TaskExecutor taskExecutor(@Value("${camunda.bpm.job-execution.core-pool-size:1}") int corePoolSize) {
+    public static TaskExecutor camundaTaskExecutor(@Value("${camunda.bpm.job-execution.core-pool-size:1}") int corePoolSize) {
       final ThreadPoolTaskExecutor threadPoolTaskExecutor = new ThreadPoolTaskExecutor();
 
       if (corePoolSize > 1) {
@@ -72,11 +75,10 @@ public class DefaultJobConfiguration extends AbstractCamundaConfiguration implem
     @Bean
     @ConditionalOnMissingBean(JobExecutor.class)
     @ConditionalOnProperty(prefix = "camunda.bpm.job-execution", name = "enabled", havingValue = "true", matchIfMissing = true)
-    public static JobExecutor jobExecutor(final TaskExecutor taskExecutor) {
+    public static JobExecutor jobExecutor(@Qualifier(CAMUNDA_TASK_EXECUTOR_QUALIFIER) final TaskExecutor taskExecutor) {
       final SpringJobExecutor springJobExecutor = new SpringJobExecutor();
       springJobExecutor.setTaskExecutor(taskExecutor);
       springJobExecutor.setRejectedJobsHandler(new CallerRunsRejectedJobsHandler());
-
 
       return springJobExecutor;
     }

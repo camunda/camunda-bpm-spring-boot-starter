@@ -86,7 +86,7 @@ Applies the job execution properties to the process engine.
 To have more control about the execution itself you can provide your own
 
 - `org.camunda.bpm.engine.impl.jobexecutor.JobExecutor`
-- `org.springframework.core.task.TaskExecutor`
+- `org.springframework.core.task.TaskExecutor` named `camundaTaskExecutor`
 
 beans.
 
