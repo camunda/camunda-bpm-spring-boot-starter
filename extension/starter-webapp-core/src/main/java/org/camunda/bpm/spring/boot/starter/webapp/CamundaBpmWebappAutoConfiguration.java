@@ -25,8 +25,12 @@ public class CamundaBpmWebappAutoConfiguration extends WebMvcConfigurerAdapter {
   @Autowired
   private ResourceLoader resourceLoader;
 
-  @Autowired
-  private CamundaBpmProperties properties;
+  @Value("${camunda.bpm.webapp.index-redirect-enabled:true}")
+  private boolean isIndexRedirectEnabled;
+
+  //@Value("${camunda.bpm.webapp.class-path:/META-INF/resources/webjars/camunda}")
+  @Value("${camunda.bpm.webapp.class-path:''}")
+  private String webjarClasspath;
 
 
   @Bean
@@ -46,7 +50,7 @@ public class CamundaBpmWebappAutoConfiguration extends WebMvcConfigurerAdapter {
 
   @Override
   public void addResourceHandlers(ResourceHandlerRegistry registry) {
-    final String classpath = "classpath:" + properties.getWebapp().getWebjarClasspath();
+    final String classpath = "classpath:" + webjarClasspath;
     registry.addResourceHandler("/lib/**").addResourceLocations("classpath:/lib/");
     registry.addResourceHandler("/api/**").addResourceLocations("classpath:/api/");
     registry.addResourceHandler("/app/**").addResourceLocations("classpath:/app/");
@@ -55,7 +59,7 @@ public class CamundaBpmWebappAutoConfiguration extends WebMvcConfigurerAdapter {
 
   @Override
   public void addViewControllers(ViewControllerRegistry registry) {
-    if (properties.getWebapp().isIndexRedirectEnabled()) {
+    if (isIndexRedirectEnabled) {
       registry.addRedirectViewController("/", "/app/");
     }
     super.addViewControllers(registry);

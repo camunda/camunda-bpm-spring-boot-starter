@@ -48,8 +48,9 @@ public class CamundaBpmWebappInitializer implements ServletContextInitializer {
 
   private ServletContext servletContext;
 
-  @Autowired
-  private CamundaBpmProperties properties;
+  //@Value("${camunda.bpm.webapp.security-config-file:/META-INF/resources/webjars/camunda/securityFilterRules.json}")
+  @Value("${camunda.bpm.webapp.security-config-file:/securityFilterRules.json}")
+  private String securityConfigFile;
 
   @Override
   public void onStartup(ServletContext servletContext) throws ServletException {
@@ -62,7 +63,7 @@ public class CamundaBpmWebappInitializer implements ServletContextInitializer {
 
     registerFilter("Authentication Filter", AuthenticationFilter.class, "/*");
 
-    registerFilter("Security Filter", LazySecurityFilter.class, singletonMap("configFile", properties.getWebapp().getSecurityConfigFile()), "/*");
+    registerFilter("Security Filter", LazySecurityFilter.class, singletonMap("configFile", securityConfigFile), "/*");
 
     registerFilter("Engines Filter", LazyProcessEnginesFilter.class, "/app/*");
     registerFilter("CacheControlFilter", CacheControlFilter.class, "/api/*");
