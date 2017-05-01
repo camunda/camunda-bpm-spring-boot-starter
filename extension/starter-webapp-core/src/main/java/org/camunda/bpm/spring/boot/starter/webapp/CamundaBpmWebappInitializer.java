@@ -20,6 +20,7 @@ import org.camunda.bpm.admin.impl.web.bootstrap.AdminContainerBootstrap;
 import org.camunda.bpm.cockpit.impl.web.CockpitApplication;
 import org.camunda.bpm.cockpit.impl.web.bootstrap.CockpitContainerBootstrap;
 import org.camunda.bpm.engine.rest.filter.CacheControlFilter;
+import org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties;
 import org.camunda.bpm.spring.boot.starter.webapp.filter.LazyProcessEnginesFilter;
 import org.camunda.bpm.spring.boot.starter.webapp.filter.LazySecurityFilter;
 import org.camunda.bpm.tasklist.impl.web.TasklistApplication;
@@ -29,6 +30,8 @@ import org.camunda.bpm.webapp.impl.security.auth.AuthenticationFilter;
 import org.camunda.bpm.welcome.impl.web.bootstrap.WelcomeContainerBootstrap;
 import org.glassfish.jersey.servlet.ServletContainer;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 
@@ -39,15 +42,14 @@ import org.springframework.boot.web.servlet.ServletContextInitializer;
  */
 public class CamundaBpmWebappInitializer implements ServletContextInitializer {
 
-  private static final Logger log = org.slf4j.LoggerFactory.getLogger(CamundaBpmWebappInitializer.class);
+  private static final Logger log = LoggerFactory.getLogger(CamundaBpmWebappInitializer.class);
 
   private static final EnumSet<DispatcherType> DISPATCHER_TYPES = EnumSet.of(DispatcherType.REQUEST);
 
   private ServletContext servletContext;
 
-  //@Value("${camunda.bpm.webapp.security-config-file:/META-INF/resources/webjars/camunda/securityFilterRules.json}")
-  @Value("${camunda.bpm.webapp.security-config-file:/securityFilterRules.json}")
-  private String securityConfigFile;
+  @Autowired
+  private CamundaBpmProperties properties;
 
   @Override
   public void onStartup(ServletContext servletContext) throws ServletException {
@@ -60,7 +62,7 @@ public class CamundaBpmWebappInitializer implements ServletContextInitializer {
 
     registerFilter("Authentication Filter", AuthenticationFilter.class, "/*");
 
-    registerFilter("Security Filter", LazySecurityFilter.class, singletonMap("configFile", securityConfigFile), "/*");
+    registerFilter("Security Filter", LazySecurityFilter.class, singletonMap("configFile", properties.getWebapp().getSecurityConfigFile()), "/*");
 
     registerFilter("Engines Filter", LazyProcessEnginesFilter.class, "/app/*");
     registerFilter("CacheControlFilter", CacheControlFilter.class, "/api/*");
