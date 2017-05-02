@@ -1,20 +1,5 @@
 package org.camunda.bpm.spring.boot.starter.webapp;
 
-import static java.util.Collections.singletonMap;
-import static org.glassfish.jersey.servlet.ServletProperties.JAXRS_APPLICATION_CLASS;
-
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.Map;
-
-import javax.servlet.DispatcherType;
-import javax.servlet.Filter;
-import javax.servlet.FilterRegistration;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration;
-import javax.servlet.SessionTrackingMode;
-
 import org.camunda.bpm.admin.impl.web.AdminApplication;
 import org.camunda.bpm.admin.impl.web.bootstrap.AdminContainerBootstrap;
 import org.camunda.bpm.cockpit.impl.web.CockpitApplication;
@@ -31,9 +16,21 @@ import org.camunda.bpm.welcome.impl.web.bootstrap.WelcomeContainerBootstrap;
 import org.glassfish.jersey.servlet.ServletContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
+
+import javax.servlet.DispatcherType;
+import javax.servlet.Filter;
+import javax.servlet.FilterRegistration;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRegistration;
+import javax.servlet.SessionTrackingMode;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.Map;
+
+import static java.util.Collections.singletonMap;
+import static org.glassfish.jersey.servlet.ServletProperties.JAXRS_APPLICATION_CLASS;
 
 /**
  * Inspired by:
@@ -48,9 +45,11 @@ public class CamundaBpmWebappInitializer implements ServletContextInitializer {
 
   private ServletContext servletContext;
 
-  //@Value("${camunda.bpm.webapp.security-config-file:/META-INF/resources/webjars/camunda/securityFilterRules.json}")
-  @Value("${camunda.bpm.webapp.security-config-file:/securityFilterRules.json}")
-  private String securityConfigFile;
+  private final CamundaBpmProperties properties;
+
+  public CamundaBpmWebappInitializer(CamundaBpmProperties properties) {
+    this.properties = properties;
+  }
 
   @Override
   public void onStartup(ServletContext servletContext) throws ServletException {
@@ -63,7 +62,7 @@ public class CamundaBpmWebappInitializer implements ServletContextInitializer {
 
     registerFilter("Authentication Filter", AuthenticationFilter.class, "/*");
 
-    registerFilter("Security Filter", LazySecurityFilter.class, singletonMap("configFile", securityConfigFile), "/*");
+    registerFilter("Security Filter", LazySecurityFilter.class, singletonMap("configFile", properties.getWebapp().getSecurityConfigFile()), "/*");
 
     registerFilter("Engines Filter", LazyProcessEnginesFilter.class, "/app/*");
     registerFilter("CacheControlFilter", CacheControlFilter.class, "/api/*");
@@ -79,7 +78,7 @@ public class CamundaBpmWebappInitializer implements ServletContextInitializer {
   }
 
   private FilterRegistration registerFilter(final String filterName, final Class<? extends Filter> filterClass, final Map<String, String> initParameters,
-      final String... urlPatterns) {
+                                            final String... urlPatterns) {
     FilterRegistration filterRegistration = servletContext.getFilterRegistration(filterName);
 
     if (filterRegistration == null) {
