@@ -30,8 +30,8 @@ public class CamundaBpmWebappAutoConfiguration extends WebMvcConfigurerAdapter {
 
 
   @Bean
-  public CamundaBpmWebappInitializer camundaBpmWebappInitializer() {
-    return new CamundaBpmWebappInitializer();
+  public CamundaBpmWebappInitializer camundaBpmWebappInitializer(CamundaBpmProperties properties) {
+    return new CamundaBpmWebappInitializer(properties);
   }
 
   @Bean(name = "resourceLoaderDependingInitHook")
