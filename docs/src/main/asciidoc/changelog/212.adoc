@@ -1,0 +1,10 @@
+
+
+INFO link:https://github.com/camunda/camunda-bpm-spring-boot-starter/milestone/10?closed=1[Milestone 2.1.2]
+
+
+*Fixes*
+
+* Default configuration works as expected, fixed serialization format and id generator. 
+* correct gradle ee plugin
+
