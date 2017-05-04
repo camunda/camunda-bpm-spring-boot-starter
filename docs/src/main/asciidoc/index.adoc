@@ -8,7 +8,6 @@ to the classpath.
 These starters will pre-configure camunda process engine, rest-api and webapp so
 they can easily be used in a standalone process application.
 
-
 include::_known-issues.adoc[]
 
 include::_gettingstarted.adoc[]
@@ -209,8 +208,14 @@ The default camunda URLs are:
 |cockpit|http://localhost:8080/app/cockpit/index.html
 |===
 
+:leveloffset : 1
 include::_processapplication.adoc[]
 
+:leveloffset : 1
 include::_camunda-enterprise.adoc[]
 
+:leveloffset : 1
 include::_properties.adoc[]
+
+:leveloffset : 1
+include::_changelog.adoc[]

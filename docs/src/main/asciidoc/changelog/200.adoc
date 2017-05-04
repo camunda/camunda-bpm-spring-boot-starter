@@ -1,3 +1,5 @@
+# 2.0.0
+
 INFO https://github.com/camunda/camunda-bpm-spring-boot-starter/milestone/3?closed=1[Milestone 2.0.0]
 
 
