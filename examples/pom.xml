@@ -13,6 +13,7 @@
 
   <modules>
     <module>example-simple</module>
+    <module>example-simple-760</module>
     <module>example-web</module>
     <module>example-cloud</module>
     <module>example-webapp</module>
