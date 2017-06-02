@@ -35,25 +35,12 @@ public class AdditionalCammundaBpmConfigurations {
       PROCESSED = true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.camunda.bpm.engine.impl.cfg.ProcessEnginePlugin#postInit(org.camunda.
-     * bpm.engine.impl.cfg.ProcessEngineConfigurationImpl)
-     */
     @Override
     public void postInit(ProcessEngineConfigurationImpl processEngineConfiguration) {
       // TODO Auto-generated method stub
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.camunda.bpm.engine.impl.cfg.ProcessEnginePlugin#
-     * postProcessEngineBuild(org.camunda.bpm.engine.ProcessEngine)
-     */
     @Override
     public void postProcessEngineBuild(ProcessEngine processEngine) {
       // TODO Auto-generated method stub
@@ -73,25 +60,12 @@ public class AdditionalCammundaBpmConfigurations {
       PROCESSED = true;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.camunda.bpm.engine.impl.cfg.ProcessEnginePlugin#postInit(org.camunda.
-     * bpm.engine.impl.cfg.ProcessEngineConfigurationImpl)
-     */
     @Override
     public void postInit(ProcessEngineConfigurationImpl processEngineConfiguration) {
       // TODO Auto-generated method stub
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.camunda.bpm.engine.impl.cfg.ProcessEnginePlugin#
-     * postProcessEngineBuild(org.camunda.bpm.engine.ProcessEngine)
-     */
     @Override
     public void postProcessEngineBuild(ProcessEngine processEngine) {
       // TODO Auto-generated method stub
