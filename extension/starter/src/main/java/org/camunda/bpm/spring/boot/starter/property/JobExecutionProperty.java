@@ -1,5 +1,7 @@
 package org.camunda.bpm.spring.boot.starter.property;
 
+import static org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties.joinOn;
+
 public class JobExecutionProperty {
 
   /**
@@ -55,8 +57,12 @@ public class JobExecutionProperty {
 
   @Override
   public String toString() {
-    return "JobExecutionProperty [enabled=" + enabled + ", active=" + active + ", deploymentAware="
-        + deploymentAware + ", corePoolSize=" + corePoolSize + "]";
+    return joinOn(this.getClass())
+      .add("enabled=" + enabled)
+      .add("active=" + active)
+      .add("deploymentAware=" + deploymentAware)
+      .add("corePoolSize=" + corePoolSize)
+      .toString();
   }
 
 }

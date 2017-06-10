@@ -1,5 +1,7 @@
 package org.camunda.bpm.spring.boot.starter.property;
 
+import static org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties.joinOn;
+
 public class FilterProperty {
 
   private String create;
@@ -14,7 +16,9 @@ public class FilterProperty {
 
   @Override
   public String toString() {
-    return "FilterProperty [create=" + create + "]";
+    return joinOn(this.getClass())
+      .add("create=" + create)
+      .toString();
   }
 
 }

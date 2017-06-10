@@ -4,12 +4,15 @@ import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.camunda.bpm.engine.impl.interceptor.CommandExecutor;
 import org.camunda.bpm.engine.spring.ProcessEngineFactoryBean;
 import org.camunda.bpm.engine.spring.SpringProcessEngineServicesConfiguration;
+import org.camunda.bpm.model.bpmn.instance.camunda.CamundaProperties;
 import org.camunda.bpm.spring.boot.starter.event.ProcessApplicationEventPublisher;
 import org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties;
 import org.camunda.bpm.spring.boot.starter.property.ManagementProperties;
 import org.camunda.bpm.spring.boot.starter.util.CamundaBpmVersion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.cache.CacheProperties;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationEventPublisher;
@@ -28,6 +31,7 @@ import org.springframework.context.annotation.Primary;
     CamundaBpmPluginConfiguration.class,
     SpringProcessEngineServicesConfiguration.class
 })
+@ConditionalOnProperty(prefix = CamundaBpmProperties.PREFIX, name = "enabled", matchIfMissing = true)
 @AutoConfigureAfter(HibernateJpaAutoConfiguration.class)
 public class CamundaBpmAutoConfiguration {
 

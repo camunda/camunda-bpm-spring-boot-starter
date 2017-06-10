@@ -1,5 +1,7 @@
 package org.camunda.bpm.spring.boot.starter.property;
 
+import static org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties.joinOn;
+
 public class JpaProperty {
   /**
    * enables JPA
@@ -55,9 +57,12 @@ public class JpaProperty {
 
   @Override
   public String toString() {
-    return "JpaProperty [enabled=" + enabled + ", persistenceUnitName=" + persistenceUnitName
-        + ", closeEntityManager=" + closeEntityManager + ", handleTransaction=" + handleTransaction
-        + "]";
+    return joinOn(this.getClass())
+      .add("enabled=" + enabled)
+      .add("persistenceUnitName=" + persistenceUnitName)
+      .add("closeEntityManager=" + closeEntityManager)
+      .add("handleTransaction=" + handleTransaction)
+      .toString();
   }
 
 }
