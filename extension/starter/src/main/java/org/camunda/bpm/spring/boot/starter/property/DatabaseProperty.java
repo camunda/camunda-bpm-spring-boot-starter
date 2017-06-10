@@ -10,6 +10,7 @@ import static org.camunda.bpm.engine.ProcessEngineConfiguration.DB_SCHEMA_UPDATE
 import static org.camunda.bpm.engine.ProcessEngineConfiguration.DB_SCHEMA_UPDATE_TRUE;
 import static org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl.DB_SCHEMA_UPDATE_CREATE;
 import static org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl.DB_SCHEMA_UPDATE_DROP_CREATE;
+import static org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties.joinOn;
 
 public class DatabaseProperty {
   public static final List<String> SCHEMA_UPDATE_VALUES = Arrays.asList(
@@ -64,8 +65,11 @@ public class DatabaseProperty {
 
   @Override
   public String toString() {
-    return "DatabaseProperty [schemaUpdate=" + schemaUpdate + ", type=" + type + ", tablePrefix="
-        + tablePrefix + "]";
+    return joinOn(this.getClass())
+      .add("schemaUpdate=" + schemaUpdate)
+      .add("type=" + type)
+      .add("tablePrefix=" + tablePrefix)
+      .toString();
   }
 
 }

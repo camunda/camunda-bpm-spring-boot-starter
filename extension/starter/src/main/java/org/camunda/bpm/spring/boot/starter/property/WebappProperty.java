@@ -1,5 +1,7 @@
 package org.camunda.bpm.spring.boot.starter.property;
 
+import static org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties.joinOn;
+
 public class WebappProperty {
   private boolean indexRedirectEnabled = true;
 
@@ -34,10 +36,10 @@ public class WebappProperty {
 
   @Override
   public String toString() {
-    return "WebappProperty{" +
-      "indexRedirectEnabled=" + indexRedirectEnabled +
-      ", webjarClasspath='" + webjarClasspath + '\'' +
-      ", securityConfigFile='" + securityConfigFile + '\'' +
-      '}';
+    return joinOn(this.getClass())
+      .add("indexRedirectEnabled=" + indexRedirectEnabled)
+      .add("webjarClasspath='" + webjarClasspath + '\'')
+      .add("securityConfigFile='" + securityConfigFile + '\'')
+      .toString();
   }
 }

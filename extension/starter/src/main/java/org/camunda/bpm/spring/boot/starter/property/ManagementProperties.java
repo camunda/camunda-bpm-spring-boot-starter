@@ -2,6 +2,8 @@ package org.camunda.bpm.spring.boot.starter.property;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import static org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties.joinOn;
+
 @ConfigurationProperties("management")
 public class ManagementProperties {
 
@@ -15,8 +17,7 @@ public class ManagementProperties {
   }
 
   /**
-   * @param health
-   *          the health to set
+   * @param health the health to set
    */
   public void setHealth(Health health) {
     this.health = health;
@@ -39,8 +40,7 @@ public class ManagementProperties {
     }
 
     /**
-     * @param camunda
-     *          the camunda to set
+     * @param camunda the camunda to set
      */
     public void setCamunda(Camunda camunda) {
       this.camunda = camunda;
@@ -48,7 +48,9 @@ public class ManagementProperties {
 
     @Override
     public String toString() {
-      return "Health [camunda=" + camunda + "]";
+      return joinOn(this.getClass())
+        .add("camunda=" + camunda)
+        .toString();
     }
 
     public class Camunda {
@@ -62,8 +64,7 @@ public class ManagementProperties {
       }
 
       /**
-       * @param enabled
-       *          the enabled to set
+       * @param enabled the enabled to set
        */
       public void setEnabled(boolean enabled) {
         this.enabled = enabled;
@@ -71,7 +72,9 @@ public class ManagementProperties {
 
       @Override
       public String toString() {
-        return "Camunda [enabled=" + enabled + "]";
+        return joinOn(this.getClass())
+          .add("enabled=" + enabled)
+          .toString();
       }
 
     }

@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.StringJoiner;
 
 import static org.springframework.core.io.support.ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX;
 
@@ -16,6 +17,7 @@ import static org.springframework.core.io.support.ResourcePatternResolver.CLASSP
 public class CamundaBpmProperties {
 
   public static final String PREFIX = "camunda.bpm";
+  private static final String CLASS_NAME = CamundaBpmProperties.class.getSimpleName();
 
   public static final String[] DEFAULT_BPMN_RESOURCE_SUFFIXES = new String[]{"bpmn20.xml", "bpmn"};
   public static final String[] DEFAULT_CMMN_RESOURCE_SUFFIXES = new String[]{"cmmn11.xml", "cmmn10.xml", "cmmn"};
@@ -33,6 +35,10 @@ public class CamundaBpmProperties {
     }
 
     return patterns.toArray(new String[patterns.size()]);
+  }
+
+  static StringJoiner joinOn(final Class<?> clazz) {
+    return new StringJoiner(", ", clazz.getSimpleName() + "[", "]");
   }
 
   /**
@@ -68,6 +74,11 @@ public class CamundaBpmProperties {
   private String defaultSerializationFormat = Defaults.INSTANCE.getDefaultSerializationFormat();
 
   private URL licenseFile;
+
+  /**
+   * decativate camunda auto configuration
+   */
+  private boolean enabled = true;
 
   /**
    * metrics configuration
@@ -261,28 +272,37 @@ public class CamundaBpmProperties {
     this.idGenerator = idGenerator;
   }
 
+  public boolean isEnabled() {
+    return enabled;
+  }
+
+  public void setEnabled(boolean enabled) {
+    this.enabled = enabled;
+  }
+
   @Override
   public String toString() {
-    return "CamundaBpmProperties ["
-      + "processEngineName=" + processEngineName
-      + ", historyLevel=" + historyLevel
-      + ", historyLevelDefault=" + historyLevelDefault
-      + ", autoDeploymentEnabled=" + autoDeploymentEnabled
-      + ", deploymentResourcePattern=" + Arrays.toString(deploymentResourcePattern)
-      + ", defaultSerializationFormat=" + defaultSerializationFormat
-      + ", licenseFile=" + licenseFile
-      + ", metrics=" + metrics
-      + ", database=" + database
-      + ", jpa=" + jpa
-      + ", jobExecution=" + jobExecution
-      + ", webapp=" + webapp
-      + ", application=" + application
-      + ", authorization=" + authorization
-      + ", genericProperties=" + genericProperties
-      + ", adminUser=" + adminUser
-      + ", filter=" + filter
-      + ", idGenerator=" + idGenerator
-      + "]";
+    return joinOn(this.getClass())
+      .add("enabled=" + enabled)
+      .add("processEngineName=" + processEngineName)
+      .add("historyLevel=" + historyLevel)
+      .add("historyLevelDefault=" + historyLevelDefault)
+      .add("autoDeploymentEnabled=" + autoDeploymentEnabled)
+      .add("deploymentResourcePattern=" + Arrays.toString(deploymentResourcePattern))
+      .add("defaultSerializationFormat=" + defaultSerializationFormat)
+      .add("licenseFile=" + licenseFile)
+      .add("metrics=" + metrics)
+      .add("database=" + database)
+      .add("jpa=" + jpa)
+      .add("jobExecution=" + jobExecution)
+      .add("webapp=" + webapp)
+      .add("application=" + application)
+      .add("authorization=" + authorization)
+      .add("genericProperties=" + genericProperties)
+      .add("adminUser=" + adminUser)
+      .add("filter=" + filter)
+      .add("idGenerator=" + idGenerator)
+      .toString();
   }
 
 }

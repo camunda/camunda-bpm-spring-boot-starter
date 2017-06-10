@@ -5,6 +5,7 @@ import org.camunda.bpm.engine.identity.User;
 
 import static java.util.Objects.requireNonNull;
 import static org.apache.commons.lang.WordUtils.capitalize;
+import static org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties.joinOn;
 
 
 public class AdminUserProperty implements User {
@@ -83,8 +84,13 @@ public class AdminUserProperty implements User {
 
   @Override
   public String toString() {
-    return "AdminUserProperty [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName
-        + ", email=" + email + ", password=" + password + "]";
+    return joinOn(this.getClass())
+      .add("id=" + id)
+      .add("firstName=" + firstName)
+      .add("lastName=" + lastName)
+      .add("email=" + email)
+      .add("password=" + password)
+      .toString();
   }
 
 }
