@@ -158,7 +158,7 @@
 
 |`.password`
 |the initial password
-|-
+|`id`
 
 |`.firstName`, `.lastName`, `.email`
 |additional (optional) user attributes
