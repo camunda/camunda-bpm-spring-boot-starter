@@ -16,6 +16,13 @@ public class AuthorizationProperty {
 
   private String authorizationCheckRevokes = Defaults.INSTANCE.getAuthorizationCheckRevokes();
 
+  /**
+   * If the value of this flag is set <code>true</code> then the process engine
+   * performs tenant checks to ensure that an authenticated user can only access
+   * data that belongs to one of his tenants.
+   */
+  private boolean tenantCheckEnabled = true;
+
   public boolean isEnabled() {
     return enabled;
   }
@@ -40,12 +47,21 @@ public class AuthorizationProperty {
     this.authorizationCheckRevokes = authorizationCheckRevokes;
   }
 
+  public boolean isTenantCheckEnabled() {
+    return tenantCheckEnabled;
+  }
+
+  public void setTenantCheckEnabled(boolean tenantCheckEnabled) {
+    this.tenantCheckEnabled = tenantCheckEnabled;
+  }
+
   @Override
   public String toString() {
     return joinOn(this.getClass())
       .add("enabled=" + enabled)
       .add("enabledForCustomCode=" + enabledForCustomCode)
       .add("authorizationCheckRevokes=" + authorizationCheckRevokes)
+      .add("tenantCheckEnabled=" + tenantCheckEnabled)
       .toString();
   }
 

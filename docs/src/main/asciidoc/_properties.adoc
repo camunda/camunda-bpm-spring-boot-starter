@@ -5,7 +5,12 @@
 |===
 |Prefix | Property name |Description | Default value
 4+|**General**
-.9+|`{properties-prefix}`
+.10+|`{properties-prefix}`
+
+|`.enabled`
+|switch to disable the camunda auto-configuration. Use to exclude camunda in integration tests.
+|`true`
+
 
 |`.process-engine-name`
 |name of the process engine
@@ -126,7 +131,7 @@
 |`true`
 
 4+|**Authorization**
-.3+|`{properties-prefix}.authorization`
+.4+|`{properties-prefix}.authorization`
 
 |`.enabled`
 |enables authorization
@@ -139,6 +144,10 @@
 |`.authorization-check-revokes`
 |configures authorization check revokes
 |camunda default value
+
+|`.tenant-check-enabled`
+|Performs tenant checks to ensure that an authenticated user can only access data that belongs to one of his tenants.
+|`true`
 
 4+|**Admin User**
 .3+|`{properties-prefix}.admin-user`

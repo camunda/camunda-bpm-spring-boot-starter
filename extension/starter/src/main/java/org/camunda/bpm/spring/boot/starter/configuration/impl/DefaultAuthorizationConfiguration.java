@@ -7,11 +7,13 @@ import org.camunda.bpm.spring.boot.starter.configuration.CamundaAuthorizationCon
 public class DefaultAuthorizationConfiguration extends AbstractCamundaConfiguration implements CamundaAuthorizationConfiguration {
 
   @Override
-  public void preInit(SpringProcessEngineConfiguration configuration) {
+  public void preInit(final SpringProcessEngineConfiguration configuration) {
     final AuthorizationProperty authorization = camundaBpmProperties.getAuthorization();
     configuration.setAuthorizationEnabled(authorization.isEnabled());
     configuration.setAuthorizationEnabledForCustomCode(authorization.isEnabledForCustomCode());
     configuration.setAuthorizationCheckRevokes(authorization.getAuthorizationCheckRevokes());
+
+    configuration.setTenantCheckEnabled(authorization.isTenantCheckEnabled());
   }
 
 }
