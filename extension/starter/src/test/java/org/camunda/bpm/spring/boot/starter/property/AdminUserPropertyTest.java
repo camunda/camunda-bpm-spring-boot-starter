@@ -21,14 +21,6 @@ public class AdminUserPropertyTest {
   }
 
   @Test
-  public void fillMissingFields_fail_no_password() throws Exception {
-    thrown.expect(NullPointerException.class);
-    thrown.expectMessage("missing field: camunda.bpm.admin-user.password");
-
-    adminUser("admin", null, null, null, null).init();
-  }
-
-  @Test
   public void fillMissingFields_null() throws Exception {
     User adminUser = adminUser("admin", "foo", null, null, null).init();
 
@@ -48,6 +40,14 @@ public class AdminUserPropertyTest {
     assertThat(adminUser.getFirstName()).isEqualTo("Admin");
     assertThat(adminUser.getLastName()).isEqualTo("Admin");
     assertThat(adminUser.getEmail()).isEqualTo("admin@localhost");
+  }
+
+  @Test
+  public void paswordDefaultsToUserId() throws Exception {
+    User adminUser = adminUser("admin", null, "", "", "").init();
+
+    assertThat(adminUser.getId()).isEqualTo("admin");
+    assertThat(adminUser.getPassword()).isEqualTo("admin");
   }
 
   private AdminUserProperty adminUser(String id, String password, String first, String last, String mail) {

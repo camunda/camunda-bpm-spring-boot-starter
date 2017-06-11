@@ -74,7 +74,7 @@ public class AdminUserProperty implements User {
 
   @Override
   public String getPassword() {
-    return password;
+    return password != null ? password : id;
   }
 
   @Override
