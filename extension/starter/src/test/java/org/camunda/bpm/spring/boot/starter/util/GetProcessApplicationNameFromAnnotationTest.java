@@ -5,7 +5,12 @@ import org.camunda.bpm.engine.variable.Variables;
 import org.camunda.bpm.spring.boot.starter.annotation.EnableProcessApplication;
 import org.camunda.bpm.spring.boot.starter.util.GetProcessApplicationNameFromAnnotation.AnnotatedBean;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Optional;
 
@@ -13,10 +18,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest(
+  classes = GetProcessApplicationNameFromAnnotationTest.WithName.class,
+  properties = { "camunda.bpm.enabled=false" }
+)
 public class GetProcessApplicationNameFromAnnotationTest {
 
+  @SpringBootApplication
   @EnableProcessApplication("withNameApplication")
   public static class WithName {
+
+    @Bean
+    static Runnable runnable() {
+      return () -> {};
+    }
   }
 
   @EnableProcessApplication
