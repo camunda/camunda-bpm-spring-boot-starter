@@ -1,12 +1,12 @@
 # How to contribute
 
-We love you to contribute to this project by filing bugs, helping others on the [issue tracker](https://github.com/camunda/camunda-bpm-spring-boot-starter/issues), by contributing features/bug fixes through pull requests.
-
-
 ## Creating issues
 
-We use our [issue tracker](https://github.com/camunda/camunda-bpm-spring-boot-starter/issues) for project communication.
-When using the issue tracker:
+We have an active dicussion forum here: https://forum.camunda.org/c/community-extensions/spring-boot-starter where we 
+are happy to help/discuss all your "why is this not working", "what am I missing", "do you support this feature" questions.  
+Please only file issues here for concrete bug reports and feature requests. Thank you!
+
+We would love you to contribute to this project by filing bugs, helping others on the [issue tracker](https://github.com/camunda/camunda-bpm-spring-boot-starter/issues), by contributing features/bug fixes through pull requests.
 
 * Be descriptive when creating an issue (what, where, when and how does a problem pop up)?
 * Attach steps to reproduce (if applicable)
@@ -14,7 +14,6 @@ When using the issue tracker:
 * Be helpful and respect others when commenting
 
 Create a pull request if you would like to have an in-depth discussion about some piece of code.
-
 
 ## Setting up the project locally
 
