@@ -95,7 +95,6 @@ public class GetProcessApplicationNameFromAnnotation implements Supplier<Optiona
    * @throws IllegalStateException if more than one bean is found
    */
   public static Function<ApplicationContext, Optional<AnnotatedBean>> getAnnotatedBean = applicationContext -> {
-    // TODO: kata - this should be possible to write as a pure-lambda one-liner ....
     final Set<Entry<String, Object>> beans = Optional.ofNullable(applicationContext.getBeansWithAnnotation(EnableProcessApplication.class))
       .map(Map::entrySet)
       .orElse(Collections.emptySet());
