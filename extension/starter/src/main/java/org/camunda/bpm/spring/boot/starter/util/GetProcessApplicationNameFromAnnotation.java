@@ -4,19 +4,26 @@ import org.apache.commons.lang.StringUtils;
 import org.camunda.bpm.spring.boot.starter.annotation.EnableProcessApplication;
 import org.springframework.context.ApplicationContext;
 
-import java.util.Collections;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
+import java.util.Map.Entry;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
+import java.util.stream.Stream;
+
+import static org.apache.catalina.manager.StatusTransformer.filter;
 
 public class GetProcessApplicationNameFromAnnotation implements Supplier<Optional<String>>, UnaryOperator<Optional<String>> {
 
   public static GetProcessApplicationNameFromAnnotation processApplicationNameFromAnnotation(final ApplicationContext applicationContext) {
     return new GetProcessApplicationNameFromAnnotation(applicationContext);
   }
+
+  private static final Predicate<Entry<String,Object>> ANNOTATED_WITH_ENABLEPROCESSAPPLICATION = e -> Optional.ofNullable(e.getValue())
+    .map(Object::getClass)
+    .map(c -> c.isAnnotationPresent(EnableProcessApplication.class))
+    .orElse(false);
 
   private final ApplicationContext applicationContext;
 
@@ -40,6 +47,10 @@ public class GetProcessApplicationNameFromAnnotation implements Supplier<Optiona
 
     public static AnnotatedBean of(String name, Object instance) {
       return of(name, instance.getClass().getAnnotation(EnableProcessApplication.class));
+    }
+
+    public static AnnotatedBean ofEntry(Entry<String,Object> entry) {
+      return of(entry.getKey(), entry.getValue());
     }
 
     public String getName() {
@@ -84,15 +95,19 @@ public class GetProcessApplicationNameFromAnnotation implements Supplier<Optiona
    * @throws IllegalStateException if more than one bean is found
    */
   public static Function<ApplicationContext, Optional<AnnotatedBean>> getAnnotatedBean = applicationContext -> {
-    final Map<String, Object> beans = Optional.ofNullable(applicationContext.getBeansWithAnnotation(EnableProcessApplication.class))
-      .orElse(Collections.EMPTY_MAP);
+    // TODO: kata - this should be possible to write as a pure-lambda one-liner ....
+    final Set<Entry<String, Object>> beans = Optional.ofNullable(applicationContext.getBeansWithAnnotation(EnableProcessApplication.class))
+      .map(Map::entrySet)
+      .orElse(Collections.emptySet());
 
-    if (beans.size() > 1) {
-      throw new IllegalStateException("requires exactly one bean to be annotated with @EnableProcessApplication, found: " + beans.keySet());
-    }
+    return beans.stream().filter(ANNOTATED_WITH_ENABLEPROCESSAPPLICATION)
+      .map(e -> AnnotatedBean.of(e.getKey(), e.getValue()))
+      .reduce( (u,v) ->  {
+        throw new IllegalStateException("requires exactly one bean to be annotated with @EnableProcessApplication, found: " + beans);
+    });
 
-    return beans.entrySet().stream().findFirst().map(e -> AnnotatedBean.of(e.getKey(), e.getValue()));
   };
+
 
   public static Function<EnableProcessApplication, Optional<String>> getAnnotationValue = annotation ->
     Optional.of(annotation)

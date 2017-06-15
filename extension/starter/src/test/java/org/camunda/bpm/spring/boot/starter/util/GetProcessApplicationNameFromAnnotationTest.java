@@ -18,21 +18,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(
-  classes = GetProcessApplicationNameFromAnnotationTest.WithName.class,
-  properties = { "camunda.bpm.enabled=false" }
-)
 public class GetProcessApplicationNameFromAnnotationTest {
 
-  @SpringBootApplication
   @EnableProcessApplication("withNameApplication")
   public static class WithName {
-
-    @Bean
-    static Runnable runnable() {
-      return () -> {};
-    }
   }
 
   @EnableProcessApplication
