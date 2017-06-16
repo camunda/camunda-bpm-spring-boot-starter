@@ -2,7 +2,7 @@ package org.camunda.bpm.spring.boot.starter.configuration.impl;
 
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
-import org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties;
+import org.camunda.bpm.spring.boot.properties.CamundaBpmProperties;
 import org.camunda.bpm.spring.boot.starter.util.CamundaBpmVersion;
 import org.camunda.bpm.spring.boot.starter.util.CamundaBpmVersionTest;
 import org.junit.Test;

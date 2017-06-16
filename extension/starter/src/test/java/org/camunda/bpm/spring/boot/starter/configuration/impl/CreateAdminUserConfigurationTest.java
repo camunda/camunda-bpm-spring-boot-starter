@@ -4,7 +4,7 @@ package org.camunda.bpm.spring.boot.starter.configuration.impl;
 import org.camunda.bpm.engine.identity.User;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.camunda.bpm.engine.test.ProcessEngineRule;
-import org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties;
+import org.camunda.bpm.spring.boot.properties.CamundaBpmProperties;
 import org.camunda.bpm.spring.boot.starter.test.helper.StandaloneInMemoryTestConfiguration;
 import org.junit.Rule;
 import org.junit.Test;

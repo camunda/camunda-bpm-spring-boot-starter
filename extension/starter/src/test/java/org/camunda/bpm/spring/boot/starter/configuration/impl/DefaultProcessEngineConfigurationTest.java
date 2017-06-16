@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.camunda.bpm.engine.ProcessEngines;
 import org.camunda.bpm.engine.impl.cfg.IdGenerator;
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
-import org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties;
+import org.camunda.bpm.spring.boot.properties.CamundaBpmProperties;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.test.util.ReflectionTestUtils;

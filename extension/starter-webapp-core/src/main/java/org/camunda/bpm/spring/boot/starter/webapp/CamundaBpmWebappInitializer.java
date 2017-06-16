@@ -5,7 +5,7 @@ import org.camunda.bpm.admin.impl.web.bootstrap.AdminContainerBootstrap;
 import org.camunda.bpm.cockpit.impl.web.CockpitApplication;
 import org.camunda.bpm.cockpit.impl.web.bootstrap.CockpitContainerBootstrap;
 import org.camunda.bpm.engine.rest.filter.CacheControlFilter;
-import org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties;
+import org.camunda.bpm.spring.boot.properties.CamundaBpmProperties;
 import org.camunda.bpm.spring.boot.starter.webapp.filter.LazyProcessEnginesFilter;
 import org.camunda.bpm.spring.boot.starter.webapp.filter.LazySecurityFilter;
 import org.camunda.bpm.tasklist.impl.web.TasklistApplication;

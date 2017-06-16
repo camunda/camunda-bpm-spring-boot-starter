@@ -1,6 +1,6 @@
-package org.camunda.bpm.spring.boot.starter.property;
+package org.camunda.bpm.spring.boot.properties;
 
-import static org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties.joinOn;
+import static org.camunda.bpm.spring.boot.properties.CamundaBpmProperties.joinOn;
 
 public class FilterProperty {
 

@@ -7,7 +7,7 @@ import java.util.Optional;
 import java.util.Properties;
 import java.util.function.Supplier;
 
-import static org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties.PREFIX;
+import static org.camunda.bpm.spring.boot.properties.CamundaBpmProperties.PREFIX;
 
 /**
  * Return the full version string of the present Camunda codebase, or

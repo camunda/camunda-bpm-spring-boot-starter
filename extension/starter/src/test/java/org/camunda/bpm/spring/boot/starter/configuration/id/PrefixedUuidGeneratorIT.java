@@ -3,7 +3,7 @@ package org.camunda.bpm.spring.boot.starter.configuration.id;
 
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.impl.cfg.IdGenerator;
-import org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties;
+import org.camunda.bpm.spring.boot.properties.CamundaBpmProperties;
 import org.camunda.bpm.spring.boot.starter.test.TestApplication;
 import org.camunda.bpm.spring.boot.starter.util.CamundaSpringBootUtil;
 import org.junit.Test;
@@ -13,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.camunda.bpm.spring.boot.starter.configuration.id.IdGeneratorConfiguration.PREFIXED;
+import static org.camunda.bpm.spring.boot.properties.CamundaBpmProperties.IdGeneratorType.PREFIXED;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(
@@ -35,7 +35,7 @@ public class PrefixedUuidGeneratorIT {
 
   @Test
   public void property_is_set() throws Exception {
-    assertThat(properties.getIdGenerator()).isEqualTo(IdGeneratorConfiguration.PREFIXED);
+    assertThat(properties.getIdGenerator()).isEqualTo(PREFIXED);
   }
 
   @Test
