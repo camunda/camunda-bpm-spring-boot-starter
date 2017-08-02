@@ -1,7 +1,9 @@
-package org.camunda.bpm.spring.boot.starter.property;
+package org.camunda.bpm.spring.boot.properties;
 
+import org.assertj.core.api.Assertions;
 import org.camunda.bpm.engine.ProcessEngineConfiguration;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
+import org.camunda.bpm.spring.boot.properties.CamundaBpmProperties;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -17,8 +19,8 @@ public class CamundaBpmPropertiesTest {
   public void initResourcePatterns() {
     final String[] patterns = CamundaBpmProperties.initDeploymentResourcePattern();
 
-    assertThat(patterns).hasSize(7);
-    assertThat(patterns).containsOnly("classpath*:**/*.bpmn", "classpath*:**/*.bpmn20.xml", "classpath*:**/*.dmn", "classpath*:**/*.dmn11.xml",
+    Assertions.assertThat(patterns).hasSize(7);
+    Assertions.assertThat(patterns).containsOnly("classpath*:**/*.bpmn", "classpath*:**/*.bpmn20.xml", "classpath*:**/*.dmn", "classpath*:**/*.dmn11.xml",
       "classpath*:**/*.cmmn", "classpath*:**/*.cmmn10.xml", "classpath*:**/*.cmmn11.xml");
   }
 

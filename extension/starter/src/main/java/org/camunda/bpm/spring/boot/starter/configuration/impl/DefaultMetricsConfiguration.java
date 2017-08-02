@@ -2,7 +2,7 @@ package org.camunda.bpm.spring.boot.starter.configuration.impl;
 
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaMetricsConfiguration;
-import org.camunda.bpm.spring.boot.starter.property.MetricsProperty;
+import org.camunda.bpm.spring.boot.properties.MetricsProperty;
 
 import javax.annotation.PostConstruct;
 

@@ -3,7 +3,7 @@ package org.camunda.bpm.spring.boot.starter.configuration.impl;
 import static org.junit.Assert.assertEquals;
 
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
-import org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties;
+import org.camunda.bpm.spring.boot.properties.CamundaBpmProperties;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.NotWritablePropertyException;

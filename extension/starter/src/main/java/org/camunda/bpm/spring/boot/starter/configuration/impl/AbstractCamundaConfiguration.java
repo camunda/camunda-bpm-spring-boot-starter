@@ -1,7 +1,7 @@
 package org.camunda.bpm.spring.boot.starter.configuration.impl;
 
 import org.camunda.bpm.spring.boot.starter.configuration.Ordering;
-import org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties;
+import org.camunda.bpm.spring.boot.properties.CamundaBpmProperties;
 import org.camunda.bpm.spring.boot.starter.util.SpringBootProcessEngineLogger;
 import org.camunda.bpm.spring.boot.starter.util.SpringBootProcessEnginePlugin;
 import org.slf4j.Logger;

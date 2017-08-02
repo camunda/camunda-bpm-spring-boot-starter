@@ -18,6 +18,12 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
+        <artifactId>camunda-bpm-spring-boot-properties</artifactId>
+        <groupId>${project.groupId}</groupId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
         <artifactId>camunda-bpm-spring-boot-starter</artifactId>
         <groupId>${project.groupId}</groupId>
         <version>${project.version}</version>

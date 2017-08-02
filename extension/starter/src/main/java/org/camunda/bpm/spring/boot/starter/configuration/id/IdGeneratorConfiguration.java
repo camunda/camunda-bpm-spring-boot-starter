@@ -2,20 +2,19 @@ package org.camunda.bpm.spring.boot.starter.configuration.id;
 
 import org.camunda.bpm.engine.impl.cfg.IdGenerator;
 import org.camunda.bpm.engine.impl.persistence.StrongUuidGenerator;
-import org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties;
+import org.camunda.bpm.spring.boot.properties.CamundaBpmProperties;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 
+import static org.camunda.bpm.spring.boot.properties.CamundaBpmProperties.IdGeneratorType.PREFIXED;
+import static org.camunda.bpm.spring.boot.properties.CamundaBpmProperties.IdGeneratorType.STRONG;
+
 @SuppressWarnings("unused")
 public class IdGeneratorConfiguration {
 
   public static final String PROPERTY_NAME = "id-generator";
-
-  public static final String SIMPLE = "simple";
-  public static final String STRONG = "strong";
-  public static final String PREFIXED = "prefixed";
 
   @Bean
   @ConditionalOnMissingBean(IdGenerator.class)

@@ -1,6 +1,4 @@
-package org.camunda.bpm.spring.boot.starter.property;
-
-import static org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties.joinOn;
+package org.camunda.bpm.spring.boot.properties;
 
 public class JobExecutionProperty {
 
@@ -57,7 +55,7 @@ public class JobExecutionProperty {
 
   @Override
   public String toString() {
-    return joinOn(this.getClass())
+    return CamundaBpmProperties.joinOn(this.getClass())
       .add("enabled=" + enabled)
       .add("active=" + active)
       .add("deploymentAware=" + deploymentAware)

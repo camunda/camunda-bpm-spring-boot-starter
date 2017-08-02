@@ -2,7 +2,7 @@ package org.camunda.bpm.spring.boot.starter.configuration.impl;
 
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.filter.Filter;
-import org.camunda.bpm.spring.boot.starter.property.FilterProperty;
+import org.camunda.bpm.spring.boot.properties.FilterProperty;
 
 import javax.annotation.PostConstruct;
 import java.util.Collections;

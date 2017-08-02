@@ -1,4 +1,4 @@
-package org.camunda.bpm.spring.boot.starter.property;
+package org.camunda.bpm.spring.boot.properties;
 
 import org.camunda.bpm.application.impl.metadata.ProcessArchiveXmlImpl;
 import org.camunda.bpm.application.impl.metadata.spi.ProcessArchiveXml;
@@ -6,7 +6,7 @@ import org.camunda.bpm.engine.repository.ResumePreviousBy;
 
 import java.util.*;
 
-import static org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties.joinOn;
+import static org.camunda.bpm.spring.boot.properties.CamundaBpmProperties.joinOn;
 
 public class ApplicationProperty {
 

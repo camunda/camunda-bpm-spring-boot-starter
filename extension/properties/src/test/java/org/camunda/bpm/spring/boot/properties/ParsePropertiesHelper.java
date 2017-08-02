@@ -1,4 +1,4 @@
-package org.camunda.bpm.spring.boot.starter.property;
+package org.camunda.bpm.spring.boot.properties;
 
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,7 @@ import javax.annotation.PostConstruct;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = ParsePropertiesHelper.TestConfig.class)
-public abstract class ParsePropertiesHelper {
+abstract class ParsePropertiesHelper {
 
   @EnableConfigurationProperties(CamundaBpmProperties.class)
   public static class TestConfig {

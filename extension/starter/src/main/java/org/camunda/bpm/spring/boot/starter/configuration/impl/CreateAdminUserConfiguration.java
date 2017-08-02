@@ -9,7 +9,7 @@ import org.camunda.bpm.engine.authorization.Resources;
 import org.camunda.bpm.engine.identity.Group;
 import org.camunda.bpm.engine.identity.User;
 import org.camunda.bpm.engine.impl.persistence.entity.AuthorizationEntity;
-import org.camunda.bpm.spring.boot.starter.property.AdminUserProperty;
+import org.camunda.bpm.spring.boot.properties.AdminUserProperty;
 import org.springframework.beans.BeanUtils;
 
 import javax.annotation.PostConstruct;

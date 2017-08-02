@@ -1,9 +1,9 @@
-package org.camunda.bpm.spring.boot.starter.property;
+package org.camunda.bpm.spring.boot.properties;
 
 import org.camunda.bpm.engine.ProcessEngines;
-import org.camunda.bpm.spring.boot.starter.configuration.id.IdGeneratorConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
+import org.springframework.core.io.support.ResourcePatternResolver;
 
 import java.net.URL;
 import java.util.Arrays;
@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.StringJoiner;
 
-import static org.springframework.core.io.support.ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX;
+import static org.camunda.bpm.spring.boot.properties.CamundaBpmProperties.IdGeneratorType.SIMPLE;
 
 @ConfigurationProperties(CamundaBpmProperties.PREFIX)
 public class CamundaBpmProperties {
@@ -31,10 +31,18 @@ public class CamundaBpmProperties {
 
     final Set<String> patterns = new HashSet<String>();
     for (String suffix : suffixes) {
-      patterns.add(String.format("%s**/*.%s", CLASSPATH_ALL_URL_PREFIX, suffix));
+      patterns.add(String.format("%s**/*.%s", ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX, suffix));
     }
 
     return patterns.toArray(new String[patterns.size()]);
+  }
+
+  public enum IdGeneratorType {
+    ;
+    public static final String SIMPLE = "simple";
+    public static final String STRONG = "strong";
+    public static final String PREFIXED = "prefixed";
+
   }
 
   static StringJoiner joinOn(final Class<?> clazz) {
@@ -46,7 +54,7 @@ public class CamundaBpmProperties {
    */
   private String processEngineName = ProcessEngines.NAME_DEFAULT;
 
-  private String idGenerator = IdGeneratorConfiguration.SIMPLE;
+  private String idGenerator = SIMPLE;
 
   /**
    * the history level to use

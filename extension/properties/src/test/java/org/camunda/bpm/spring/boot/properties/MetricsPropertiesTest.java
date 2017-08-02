@@ -1,4 +1,4 @@
-package org.camunda.bpm.spring.boot.starter.property;
+package org.camunda.bpm.spring.boot.properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

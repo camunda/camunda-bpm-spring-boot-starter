@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
-import org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties;
+import org.camunda.bpm.spring.boot.properties.CamundaBpmProperties;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.io.Resource;

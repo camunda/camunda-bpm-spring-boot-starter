@@ -4,7 +4,7 @@ import javax.persistence.EntityManagerFactory;
 
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaJpaConfiguration;
-import org.camunda.bpm.spring.boot.starter.property.JpaProperty;
+import org.camunda.bpm.spring.boot.properties.JpaProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class DefaultJpaConfiguration extends AbstractCamundaConfiguration implements CamundaJpaConfiguration {

@@ -1,5 +1,7 @@
-package org.camunda.bpm.spring.boot.starter.property;
+package org.camunda.bpm.spring.boot.properties;
 
+import org.camunda.bpm.engine.ProcessEngineConfiguration;
+import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.springframework.util.Assert;
 
 import java.util.Arrays;
@@ -10,20 +12,20 @@ import static org.camunda.bpm.engine.ProcessEngineConfiguration.DB_SCHEMA_UPDATE
 import static org.camunda.bpm.engine.ProcessEngineConfiguration.DB_SCHEMA_UPDATE_TRUE;
 import static org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl.DB_SCHEMA_UPDATE_CREATE;
 import static org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl.DB_SCHEMA_UPDATE_DROP_CREATE;
-import static org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties.joinOn;
+import static org.camunda.bpm.spring.boot.properties.CamundaBpmProperties.joinOn;
 
 public class DatabaseProperty {
   public static final List<String> SCHEMA_UPDATE_VALUES = Arrays.asList(
-    DB_SCHEMA_UPDATE_TRUE,
-    DB_SCHEMA_UPDATE_FALSE,
-    DB_SCHEMA_UPDATE_CREATE,
-    DB_SCHEMA_UPDATE_CREATE_DROP,
-    DB_SCHEMA_UPDATE_DROP_CREATE);
+    ProcessEngineConfiguration.DB_SCHEMA_UPDATE_TRUE,
+    ProcessEngineConfiguration.DB_SCHEMA_UPDATE_FALSE,
+    ProcessEngineConfigurationImpl.DB_SCHEMA_UPDATE_CREATE,
+    ProcessEngineConfiguration.DB_SCHEMA_UPDATE_CREATE_DROP,
+    ProcessEngineConfigurationImpl.DB_SCHEMA_UPDATE_DROP_CREATE);
 
   /**
    * enables automatic schema update
    */
-  private String schemaUpdate = DB_SCHEMA_UPDATE_TRUE;
+  private String schemaUpdate = ProcessEngineConfiguration.DB_SCHEMA_UPDATE_TRUE;
 
   /**
    * the database type

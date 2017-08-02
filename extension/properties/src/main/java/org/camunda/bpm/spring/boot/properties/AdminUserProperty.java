@@ -1,11 +1,11 @@
-package org.camunda.bpm.spring.boot.starter.property;
+package org.camunda.bpm.spring.boot.properties;
 
 import org.apache.commons.lang.StringUtils;
 import org.camunda.bpm.engine.identity.User;
 
 import static java.util.Objects.requireNonNull;
 import static org.apache.commons.lang.WordUtils.capitalize;
-import static org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties.joinOn;
+import static org.camunda.bpm.spring.boot.properties.CamundaBpmProperties.joinOn;
 
 
 public class AdminUserProperty implements User {

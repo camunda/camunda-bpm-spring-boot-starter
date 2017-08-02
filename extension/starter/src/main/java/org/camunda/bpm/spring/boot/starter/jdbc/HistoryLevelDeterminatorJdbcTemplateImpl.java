@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.camunda.bpm.engine.impl.history.HistoryLevel;
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
-import org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties;
+import org.camunda.bpm.spring.boot.properties.CamundaBpmProperties;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.dao.DataAccessException;
@@ -16,7 +16,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 public class HistoryLevelDeterminatorJdbcTemplateImpl implements HistoryLevelDeterminator, InitializingBean {
-  
+
   private static final Logger log = org.slf4j.LoggerFactory.getLogger(HistoryLevelDeterminatorJdbcTemplateImpl.class);
 
   public static HistoryLevelDeterminator createHistoryLevelDeterminator(CamundaBpmProperties camundaBpmProperties, JdbcTemplate jdbcTemplate) {

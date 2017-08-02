@@ -1,6 +1,8 @@
-package org.camunda.bpm.spring.boot.starter.property;
+package org.camunda.bpm.spring.boot.properties;
 
+import org.assertj.core.api.Assertions;
 import org.camunda.bpm.engine.identity.User;
+import org.camunda.bpm.spring.boot.properties.AdminUserProperty;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;

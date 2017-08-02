@@ -1,8 +1,8 @@
-package org.camunda.bpm.spring.boot.starter.property;
+package org.camunda.bpm.spring.boot.properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.camunda.bpm.spring.boot.starter.property.ParsePropertiesHelper;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.springframework.test.context.TestPropertySource;
 
