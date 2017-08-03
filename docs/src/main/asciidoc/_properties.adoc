@@ -73,7 +73,7 @@
 |`1`
 
 4+|**Datasource**
-.3+|`{properties-prefix}.database`
+.4+|`{properties-prefix}.database`
 |`.schema-update`
 |if automatic schema update should be applied, use one of [true, false, create, create-drop, drop-create]
 |`true`
@@ -84,7 +84,12 @@
 
 |`.table-prefix`
 |prefix of the camunda database tables. Attention: The table prefix will *not* be applied if you  are using `schema-update`!
-|camunda default value
+|_camunda default value_
+
+|`.schema-name`
+|the dataBase schema name
+|_camunda default value_
+
 
 4+|**JPA**
 .4+|`{properties-prefix}.jpa`
