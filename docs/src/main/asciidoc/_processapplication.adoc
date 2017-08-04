@@ -32,3 +32,22 @@ public class MyApplication {
 
 }
 ----
+
+=== Using deployment callbacks
+
+As when using `@EnableProcessApplication` we don't extend `ProcessApplication` class,
+we can't use `@PostDeploy` and `@PreUndeploy` method annotations. Instead these callbacks
+ are provided via Spring event publishing mechanism. So you can use the following event listeners:
+
+[source,java]
+----
+@EventListener
+public void onPostDeploy(PostDeployEvent event) {
+  ...
+}
+
+@EventListener
+public void onPreUndeploy(PreUndeployEvent event) {
+  ...
+}
+----

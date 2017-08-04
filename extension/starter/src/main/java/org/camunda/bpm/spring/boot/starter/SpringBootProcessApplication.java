@@ -10,14 +10,19 @@ import java.util.Set;
 
 import javax.servlet.ServletContext;
 
+import org.camunda.bpm.application.PostDeploy;
+import org.camunda.bpm.application.PreUndeploy;
 import org.camunda.bpm.container.RuntimeContainerDelegate;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.camunda.bpm.engine.spring.application.SpringProcessApplication;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaDeploymentConfiguration;
+import org.camunda.bpm.spring.boot.starter.event.PostDeployEvent;
+import org.camunda.bpm.spring.boot.starter.event.PreUndeployEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
@@ -54,6 +59,9 @@ public class SpringBootProcessApplication extends SpringProcessApplication {
   @Autowired
   protected ProcessEngine processEngine;
 
+  @Autowired
+  protected ApplicationEventPublisher eventPublisher;
+
   @Override
   public void afterPropertiesSet() throws Exception {
     processApplicationNameFromAnnotation(applicationContext)
@@ -70,6 +78,16 @@ public class SpringBootProcessApplication extends SpringProcessApplication {
   public void destroy() throws Exception {
     super.destroy();
     RuntimeContainerDelegate.INSTANCE.get().unregisterProcessEngine(processEngine);
+  }
+
+  @PostDeploy
+  public void onPostDeploy(ProcessEngine processEngine) {
+    eventPublisher.publishEvent(new PostDeployEvent(processEngine));
+  }
+
+  @PreUndeploy
+  public void onPreUndeploy(ProcessEngine processEngine) {
+    eventPublisher.publishEvent(new PreUndeployEvent(processEngine));
   }
 
   @ConditionalOnWebApplication
