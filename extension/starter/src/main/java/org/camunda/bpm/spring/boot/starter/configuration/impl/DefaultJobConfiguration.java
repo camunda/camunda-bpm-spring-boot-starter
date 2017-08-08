@@ -11,6 +11,7 @@ import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 import org.camunda.bpm.engine.spring.components.jobexecutor.SpringJobExecutor;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaJobConfiguration;
 import org.camunda.bpm.spring.boot.starter.event.JobExecutorStartingEventListener;
+import org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -61,14 +62,17 @@ public class DefaultJobConfiguration extends AbstractCamundaConfiguration implem
     @Bean(name = CAMUNDA_TASK_EXECUTOR_QUALIFIER)
     @ConditionalOnMissingBean(name = CAMUNDA_TASK_EXECUTOR_QUALIFIER)
     @ConditionalOnProperty(prefix = "camunda.bpm.job-execution", name = "enabled", havingValue = "true", matchIfMissing = true)
-    public static TaskExecutor camundaTaskExecutor(@Value("${camunda.bpm.job-execution.core-pool-size:1}") int corePoolSize) {
+    public static TaskExecutor camundaTaskExecutor(CamundaBpmProperties properties) {
+      int corePoolSize = properties.getJobExecution().getCorePoolSize();
+      int maxPoolSize = properties.getJobExecution().getMaxPoolSize();
+
       final ThreadPoolTaskExecutor threadPoolTaskExecutor = new ThreadPoolTaskExecutor();
 
-      if (corePoolSize > 1) {
-        threadPoolTaskExecutor.setCorePoolSize(corePoolSize);
-      }
+      threadPoolTaskExecutor.setCorePoolSize(corePoolSize);
+      threadPoolTaskExecutor.setMaxPoolSize(maxPoolSize);
 
-      LOG.configureJobExecutorPool(corePoolSize);
+
+      LOG.configureJobExecutorPool(corePoolSize, maxPoolSize);
       return threadPoolTaskExecutor;
     }
 

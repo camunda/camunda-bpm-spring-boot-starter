@@ -19,9 +19,8 @@ public class JobExecutionProperty {
    */
   private boolean deploymentAware;
 
-  private int corePoolSize = Defaults.TASK_EXECUTOR.getCorePoolSize();
-  //private int maxPoolSize = Defaults.TASK_EXECUTOR.getMaxPoolSize();
-  //private int keepAliveSeconds = Defaults.TASK_EXECUTOR.getKeepAliveSeconds();
+  private int corePoolSize = 3;
+  private int maxPoolSize = 10;
 
   public boolean isEnabled() {
     return enabled;
@@ -55,6 +54,14 @@ public class JobExecutionProperty {
     this.corePoolSize = corePoolSize;
   }
 
+  public int getMaxPoolSize() {
+    return maxPoolSize;
+  }
+
+  public void setMaxPoolSize(int maxPoolSize) {
+    this.maxPoolSize = maxPoolSize;
+  }
+
   @Override
   public String toString() {
     return joinOn(this.getClass())
@@ -62,6 +69,7 @@ public class JobExecutionProperty {
       .add("active=" + active)
       .add("deploymentAware=" + deploymentAware)
       .add("corePoolSize=" + corePoolSize)
+      .add("maxPoolSize=" + maxPoolSize)
       .toString();
   }
 

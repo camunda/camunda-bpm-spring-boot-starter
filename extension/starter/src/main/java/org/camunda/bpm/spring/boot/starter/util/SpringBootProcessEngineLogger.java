@@ -39,7 +39,7 @@ public class SpringBootProcessEngineLogger extends BaseLogger {
     logInfo("030", "Setting up license key: {}", licenseKeyFile);
   }
 
-  public void configureJobExecutorPool(Integer corePoolSize) {
-    logInfo("040", "Setting up jobExecutor with pool-size {}", corePoolSize);
+  public void configureJobExecutorPool(Integer corePoolSize, Integer maxPoolSize) {
+    logInfo("040", "Setting up jobExecutor with corePoolSize={}, maxPoolSize:{}", corePoolSize, maxPoolSize);
   }
 }
