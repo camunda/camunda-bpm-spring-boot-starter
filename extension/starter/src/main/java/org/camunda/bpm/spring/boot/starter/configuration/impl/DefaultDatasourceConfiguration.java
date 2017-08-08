@@ -40,6 +40,10 @@ public class DefaultDatasourceConfiguration extends AbstractCamundaConfiguration
     if (!StringUtils.isEmpty(database.getTablePrefix())) {
       configuration.setDatabaseTablePrefix(database.getTablePrefix());
     }
+
+    if(!StringUtils.isEmpty(database.getSchemaName())) {
+      configuration.setDatabaseSchema(database.getSchemaName());
+    }
   }
 
 }

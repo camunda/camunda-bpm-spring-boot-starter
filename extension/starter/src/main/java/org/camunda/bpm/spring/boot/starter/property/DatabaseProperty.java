@@ -33,7 +33,12 @@ public class DatabaseProperty {
   /**
    * the database table prefix to use
    */
-  private String tablePrefix;
+  private String tablePrefix = Defaults.INSTANCE.getDatabaseTablePrefix();
+
+  /**
+   * the database schema to use
+   */
+  private String schemaName = Defaults.INSTANCE.getDatabaseSchema();
 
   public String getSchemaUpdate() {
     return schemaUpdate;
@@ -63,13 +68,25 @@ public class DatabaseProperty {
     this.tablePrefix = tablePrefix;
   }
 
+  public static List<String> getSchemaUpdateValues() {
+    return SCHEMA_UPDATE_VALUES;
+  }
+
+  public String getSchemaName() {
+    return schemaName;
+  }
+
+  public void setSchemaName(String schemaName) {
+    this.schemaName = schemaName;
+  }
+
   @Override
   public String toString() {
     return joinOn(this.getClass())
-      .add("schemaUpdate=" + schemaUpdate)
       .add("type=" + type)
+      .add("schemaUpdate=" + schemaUpdate)
+      .add("schemaName=" + schemaName)
       .add("tablePrefix=" + tablePrefix)
       .toString();
   }
-
 }
