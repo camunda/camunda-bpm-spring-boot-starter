@@ -1,8 +1,0 @@
-# camunda spring boot maven
-
-Here we provide tools for easier setup of spring boot starter projectes via maven.
-
-:toc:
-
-include::webjar-maven-plugin/README.adoc[]
-
