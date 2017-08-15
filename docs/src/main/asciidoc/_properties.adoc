@@ -5,7 +5,7 @@
 |===
 |Prefix | Property name |Description | Default value
 4+|**General**
-.10+|`{properties-prefix}`
+.11+|`{properties-prefix}`
 
 |`.enabled`
 |switch to disable the camunda auto-configuration. Use to exclude camunda in integration tests.
@@ -49,8 +49,13 @@
 |read only value e.g. (v7.4.0)
 
 
+|`.deployment-resource-pattern`
+|location for auto deployment
+|`classpath*:**/*.bpmn, classpath*:**/*.bpmn20.xml, classpath*:**/*.dmn, classpath*:**/*.dmn11.xml, classpath*:**/*.cmmn, classpath*:**/*.cmmn10.xml, classpath*:**/*.cmmn11.xml`
+
+
 4+|**Job Execution**
-.5+|`{properties-prefix}.job-execution`
+.4+|`{properties-prefix}.job-execution`
 
 |`.active`
 |activate job execution after successful startup
@@ -63,10 +68,6 @@
 |`.deployment-aware`
 |if job executor is deployment aware
 |`false`
-
-|`.deployment-resource-pattern`
-|location for auto deployment
-|`classpath*:**/*.bpmn, classpath*:**/*.bpmn20.xml, classpath*:**/*.dmn, classpath*:**/*.dmn11.xml, classpath*:**/*.cmmn, classpath*:**/*.cmmn10.xml, classpath*:**/*.cmmn11.xml`
 
 |`.core-pool-size`
 |set to value > 1 to activate parallel job execution.
