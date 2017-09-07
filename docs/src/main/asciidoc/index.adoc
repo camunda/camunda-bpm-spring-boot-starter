@@ -25,6 +25,8 @@ The configuration is divided into _sections_. These _sections_ are represented b
 * `org.camunda.bpm.spring.boot.starter.configuration.CamundaDeploymentConfiguration`
 * `org.camunda.bpm.spring.boot.starter.configuration.CamundaJpaConfiguration`
 * `org.camunda.bpm.spring.boot.starter.configuration.CamundaAuthorizationConfiguration`
+* `org.camunda.bpm.spring.boot.starter.configuration.CamundaFailedJobConfiguration`
+* `org.camunda.bpm.spring.boot.starter.configuration.CamundaMetricsConfiguration`
 
 === Default configurations
 
@@ -59,7 +61,7 @@ IMPORTANT: When using `history-level auto` with more then one database and camun
 
 ==== `DefaultHistoryConfiguration`
 
-Applies the history configuration to the process engine. If not configured the `camunda` default level will be used.
+Applies the history configuration to the process engine. If not configured the FULL history level level will be used.
 If you want to use a custom `HistoryEventHandler` you just have to provide a bean implementing the interface.
 [source,java]
 ----
