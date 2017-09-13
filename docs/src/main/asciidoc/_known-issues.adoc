@@ -1,9 +1,0 @@
-== Known issues
-
-* The `camunda-bpm-spring-boot-starter-test` used to also reference `camunda-bpm-assert`. +
-After switching to spring-boot v1.5.2, this was not possible because v1.5.2 brings a dependency +
-to assertj-core 2.6.0 which is no longer compatible to the outdated version used in the test-extension. +
-That's why we now include the bpm-assert classes directly and compile them with the starter. +
-+
-**Attention:** This means you must *not* add an additional dependency on `camunda-bpm-assert` when you +
- use the `camunda-bpm-spring-boot-starter-test` in your test scope! This hopefully will change with following versions.
