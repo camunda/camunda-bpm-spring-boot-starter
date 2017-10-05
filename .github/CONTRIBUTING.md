@@ -1,19 +1,14 @@
 # How to contribute
 
-## Creating issues
+First of all, please follow the same [contributing guidelines](https://github.com/camunda/camunda-bpm-platform/blob/master/CONTRIBUTING.md), as for Camunda BPM Platform.
 
 We have an active dicussion forum here: https://forum.camunda.org/c/community-extensions/spring-boot-starter where we 
 are happy to help/discuss all your "why is this not working", "what am I missing", "do you support this feature" questions.  
 Please only file issues here for concrete bug reports and feature requests. Thank you!
 
-We would love you to contribute to this project by filing bugs, helping others on the [issue tracker](https://github.com/camunda/camunda-bpm-spring-boot-starter/issues), by contributing features/bug fixes through pull requests.
+We would love you to contribute to this project by filing bugs, helping others on the [issue tracker](https://app.camunda.com/jira/browse/CAM), by contributing features/bug fixes through pull requests. When creating an issue, please put "sping-boot" as a Component, so that we can easily track all the issues related with this project.
 
-* Be descriptive when creating an issue (what, where, when and how does a problem pop up)?
-* Attach steps to reproduce (if applicable)
-* Attach code samples, configuration options or stack traces that may indicate a problem
-* Be helpful and respect others when commenting
-
-Create a pull request if you would like to have an in-depth discussion about some piece of code.
+Before v. 2.3.0, the issues were tracked in GitHub: https://github.com/camunda/camunda-bpm-spring-boot-starter/issues. They are now preserved for the reference, but, please, DON'T create new issues here anymore.
 
 ## Setting up the project locally
 
