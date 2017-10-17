@@ -4,7 +4,7 @@ First of all, please follow the same [contributing guidelines](https://github.co
 
 We have an active discussion forum where we are happy to help/discuss all your "why is this not working", "what am I missing", "do you support this feature" questions. 
 Please only file issues here for concrete bug reports and feature requests. Thank you! 
-You can find the forum here: https://forum.camunda.org/c/community-extensions/spring-boot-starter
+You can find the forum here: https://forum.camunda.org/c/spring-boot-starter
 
 We would love for you to contribute to this project by filing bugs, helping others on the [issue tracker](https://app.camunda.com/jira/browse/CAM) and by contributing features/bug fixes through pull requests. When creating an issue, please add "spring-boot" as a component, so that we can easily track all the issues related to this project.
 
