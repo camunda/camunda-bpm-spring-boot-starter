@@ -1,11 +1,15 @@
 package org.camunda.bpm.spring.boot.starter.property;
 
-import org.camunda.bpm.application.impl.metadata.ProcessArchiveXmlImpl;
-import org.camunda.bpm.application.impl.metadata.spi.ProcessArchiveXml;
 import org.camunda.bpm.engine.repository.ResumePreviousBy;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
+import static org.camunda.bpm.application.impl.metadata.spi.ProcessArchiveXml.PROP_IS_DELETE_UPON_UNDEPLOY;
+import static org.camunda.bpm.application.impl.metadata.spi.ProcessArchiveXml.PROP_IS_DEPLOY_CHANGED_ONLY;
+import static org.camunda.bpm.application.impl.metadata.spi.ProcessArchiveXml.PROP_IS_RESUME_PREVIOUS_VERSIONS;
+import static org.camunda.bpm.application.impl.metadata.spi.ProcessArchiveXml.PROP_IS_SCAN_FOR_PROCESS_DEFINITIONS;
+import static org.camunda.bpm.application.impl.metadata.spi.ProcessArchiveXml.PROP_RESUME_PREVIOUS_BY;
 import static org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties.joinOn;
 
 public class ApplicationProperty {
@@ -156,34 +160,22 @@ public class ApplicationProperty {
     this.resumePreviousBy = resumePreviousBy;
   }
 
-  public List<ProcessArchiveXml> getProcessArchives() {
-    List<ProcessArchiveXml> processArchives = new ArrayList<ProcessArchiveXml>();
+  public Map<String,String> toMap() {
 
-    // add single PA
-    ProcessArchiveXmlImpl pa = new ProcessArchiveXmlImpl();
-    processArchives.add(pa);
+    final Map<String, String> properties = new HashMap();
+    properties.put(PROP_IS_DELETE_UPON_UNDEPLOY, String.valueOf(isDeleteUponUndeploy));
+    properties.put(PROP_IS_SCAN_FOR_PROCESS_DEFINITIONS, String.valueOf(isScanForProcessDefinitions));
+    properties.put(PROP_IS_DEPLOY_CHANGED_ONLY, String.valueOf(isDeployChangedOnly));
+    properties.put(PROP_IS_RESUME_PREVIOUS_VERSIONS, String.valueOf(isResumePreviousVersions));
+    properties.put(PROP_RESUME_PREVIOUS_BY, resumePreviousBy);
 
-    pa.setProcessResourceNames(Collections.<String>emptyList());
-
-    // with default properties
-    final HashMap<String, String> properties = new HashMap<String, String>();
-    pa.setProperties(properties);
-    properties.put(ProcessArchiveXml.PROP_IS_DELETE_UPON_UNDEPLOY, String.valueOf(isDeleteUponUndeploy));
-    properties.put(ProcessArchiveXml.PROP_IS_SCAN_FOR_PROCESS_DEFINITIONS, String.valueOf(isScanForProcessDefinitions));
-    properties.put(ProcessArchiveXml.PROP_IS_DEPLOY_CHANGED_ONLY, String.valueOf(isDeployChangedOnly));
-    properties.put(ProcessArchiveXml.PROP_RESUME_PREVIOUS_BY, resumePreviousBy);
-
-    return processArchives;
+    return properties;
   }
 
   @Override
   public String toString() {
     return joinOn(this.getClass())
-      .add("isDeleteUponUndeploy=" + isDeleteUponUndeploy)
-      .add("isScanForProcessDefinitions=" + isScanForProcessDefinitions)
-      .add("isDeployChangedOnly=" + isDeployChangedOnly)
-      .add("isResumePreviousVersions=" + isResumePreviousVersions)
-      .add("resumePreviousBy=" + resumePreviousBy)
+      .add("properties=" + toMap())
       .toString();
   }
 

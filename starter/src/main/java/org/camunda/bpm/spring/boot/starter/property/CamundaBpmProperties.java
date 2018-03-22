@@ -48,6 +48,8 @@ public class CamundaBpmProperties {
 
   private String idGenerator = IdGeneratorConfiguration.STRONG;
 
+  private boolean processesXmlFromProperties = true;
+
   /**
    * the history level to use
    */
@@ -280,11 +282,20 @@ public class CamundaBpmProperties {
     this.enabled = enabled;
   }
 
+  public boolean isProcessesXmlFromProperties() {
+    return processesXmlFromProperties;
+  }
+
+  public void setProcessesXmlFromProperties(boolean processesXmlFromProperties) {
+    this.processesXmlFromProperties = processesXmlFromProperties;
+  }
+
   @Override
   public String toString() {
     return joinOn(this.getClass())
       .add("enabled=" + enabled)
       .add("processEngineName=" + processEngineName)
+      .add("processesXmlFromProperties=" + processesXmlFromProperties)
       .add("historyLevel=" + historyLevel)
       .add("historyLevelDefault=" + historyLevelDefault)
       .add("autoDeploymentEnabled=" + autoDeploymentEnabled)

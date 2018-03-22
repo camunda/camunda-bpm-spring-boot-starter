@@ -1,15 +1,5 @@
 package org.camunda.bpm.spring.boot.starter;
 
-import static java.util.Collections.EMPTY_SET;
-import static org.camunda.bpm.application.ProcessApplicationInfo.PROP_SERVLET_CONTEXT_PATH;
-import static org.camunda.bpm.spring.boot.starter.util.GetProcessApplicationNameFromAnnotation.processApplicationNameFromAnnotation;
-import static org.camunda.bpm.spring.boot.starter.util.SpringBootProcessEngineLogger.LOG;
-
-import java.util.Optional;
-import java.util.Set;
-
-import javax.servlet.ServletContext;
-
 import org.camunda.bpm.application.PostDeploy;
 import org.camunda.bpm.application.PreUndeploy;
 import org.camunda.bpm.container.RuntimeContainerDelegate;
@@ -17,6 +7,7 @@ import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.camunda.bpm.engine.spring.application.SpringProcessApplication;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaDeploymentConfiguration;
+import org.camunda.bpm.spring.boot.starter.container.SpringBootRuntimeContainerDelegate;
 import org.camunda.bpm.spring.boot.starter.event.PostDeployEvent;
 import org.camunda.bpm.spring.boot.starter.event.PreUndeployEvent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +20,15 @@ import org.springframework.core.io.Resource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.ServletContextAware;
 
+import javax.servlet.ServletContext;
+import java.util.Collections;
+import java.util.Optional;
+import java.util.Set;
+
+import static org.camunda.bpm.application.ProcessApplicationInfo.PROP_SERVLET_CONTEXT_PATH;
+import static org.camunda.bpm.spring.boot.starter.util.GetProcessApplicationNameFromAnnotation.processApplicationNameFromAnnotation;
+import static org.camunda.bpm.spring.boot.starter.util.SpringBootProcessEngineLogger.LOG;
+
 public class SpringBootProcessApplication extends SpringProcessApplication {
 
   @Bean
@@ -36,7 +36,7 @@ public class SpringBootProcessApplication extends SpringProcessApplication {
     return new CamundaDeploymentConfiguration() {
       @Override
       public Set<Resource> getDeploymentResources() {
-        return EMPTY_SET;
+        return Collections.emptySet();
       }
 
       @Override
@@ -51,10 +51,12 @@ public class SpringBootProcessApplication extends SpringProcessApplication {
     };
   }
 
+  protected String contextPath = "/";
+
+  // TODO: we should use constructor injection
   @Value("${spring.application.name:null}")
   protected Optional<String> springApplicationName;
 
-  protected String contextPath = "/";
 
   @Autowired
   protected ProcessEngine processEngine;

@@ -1,6 +1,7 @@
 package org.camunda.bpm.spring.boot.starter;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.annotation.DirtiesContext.ClassMode.BEFORE_CLASS;
 
 import org.camunda.bpm.engine.repository.ProcessDefinition;
 import org.camunda.bpm.spring.boot.starter.AdditionalCammundaBpmConfigurations.AfterStandardConfiguration;
@@ -10,6 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
@@ -18,11 +20,12 @@ import org.springframework.test.context.junit4.SpringRunner;
   webEnvironment = WebEnvironment.NONE,
   properties = { "camunda.bpm.admin-user.id=admin"}
 )
+@DirtiesContext(classMode = BEFORE_CLASS)
 public class CamundaAutoConfigurationIT extends AbstractCamundaAutoConfigurationIT {
 
   @Test
   public void autoDeploymentTest() {
-    ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionName("TestProcess").singleResult();
+    ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery().processDefinitionName("TestProcess").latestVersion().singleResult();
     assertThat(processDefinition).isNotNull();
   }
 
