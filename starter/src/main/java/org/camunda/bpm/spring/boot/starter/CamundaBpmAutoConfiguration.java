@@ -5,6 +5,7 @@ import org.camunda.bpm.engine.impl.interceptor.CommandExecutor;
 import org.camunda.bpm.engine.spring.ProcessEngineFactoryBean;
 import org.camunda.bpm.engine.spring.SpringProcessEngineServicesConfiguration;
 import org.camunda.bpm.model.bpmn.instance.camunda.CamundaProperties;
+import org.camunda.bpm.spring.boot.starter.event.EventPublisherPlugin;
 import org.camunda.bpm.spring.boot.starter.event.ProcessApplicationEventPublisher;
 import org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties;
 import org.camunda.bpm.spring.boot.starter.property.ManagementProperties;
@@ -35,6 +36,7 @@ import org.springframework.context.annotation.Primary;
 @AutoConfigureAfter(HibernateJpaAutoConfiguration.class)
 public class CamundaBpmAutoConfiguration {
 
+  @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
   @Configuration
   class ProcessEngineConfigurationImplDependingConfiguration {
 
@@ -76,4 +78,8 @@ public class CamundaBpmAutoConfiguration {
     return new ProcessApplicationEventPublisher(publisher);
   }
 
+  @Bean
+  public EventPublisherPlugin eventPublisherPlugin(ApplicationEventPublisher publisher) {
+    return new EventPublisherPlugin(publisher);
+  }
 }
