@@ -39,6 +39,10 @@ public class SpringBootProcessEngineLogger extends BaseLogger {
     logInfo("030", "Setting up license key: {}", licenseKeyFile);
   }
 
+  public void enterLicenseKeyFailed(URL licenseKeyFile, Exception e) {
+    logWarn("031", "Failed setting up license key: {}", licenseKeyFile, e);
+  }
+
   public void configureJobExecutorPool(Integer corePoolSize, Integer maxPoolSize) {
     logInfo("040", "Setting up jobExecutor with corePoolSize={}, maxPoolSize:{}", corePoolSize, maxPoolSize);
   }

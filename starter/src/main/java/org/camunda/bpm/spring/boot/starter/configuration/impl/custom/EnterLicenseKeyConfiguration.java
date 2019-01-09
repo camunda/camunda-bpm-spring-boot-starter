@@ -57,8 +57,9 @@ public class EnterLicenseKeyConfiguration extends AbstractCamundaConfiguration {
       try (PreparedStatement statement = connection.prepareStatement(getSql(INSERT_SQL))) {
         statement.setString(1, licenseKey.get());
         statement.execute();
-        LOG.enterLicenseKey(fileUrl);
       }
+      connection.commit();
+      LOG.enterLicenseKey(fileUrl);
     } catch (SQLException ex) {
       throw new CamundaBpmNestedRuntimeException(ex.getMessage(), ex);
     }
@@ -84,6 +85,7 @@ public class EnterLicenseKeyConfiguration extends AbstractCamundaConfiguration {
         .map(s -> s.replaceAll("\\n", ""))
         .map(String::trim);
     } catch (IOException e) {
+      LOG.enterLicenseKeyFailed(licenseFileUrl, e);
       return Optional.empty();
     }
   }
