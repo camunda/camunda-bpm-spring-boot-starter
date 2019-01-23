@@ -1,3 +1,18 @@
+/*
+ * Copyright © 2015-2018 camunda services GmbH and various authors (info@camunda.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.camunda.bpm.spring.boot.starter.rest;
 
 import static org.junit.Assert.assertEquals;
@@ -26,6 +41,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import my.own.custom.spring.boot.project.SampleCamundaRestApplication;
 
@@ -81,6 +97,26 @@ public class SampleCamundaRestApplicationIT {
         .singleResult();
     ByteArrayInputStream byteArrayInputStream = (ByteArrayInputStream) variableInstance.getValue();
     assertTrue(byteArrayInputStream.available() > 0);
+  }
+
+  @Test
+  public void fetchAndLockExternalTaskWithLongPollingIsRunning() throws Exception {
+
+    String requestJson = "{"
+      + "  \"workerId\":\"aWorkerId\","
+      + "  \"maxTasks\":2,"
+      + "  \"topics\":"
+      + "      [{\"topicName\": \"aTopicName\","
+      + "      \"lockDuration\": 10000"
+      + "      }]"
+      + "}";
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_JSON);
+    HttpEntity<String> requestEntity = new HttpEntity<String>(requestJson, headers);
+    ResponseEntity<String> entity = testRestTemplate.postForEntity("/rest/engine/{enginename}/external-task/fetchAndLock", requestEntity, String.class,
+      camundaBpmProperties.getProcessEngineName());
+    assertEquals(HttpStatus.OK, entity.getStatusCode());
+    assertEquals("[]", entity.getBody());
   }
 
 }

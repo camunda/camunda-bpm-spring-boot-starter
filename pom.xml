@@ -4,14 +4,15 @@
   <parent>
     <groupId>org.camunda</groupId>
     <artifactId>camunda-release-parent</artifactId>
-    <version>2.5</version>
+    <version>3.2</version>
     <!-- DO NOT REMOVE EMPTY TAG https://issues.apache.org/jira/browse/MNG-4687 -->
     <relativePath />
   </parent>
 
   <groupId>org.camunda.bpm.springboot.project</groupId>
   <artifactId>camunda-bpm-spring-boot-starter-root</artifactId>
-  <version>3.0.0-SNAPSHOT</version>
+  <inceptionYear>2015</inceptionYear>
+  <version>3.3.0-SNAPSHOT</version>
 
   <packaging>pom</packaging>
 
@@ -24,11 +25,11 @@
   </modules>
 
   <properties>
-    <spring-boot.version>2.0.0.RELEASE</spring-boot.version>
+    <spring-boot.version>2.1.1.RELEASE</spring-boot.version>
     <!-- for SNAPSHOT versions ${camunda.version} and ${camunda-webapp-ee.version} will be the same, for released versions, the latter must be with -ee suffix -->
-    <camunda.version>7.9.0-SNAPSHOT</camunda.version>
-    <camunda-webapp-ee.version>${camunda.version}</camunda-webapp-ee.version>           <!-- for SNAPSHOT versions -->
-    <!--<camunda-webapp-ee.version>${camunda.version}-ee</camunda-webapp-ee.version>-->              <!-- for released versions -->
+    <camunda.version>7.11.0-SNAPSHOT</camunda.version>
+    <camunda-webapp-ee.version>${camunda.version}</camunda-webapp-ee.version>                     <!-- for SNAPSHOT versions -->
+    <!-- <camunda-webapp-ee.version>${camunda.version}-ee</camunda-webapp-ee.version> -->         <!-- for released versions -->
 
     <version.java>1.8</version.java>
     <java.version>${version.java}</java.version>
@@ -59,6 +60,18 @@
         <type>pom</type>
       </dependency>
 
+      <dependency>
+        <groupId>com.sun.xml.bind</groupId>
+        <artifactId>jaxb-impl</artifactId>
+        <version>2.2.4</version>
+        <scope>test</scope>
+      </dependency>
+      
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>3.8.1</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -73,6 +86,17 @@
       <modules>
         <module>starter-webapp-ee</module>
       </modules>
+    </profile>
+    <profile>
+      <id>license-header-check</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.mycila</groupId>
+            <artifactId>license-maven-plugin</artifactId>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
   </profiles>
 
@@ -113,6 +137,9 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
         <version>2.18.1</version>
+        <configuration>
+          <runOrder>alphabetical</runOrder>
+        </configuration>
         <executions>
           <execution>
             <goals>
@@ -126,6 +153,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M1</version>
         <configuration>
           <rules>
             <requireJavaVersion>
