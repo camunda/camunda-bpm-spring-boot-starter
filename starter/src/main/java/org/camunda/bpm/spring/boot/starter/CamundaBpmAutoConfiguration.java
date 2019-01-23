@@ -45,7 +45,7 @@ public class CamundaBpmAutoConfiguration {
     @Bean
     public ProcessEngineFactoryBean processEngineFactoryBean() {
       final ProcessEngineFactoryBean factoryBean = new ProcessEngineFactoryBean();
-      factoryBean.setProcessEngineConfiguration(processEngineConfigurationImpl); 
+      factoryBean.setProcessEngineConfiguration(processEngineConfigurationImpl);
 
       return factoryBean;
     }

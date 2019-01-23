@@ -4,6 +4,8 @@ import org.camunda.bpm.spring.boot.starter.annotation.EnableProcessApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
+ * Test process application.
+ *
  * @author Svetlana Dorokhova.
  */
 @SpringBootApplication
