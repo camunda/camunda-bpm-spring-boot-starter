@@ -49,11 +49,13 @@ public class TestEventCaptor {
     public final String id;
     public final String processInstanceId;
     public final String activityId;
+    public final String eventName;
 
     public ExecutionEvent(DelegateExecution execution) {
       this.id = execution.getId();
       this.processInstanceId = execution.getProcessInstanceId();
       this.activityId = execution.getCurrentActivityId();
+      this.eventName = execution.getEventName();
     }
   }
 
