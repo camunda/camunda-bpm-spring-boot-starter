@@ -15,6 +15,8 @@
  */
 package org.camunda.bpm.spring.boot.starter.property;
 
+import org.apache.commons.lang3.BooleanUtils;
+
 import static org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties.joinOn;
 
 /**
@@ -25,37 +27,41 @@ public class EventingProperty {
   /**
    * Controls events of execution listener.
    */
-  private boolean execution = true;
+  private Boolean execution = Boolean.TRUE;
   /**
    * Controls events of task listener.
    */
-  private boolean task = true;
+  private Boolean task = Boolean.TRUE;
   /**
    * Controls events of history handler.
    */
-  private boolean history = true;
+  private Boolean history = Boolean.TRUE;
 
-  public boolean isExecution() {
-    return execution;
+  public EventingProperty() {
+
   }
 
-  public void setExecution(boolean execution) {
+  public boolean isExecution() {
+    return BooleanUtils.isTrue(execution);
+  }
+
+  public void setExecution(Boolean execution) {
     this.execution = execution;
   }
 
-  public boolean isTask() {
-    return task;
+  public Boolean isTask() {
+    return BooleanUtils.isTrue(task);
   }
 
-  public void setTask(boolean task) {
+  public void setTask(Boolean task) {
     this.task = task;
   }
 
-  public boolean isHistory() {
-    return history;
+  public Boolean isHistory() {
+    return BooleanUtils.isTrue(history);
   }
 
-  public void setHistory(boolean history) {
+  public void setHistory(Boolean history) {
     this.history = history;
   }
 

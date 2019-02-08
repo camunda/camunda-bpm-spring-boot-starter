@@ -50,14 +50,18 @@ import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultMetricsConf
 import org.camunda.bpm.spring.boot.starter.configuration.impl.DefaultProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.custom.EnterLicenseKeyConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.GenericPropertiesConfiguration;
+import org.camunda.bpm.spring.boot.starter.event.EventPublisherPlugin;
+import org.camunda.bpm.spring.boot.starter.event.ProcessApplicationEventPublisher;
 import org.camunda.bpm.spring.boot.starter.jdbc.HistoryLevelDeterminator;
 import org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties;
+import org.camunda.bpm.spring.boot.starter.property.EventingProperty;
 import org.camunda.bpm.spring.boot.starter.util.CamundaBpmVersion;
 import org.camunda.bpm.spring.boot.starter.util.CamundaSpringBootUtil;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Import;
@@ -73,9 +77,7 @@ public class CamundaBpmConfiguration {
   @ConditionalOnMissingBean(ProcessEngineConfigurationImpl.class)
   public ProcessEngineConfigurationImpl processEngineConfigurationImpl(List<ProcessEnginePlugin> processEnginePlugins) {
     final SpringProcessEngineConfiguration configuration = CamundaSpringBootUtil.springProcessEngineConfiguration();
-
     configuration.getProcessEnginePlugins().add(new CompositeProcessEnginePlugin(processEnginePlugins));
-
     return configuration;
   }
 
@@ -184,4 +186,10 @@ public class CamundaBpmConfiguration {
   public CreateFilterConfiguration createFilterConfiguration() {
     return new CreateFilterConfiguration();
   }
+
+  @Bean
+  public EventPublisherPlugin eventPublisherPlugin(CamundaBpmProperties properties, ApplicationEventPublisher publisher) {
+    return new EventPublisherPlugin(properties.getEventing(), publisher);
+  }
+
 }

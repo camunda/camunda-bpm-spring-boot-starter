@@ -37,14 +37,14 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 
 @EnableConfigurationProperties({
-    CamundaBpmProperties.class,
-    ManagementProperties.class
+  CamundaBpmProperties.class,
+  ManagementProperties.class
 })
 @Import({
-    CamundaBpmConfiguration.class,
-    CamundaBpmActuatorConfiguration.class,
-    CamundaBpmPluginConfiguration.class,
-    SpringProcessEngineServicesConfiguration.class
+  CamundaBpmConfiguration.class,
+  CamundaBpmActuatorConfiguration.class,
+  CamundaBpmPluginConfiguration.class,
+  SpringProcessEngineServicesConfiguration.class
 })
 @Configuration
 @ConditionalOnProperty(prefix = CamundaBpmProperties.PREFIX, name = "enabled", matchIfMissing = true)
@@ -92,8 +92,4 @@ public class CamundaBpmAutoConfiguration {
     return new ProcessApplicationEventPublisher(publisher);
   }
 
-  @Bean
-  public EventPublisherPlugin eventPublisherPlugin(ApplicationEventPublisher publisher) {
-    return new EventPublisherPlugin(new EventingProperty(), publisher);
-  }
 }

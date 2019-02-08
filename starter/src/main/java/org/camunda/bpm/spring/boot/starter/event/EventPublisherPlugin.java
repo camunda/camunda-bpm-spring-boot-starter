@@ -56,13 +56,13 @@ public class EventPublisherPlugin extends SpringBootProcessEnginePlugin {
 
       logger.info("EVENTING-001: Initialized Camunda Spring Boot Eventing Engine Plugin.");
       if (property.isTask()) {
-        logger.info("EVENTING-003: Task events are will be published as Spring Events.");
+        logger.info("EVENTING-003: Task events will be published as Spring Events.");
       } else {
         logger.info("EVENTING-004: Task eventing is disabled via property.");
       }
 
       if (property.isExecution()) {
-        logger.info("EVENTING-005: Execution events are will be published as Spring Events.");
+        logger.info("EVENTING-005: Execution events will be published as Spring Events.");
       } else {
         logger.info("EVENTING-006: Execution eventing is disabled via property.");
       }

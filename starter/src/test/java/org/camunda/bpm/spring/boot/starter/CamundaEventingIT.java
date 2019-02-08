@@ -45,7 +45,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(
   classes = {TestApplication.class},
   webEnvironment = WebEnvironment.NONE,
-  properties = {"camunda.bpm.history-level=full"}
+  properties = {
+    "camunda.bpm.history-level=full",
+    "camunda.bpm.eventing.execution=true",
+    "camunda.bpm.eventing.history=true",
+    "camunda.bpm.eventing.task=true"
+  }
 )
 @Transactional
 public class CamundaEventingIT extends AbstractCamundaAutoConfigurationIT {
@@ -84,7 +89,8 @@ public class CamundaEventingIT extends AbstractCamundaAutoConfigurationIT {
   }
 
   @Test
-  public final void should_event_task_creation() {
+  public final void shouldEventTaskCreation() {
+
     assertThat(eventCaptor.taskEvents).isNotEmpty();
 
     Task task = taskService.createTaskQuery().active().singleResult();
@@ -96,7 +102,7 @@ public class CamundaEventingIT extends AbstractCamundaAutoConfigurationIT {
   }
 
   @Test
-  public final void should_event_task_assignment() {
+  public final void shouldEventTaskAssignment() {
 
     // given
     assertThat(eventCaptor.taskEvents).isNotEmpty();
@@ -115,7 +121,7 @@ public class CamundaEventingIT extends AbstractCamundaAutoConfigurationIT {
 
 
   @Test
-  public final void should_event_task_complete() {
+  public final void shouldEventTaskComplete() {
 
     // given
     assertThat(eventCaptor.taskEvents).isNotEmpty();
@@ -133,7 +139,7 @@ public class CamundaEventingIT extends AbstractCamundaAutoConfigurationIT {
   }
 
   @Test
-  public final void should_event_task_delete() {
+  public final void shouldEventTaskDelete() {
 
     // given
     assertThat(eventCaptor.taskEvents).isNotEmpty();
@@ -151,7 +157,7 @@ public class CamundaEventingIT extends AbstractCamundaAutoConfigurationIT {
   }
 
   @Test
-  public final void should_event_execution() {
+  public final void shouldEventExecution() {
 
     // given
     assertThat(eventCaptor.executionEvents).isNotEmpty();
@@ -169,7 +175,7 @@ public class CamundaEventingIT extends AbstractCamundaAutoConfigurationIT {
   }
 
   @Test
-  public final void should_event_history_task_assignment_changes() {
+  public final void shouldEventHistoryTaskAssignmentChanges() {
     // given
     assertThat(eventCaptor.historyEvents).isNotEmpty();
     eventCaptor.historyEvents.clear();
@@ -235,7 +241,7 @@ public class CamundaEventingIT extends AbstractCamundaAutoConfigurationIT {
 
 
   @Test
-  public void should_event_history_task_attribute_changes() {
+  public void shouldEventHistoryTaskAttributeChanges() {
     assertThat(eventCaptor.historyEvents).isNotEmpty();
     eventCaptor.historyEvents.clear();
 
@@ -256,7 +262,7 @@ public class CamundaEventingIT extends AbstractCamundaAutoConfigurationIT {
   }
 
   @Test
-  public void should_event_history_task_multiple_assignment_changes() {
+  public void shouldEventHistoryTaskMultipleAssignmentChanges() {
 
     // given
     assertThat(eventCaptor.historyEvents).isNotEmpty();
@@ -297,7 +303,7 @@ public class CamundaEventingIT extends AbstractCamundaAutoConfigurationIT {
   }
 
   @Test
-  public void should_event_history_task_follow_up_date_changes() {
+  public void shouldEventHistoryTaskFollowUpDateChanges() {
     assertThat(eventCaptor.historyEvents).isNotEmpty();
     eventCaptor.historyEvents.clear();
 
