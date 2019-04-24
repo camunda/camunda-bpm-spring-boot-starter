@@ -23,10 +23,12 @@ import org.camunda.bpm.engine.rest.filter.CacheControlFilter;
 import org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties;
 import org.camunda.bpm.spring.boot.starter.webapp.filter.LazyProcessEnginesFilter;
 import org.camunda.bpm.spring.boot.starter.webapp.filter.LazySecurityFilter;
+import org.camunda.bpm.spring.boot.starter.webapp.filter.SpringBootCsrfPreventionFilter;
 import org.camunda.bpm.tasklist.impl.web.TasklistApplication;
 import org.camunda.bpm.tasklist.impl.web.bootstrap.TasklistContainerBootstrap;
 import org.camunda.bpm.webapp.impl.engine.EngineRestApplication;
 import org.camunda.bpm.webapp.impl.security.auth.AuthenticationFilter;
+import org.camunda.bpm.webapp.impl.security.filter.util.HttpSessionMutexListener;
 import org.camunda.bpm.welcome.impl.web.bootstrap.WelcomeContainerBootstrap;
 import org.glassfish.jersey.servlet.ServletContainer;
 import org.slf4j.Logger;
@@ -69,17 +71,21 @@ public class CamundaBpmWebappInitializer implements ServletContextInitializer {
   @Override
   public void onStartup(ServletContext servletContext) throws ServletException {
     this.servletContext = servletContext;
+
     servletContext.setSessionTrackingModes(Collections.singleton(SessionTrackingMode.COOKIE));
-    servletContext.addListener(new WelcomeContainerBootstrap());
+
     servletContext.addListener(new CockpitContainerBootstrap());
     servletContext.addListener(new AdminContainerBootstrap());
     servletContext.addListener(new TasklistContainerBootstrap());
+    servletContext.addListener(new WelcomeContainerBootstrap());
+    servletContext.addListener(new HttpSessionMutexListener());
 
     registerFilter("Authentication Filter", AuthenticationFilter.class, "/*");
-
     registerFilter("Security Filter", LazySecurityFilter.class, singletonMap("configFile", properties.getWebapp().getSecurityConfigFile()), "/*");
+    registerFilter("CsrfPreventionFilter", SpringBootCsrfPreventionFilter.class, properties.getWebapp().getCsrf().getInitParams(),"/*");
 
     registerFilter("Engines Filter", LazyProcessEnginesFilter.class, "/app/*");
+
     registerFilter("CacheControlFilter", CacheControlFilter.class, "/api/*");
 
     registerServlet("Cockpit Api", CockpitApplication.class, "/api/cockpit/*");
