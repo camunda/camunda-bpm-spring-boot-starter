@@ -1,5 +1,7 @@
 package org.camunda.bpm.spring.boot.starter.property;
 
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
+
 import static org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties.joinOn;
 
 public class WebappProperty {
@@ -9,6 +11,9 @@ public class WebappProperty {
   private String webjarClasspath = "/META-INF/resources";
 
   private String securityConfigFile = "/securityFilterRules.json";
+
+  @NestedConfigurationProperty
+  private CsrfProperties csrf = new CsrfProperties();
 
   public boolean isIndexRedirectEnabled() {
     return indexRedirectEnabled;
@@ -34,12 +39,21 @@ public class WebappProperty {
     this.securityConfigFile = securityConfigFile;
   }
 
+  public CsrfProperties getCsrf() {
+    return csrf;
+  }
+
+  public void setCsrf(CsrfProperties csrf) {
+    this.csrf = csrf;
+  }
+
   @Override
   public String toString() {
     return joinOn(this.getClass())
       .add("indexRedirectEnabled=" + indexRedirectEnabled)
       .add("webjarClasspath='" + webjarClasspath + '\'')
       .add("securityConfigFile='" + securityConfigFile + '\'')
+      .add("csrf='" + csrf + '\'')
       .toString();
   }
 }

@@ -3,6 +3,7 @@ package org.camunda.bpm.spring.boot.starter.util;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.springframework.core.env.PropertiesPropertySource;
 
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.function.Supplier;
@@ -62,5 +63,43 @@ public class CamundaBpmVersion implements Supplier<String> {
     return new PropertiesPropertySource(this.getClass().getSimpleName(), props);
   }
 
+  public boolean isLaterThanOrEqual(String versionToCompare) {
+    String currentVersion = version;
+
+    // remove enterprise suffix if available
+    if (isEnterprise) {
+      currentVersion = currentVersion.split("-ee")[0];
+    }
+    if (versionToCompare.contains("-ee")) {
+      versionToCompare = versionToCompare.split("-ee")[0];
+    }
+
+    // parse version numbers
+    int[] currentVersionNumbers = Arrays.stream(currentVersion.split("\\."))
+      .mapToInt(Integer::parseInt)
+      .toArray();
+    int[] comparingVersionNumbers = Arrays.stream(versionToCompare.split("\\."))
+      .mapToInt(Integer::parseInt)
+      .toArray();
+
+    if (currentVersionNumbers.length != 3 && currentVersionNumbers.length != comparingVersionNumbers.length) {
+      throw new RuntimeException(String.format("Exception while checking version numbers %s and %s", version, versionToCompare));
+    }
+
+    // compare major, minor and patch versions
+    if (currentVersionNumbers[0] > comparingVersionNumbers[0]) {
+      return true;
+    }
+
+    if (currentVersionNumbers[1] > comparingVersionNumbers[1]) {
+      return true;
+    }
+
+    if (currentVersionNumbers[2] >= comparingVersionNumbers[2]) {
+      return true;
+    }
+
+    return false;
+  }
 
 }
