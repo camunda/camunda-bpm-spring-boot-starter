@@ -6,8 +6,10 @@ import org.camunda.bpm.cockpit.impl.web.CockpitApplication;
 import org.camunda.bpm.cockpit.impl.web.bootstrap.CockpitContainerBootstrap;
 import org.camunda.bpm.engine.rest.filter.CacheControlFilter;
 import org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties;
+import org.camunda.bpm.spring.boot.starter.util.CamundaBpmVersion;
 import org.camunda.bpm.spring.boot.starter.webapp.filter.LazyProcessEnginesFilter;
 import org.camunda.bpm.spring.boot.starter.webapp.filter.LazySecurityFilter;
+import org.camunda.bpm.spring.boot.starter.webapp.filter.SpringBootCsrfPreventionFilter;
 import org.camunda.bpm.tasklist.impl.web.TasklistApplication;
 import org.camunda.bpm.tasklist.impl.web.bootstrap.TasklistContainerBootstrap;
 import org.camunda.bpm.webapp.impl.engine.EngineRestApplication;
@@ -17,6 +19,7 @@ import org.glassfish.jersey.servlet.ServletContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
+import org.springframework.web.util.HttpSessionMutexListener;
 
 import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
@@ -47,24 +50,36 @@ public class CamundaBpmWebappInitializer implements ServletContextInitializer {
 
   private final CamundaBpmProperties properties;
 
+  private final CamundaBpmVersion camundaBpmVersion;
+
   public CamundaBpmWebappInitializer(CamundaBpmProperties properties) {
     this.properties = properties;
+    camundaBpmVersion = new CamundaBpmVersion();
   }
 
   @Override
   public void onStartup(ServletContext servletContext) throws ServletException {
     this.servletContext = servletContext;
+
     servletContext.setSessionTrackingModes(Collections.singleton(SessionTrackingMode.COOKIE));
-    servletContext.addListener(new WelcomeContainerBootstrap());
+
     servletContext.addListener(new CockpitContainerBootstrap());
     servletContext.addListener(new AdminContainerBootstrap());
     servletContext.addListener(new TasklistContainerBootstrap());
+    servletContext.addListener(new WelcomeContainerBootstrap());
 
     registerFilter("Authentication Filter", AuthenticationFilter.class, "/*");
-
     registerFilter("Security Filter", LazySecurityFilter.class, singletonMap("configFile", properties.getWebapp().getSecurityConfigFile()), "/*");
 
+    // CSRF protection is available from version 7.9.2
+    // and needs to be enabled only on those versions
+    if (camundaBpmVersion.isLaterThanOrEqual("7.8.8")) {
+      servletContext.addListener(new HttpSessionMutexListener());
+      registerFilter("CsrfPreventionFilter", SpringBootCsrfPreventionFilter.class, properties.getWebapp().getCsrf().getInitParams(), "/*");
+    }
+
     registerFilter("Engines Filter", LazyProcessEnginesFilter.class, "/app/*");
+
     registerFilter("CacheControlFilter", CacheControlFilter.class, "/api/*");
 
     registerServlet("Cockpit Api", CockpitApplication.class, "/api/cockpit/*");

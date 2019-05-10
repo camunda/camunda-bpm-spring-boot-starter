@@ -21,10 +21,12 @@ public abstract class ParsePropertiesHelper {
 
   protected MetricsProperty metrics;
   protected ApplicationProperty application;
+  protected WebappProperty webapp;
 
   @PostConstruct
   public void init() {
     metrics = properties.getMetrics();
     application = properties.getApplication();
+    webapp = properties.getWebapp();
   }
 }
