@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.function.Supplier;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties.PREFIX;
 
@@ -66,12 +68,21 @@ public class CamundaBpmVersion implements Supplier<String> {
   public boolean isLaterThanOrEqual(String versionToCompare) {
     String currentVersion = version;
 
-    // remove enterprise suffix if available
-    if (isEnterprise) {
-      currentVersion = currentVersion.split("-ee")[0];
-    }
-    if (versionToCompare.contains("-ee")) {
-      versionToCompare = versionToCompare.split("-ee")[0];
+    Pattern semVerRegex = Pattern.compile("^((0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)).*");
+    Matcher srcVersionMatcher = semVerRegex.matcher(version);
+    Matcher trgVersionMatcher = semVerRegex.matcher(versionToCompare);
+
+    // only accept "major.minor.patch-[alpha#|ee]" formatted version strings
+    if (!srcVersionMatcher.matches() || !trgVersionMatcher.matches()) {
+      throw new RuntimeException(String.format("Exception while checking version numbers '%s' and '%s'. Version numbers are missing or incompatible.", version, versionToCompare));
+    };
+
+    currentVersion = srcVersionMatcher.group(1);
+    versionToCompare = trgVersionMatcher.group(1);
+
+    // don't do semantic version check if version strings are equal
+    if (currentVersion.equals(versionToCompare)) {
+      return true;
     }
 
     // parse version numbers
@@ -82,21 +93,12 @@ public class CamundaBpmVersion implements Supplier<String> {
       .mapToInt(Integer::parseInt)
       .toArray();
 
-    if (currentVersionNumbers.length != 3 && currentVersionNumbers.length != comparingVersionNumbers.length) {
-      throw new RuntimeException(String.format("Exception while checking version numbers %s and %s", version, versionToCompare));
-    }
-
     // compare major, minor and patch versions
-    if (currentVersionNumbers[0] > comparingVersionNumbers[0]) {
-      return true;
-    }
-
-    if (currentVersionNumbers[1] > comparingVersionNumbers[1]) {
-      return true;
-    }
-
-    if (currentVersionNumbers[2] >= comparingVersionNumbers[2]) {
-      return true;
+    for (int i = 0; i < 3; i++) {
+      // if numbers are equal, skip and check next version number
+      if (currentVersionNumbers[i] != comparingVersionNumbers[i]) {
+        return currentVersionNumbers[i] > comparingVersionNumbers[i];
+      }
     }
 
     return false;

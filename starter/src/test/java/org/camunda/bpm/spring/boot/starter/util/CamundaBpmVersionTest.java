@@ -1,6 +1,8 @@
 package org.camunda.bpm.spring.boot.starter.util;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.springframework.core.env.PropertiesPropertySource;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -17,6 +19,9 @@ public class CamundaBpmVersionTest {
     when(pkg.getImplementationVersion()).thenReturn(version);
     return new CamundaBpmVersion(pkg);
   }
+
+  @Rule
+  public final ExpectedException thrown = ExpectedException.none();
 
   @Test
   public void current_version() {
@@ -40,5 +45,29 @@ public class CamundaBpmVersionTest {
   @Test
   public void isEnterprise_false() throws Exception {
     assertThat(camundaBpmVersion("7.6.0-alpha3").isEnterprise()).isFalse();
+  }
+
+  @Test
+  public void isLaterThanOrEqual_equal_true() {
+    assertThat(camundaBpmVersion("7.9.2-ee").isLaterThanOrEqual("7.9.2")).isTrue();
+  }
+
+  @Test
+  public void isLaterThanOrEqual_later_true() {
+    assertThat(camundaBpmVersion("7.9.2-ee").isLaterThanOrEqual("7.8.3")).isTrue();
+  }
+
+  @Test
+  public void isLaterThanOrEqual_earlier_false() {
+    assertThat(camundaBpmVersion("7.9.2").isLaterThanOrEqual("7.10.5-ee")).isFalse();
+  }
+
+  @Test
+  public void isLaterThanOrEqual_bad_format() {
+    thrown.expect(RuntimeException.class);
+    thrown.expectMessage("Exception while checking version numbers '7.9.2' and '7.10'. "
+      + "Version numbers are missing or incompatible.");
+
+    camundaBpmVersion("7.9.2").isLaterThanOrEqual("7.10");
   }
 }
