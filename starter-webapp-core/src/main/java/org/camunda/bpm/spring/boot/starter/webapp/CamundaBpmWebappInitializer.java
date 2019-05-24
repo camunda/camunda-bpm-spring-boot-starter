@@ -86,21 +86,21 @@ public class CamundaBpmWebappInitializer implements ServletContextInitializer {
     servletContext.addListener(new TasklistContainerBootstrap());
     servletContext.addListener(new WelcomeContainerBootstrap());
 
-    registerFilter("Authentication Filter", AuthenticationFilter.class, "/*");
-    registerFilter("Security Filter", LazySecurityFilter.class, singletonMap("configFile", properties.getWebapp().getSecurityConfigFile()), "/*");
+    registerFilter("Authentication Filter", AuthenticationFilter.class, "/api/*", "/app/*");
+    registerFilter("Security Filter", LazySecurityFilter.class, singletonMap("configFile", properties.getWebapp().getSecurityConfigFile()), "/api/*", "/app/*");
 
     // CSRF protection is available from version 7.8.8
     // and needs to be enabled only on those versions
     if (camundaBpmVersion.isLaterThanOrEqual("7.8.8")) {
       servletContext.addListener(new HttpSessionMutexListener());
-      registerFilter("CsrfPreventionFilter", SpringBootCsrfPreventionFilter.class, properties.getWebapp().getCsrf().getInitParams(), "/*");
+      registerFilter("CsrfPreventionFilter", SpringBootCsrfPreventionFilter.class, properties.getWebapp().getCsrf().getInitParams(),"/api/*", "/app/*");
     }
 
-    registerFilter("Engines Filter", LazyProcessEnginesFilter.class, "/app/*");
+    registerFilter("Engines Filter", LazyProcessEnginesFilter.class, "/api/*", "/app/*");
 
-    registerFilter("EmptyBodyFilter", EmptyBodyFilter.class, "/api/*");
+    registerFilter("EmptyBodyFilter", EmptyBodyFilter.class, "/api/*", "/app/*");
 
-    registerFilter("CacheControlFilter", CacheControlFilter.class, "/api/*");
+    registerFilter("CacheControlFilter", CacheControlFilter.class, "/api/*", "/app/*");
 
     registerServlet("Cockpit Api", CockpitApplication.class, "/api/cockpit/*");
     registerServlet("Admin Api", AdminApplication.class, "/api/admin/*");
