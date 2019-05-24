@@ -30,7 +30,6 @@ import org.camunda.bpm.tasklist.impl.web.TasklistApplication;
 import org.camunda.bpm.tasklist.impl.web.bootstrap.TasklistContainerBootstrap;
 import org.camunda.bpm.webapp.impl.engine.EngineRestApplication;
 import org.camunda.bpm.webapp.impl.security.auth.AuthenticationFilter;
-import org.camunda.bpm.webapp.impl.security.filter.CsrfPreventionFilter;
 import org.camunda.bpm.webapp.impl.security.filter.util.HttpSessionMutexListener;
 import org.camunda.bpm.welcome.impl.web.WelcomeApplication;
 import org.camunda.bpm.welcome.impl.web.bootstrap.WelcomeContainerBootstrap;
@@ -84,15 +83,15 @@ public class CamundaBpmWebappInitializer implements ServletContextInitializer {
     servletContext.addListener(new WelcomeContainerBootstrap());
     servletContext.addListener(new HttpSessionMutexListener());
 
-    registerFilter("Authentication Filter", AuthenticationFilter.class, "/*");
-    registerFilter("Security Filter", LazySecurityFilter.class, singletonMap("configFile", properties.getWebapp().getSecurityConfigFile()), "/*");
-    registerFilter("CsrfPreventionFilter", SpringBootCsrfPreventionFilter.class, properties.getWebapp().getCsrf().getInitParams(),"/*");
+    registerFilter("Authentication Filter", AuthenticationFilter.class, "/api/*", "/app/*");
+    registerFilter("Security Filter", LazySecurityFilter.class, singletonMap("configFile", properties.getWebapp().getSecurityConfigFile()), "/api/*", "/app/*");
+    registerFilter("CsrfPreventionFilter", SpringBootCsrfPreventionFilter.class, properties.getWebapp().getCsrf().getInitParams(),"/api/*", "/app/*");
 
-    registerFilter("Engines Filter", LazyProcessEnginesFilter.class, "/app/*");
+    registerFilter("Engines Filter", LazyProcessEnginesFilter.class, "/api/*", "/app/*");
 
-    registerFilter("EmptyBodyFilter", EmptyBodyFilter.class, "/api/*");
+    registerFilter("EmptyBodyFilter", EmptyBodyFilter.class, "/api/*", "/app/*");
 
-    registerFilter("CacheControlFilter", CacheControlFilter.class, "/api/*");
+    registerFilter("CacheControlFilter", CacheControlFilter.class, "/api/*", "/app/*");
 
     registerServlet("Cockpit Api", CockpitApplication.class, "/api/cockpit/*");
     registerServlet("Admin Api", AdminApplication.class, "/api/admin/*");
