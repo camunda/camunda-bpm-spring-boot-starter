@@ -16,6 +16,7 @@
  */
 package org.camunda.bpm.spring.boot.starter;
 
+import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.camunda.bpm.engine.impl.interceptor.CommandExecutor;
 import org.camunda.bpm.engine.spring.ProcessEngineFactoryBean;
@@ -26,6 +27,7 @@ import org.camunda.bpm.spring.boot.starter.property.ManagementProperties;
 import org.camunda.bpm.spring.boot.starter.util.CamundaBpmVersion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -58,6 +60,7 @@ public class CamundaBpmAutoConfiguration {
     protected ProcessEngineConfigurationImpl processEngineConfigurationImpl;
 
     @Bean
+    @ConditionalOnMissingBean(ProcessEngine.class)
     public ProcessEngineFactoryBean processEngineFactoryBean() {
       final ProcessEngineFactoryBean factoryBean = new ProcessEngineFactoryBean();
       factoryBean.setProcessEngineConfiguration(processEngineConfigurationImpl);
