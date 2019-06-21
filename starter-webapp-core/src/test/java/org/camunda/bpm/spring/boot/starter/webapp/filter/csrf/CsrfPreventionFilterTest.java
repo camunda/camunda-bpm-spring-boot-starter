@@ -14,8 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.camunda.bpm.spring.boot.starter.webapp.filter;
+package org.camunda.bpm.spring.boot.starter.webapp.filter.csrf;
 
+import org.camunda.bpm.spring.boot.starter.webapp.filter.SpringBootCsrfPreventionFilter;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,11 +38,19 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.camunda.bpm.spring.boot.starter.webapp.filter.SpringBootCsrfPreventionFilter.CsrfConstants.CSRF_PATH_FIELD_NAME;
+import static org.camunda.bpm.spring.boot.starter.webapp.filter.SpringBootCsrfPreventionFilter.CsrfConstants.CSRF_SET_COOKIE_HEADER_NAME;
+
 /**
- * @author Nikola Koevski
+ * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ * WARNING: THE WHOLE CONTENT OF THIS FILE IS A COPY FROM
+ * CLASSES OF THE camunda-bpm-webapp REPOSITORY:
+ * - org.camunda.bpm.webapp.impl.security.filter.csrf.CsrfPreventionFilterTest
+ * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  */
 @RunWith(Parameterized.class)
-public class SpringBootCsrfPreventionFilterTest {
+public class CsrfPreventionFilterTest {
 
   protected static final String SERVICE_PATH = "/camunda";
   protected static final String CSRF_COOKIE_NAME = "XSRF-TOKEN";
@@ -82,14 +91,14 @@ public class SpringBootCsrfPreventionFilterTest {
     });
   }
 
-  public SpringBootCsrfPreventionFilterTest(String nonModifyingRequestUrl, String modifyingRequestUrl, boolean isModifyingFetchRequest) {
+  public CsrfPreventionFilterTest(String nonModifyingRequestUrl, String modifyingRequestUrl, boolean isModifyingFetchRequest) {
     this.nonModifyingRequestUrl = nonModifyingRequestUrl;
     this.modifyingRequestUrl = modifyingRequestUrl;
     this.isModifyingFetchRequest = isModifyingFetchRequest;
   }
 
   @Before
-  public void setup() throws ServletException {
+  public void setup() throws Exception {
     setupFilter();
   }
 
@@ -108,46 +117,16 @@ public class SpringBootCsrfPreventionFilterTest {
   public void testNonModifyingRequestTokenGeneration() throws IOException, ServletException {
     MockHttpServletResponse response = performNonModifyingRequest(nonModifyingRequestUrl, new MockHttpSession());
 
-    Cookie cookieToken = response.getCookie(CSRF_COOKIE_NAME);
+    String cookieToken = (String) response.getHeader(CSRF_SET_COOKIE_HEADER_NAME);
     String headerToken = (String) response.getHeader(CSRF_HEADER_NAME);
 
     Assert.assertNotNull(cookieToken);
     Assert.assertNotNull(headerToken);
-    Assert.assertEquals("No Cookie Token!",false, cookieToken.getValue().isEmpty());
-    Assert.assertEquals("No HTTP Header Token!",false, headerToken.isEmpty());
-    Assert.assertEquals("Cookie and HTTP Header Tokens do not match!", cookieToken.getValue(), headerToken);
-  }
 
-  @Test
-  public void testNonModifyingRequestTokenGenerationWithRootContextPath() throws IOException, ServletException {
-    // given
-    MockHttpSession session = new MockHttpSession();
-    MockHttpServletRequest nonModifyingRequest = new MockHttpServletRequest();
-    nonModifyingRequest.setMethod("GET");
-    nonModifyingRequest.setSession(session);
-
-    // set root context path in request
-    nonModifyingRequest.setRequestURI("/"  + nonModifyingRequestUrl);
-    nonModifyingRequest.setContextPath("");
-
-    // when
-    MockHttpServletResponse response = new MockHttpServletResponse();
-    applyFilter(nonModifyingRequest, response);
-
-    // then
-    Cookie cookieToken = response.getCookie(CSRF_COOKIE_NAME);
-    String headerToken = (String) response.getHeader(CSRF_HEADER_NAME);
-
-    Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-
-    Assert.assertNotNull(cookieToken);
-    Assert.assertNotNull(headerToken);
-
-    Assert.assertEquals("No Cookie Token!",false, cookieToken.getValue().isEmpty());
-    Assert.assertEquals("Cookie path should be root (/)", "/", cookieToken.getPath());
+    assertThat(cookieToken).matches(CSRF_COOKIE_NAME + "=[A-Z0-9]{32}" + CSRF_PATH_FIELD_NAME + "/camunda;SameSite=Strict");
 
     Assert.assertEquals("No HTTP Header Token!",false, headerToken.isEmpty());
-    Assert.assertEquals("Cookie and HTTP Header Tokens do not match!", cookieToken.getValue(), headerToken);
+    assertThat(cookieToken).contains(headerToken);
   }
 
   @Test
@@ -205,6 +184,37 @@ public class SpringBootCsrfPreventionFilterTest {
       Assert.assertEquals("CSRFPreventionFilter: Token provided via HTTP Header is absent/empty.", response2.getErrorMessage());
       Assert.assertNotEquals(modifyingRequest.getSession().getId(), session.getId());
     }
+  }
+
+  @Test
+  public void testNonModifyingRequestTokenGenerationWithRootContextPath() throws IOException, ServletException {
+    // given
+    MockHttpSession session = new MockHttpSession();
+    MockHttpServletRequest nonModifyingRequest = new MockHttpServletRequest();
+    nonModifyingRequest.setMethod("GET");
+    nonModifyingRequest.setSession(session);
+
+    // set root context path in request
+    nonModifyingRequest.setRequestURI("/"  + nonModifyingRequestUrl);
+    nonModifyingRequest.setContextPath("");
+
+    // when
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    applyFilter(nonModifyingRequest, response);
+
+    // then
+    String cookieToken = (String) response.getHeader(CSRF_SET_COOKIE_HEADER_NAME);
+    String headerToken = (String) response.getHeader(CSRF_HEADER_NAME);
+
+    Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+
+    Assert.assertNotNull(cookieToken);
+    Assert.assertNotNull(headerToken);
+
+    assertThat(cookieToken).matches(CSRF_COOKIE_NAME + "=[A-Z0-9]{32}" + CSRF_PATH_FIELD_NAME + "/;SameSite=Strict");
+
+    Assert.assertEquals("No HTTP Header Token!",false, headerToken.isEmpty());
+    assertThat(cookieToken).contains(headerToken);
   }
 
   protected MockHttpServletResponse performNonModifyingRequest(String requestUrl, MockHttpSession session) throws IOException, ServletException {

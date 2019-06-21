@@ -24,7 +24,6 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -34,76 +33,24 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.SecureRandom;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import static org.springframework.web.util.WebUtils.SESSION_MUTEX_ATTRIBUTE;
+import org.camunda.bpm.engine.ProcessEngineException;
 
 /**
- * Provides basic CSRF protection implementing a Same Origin Standard Header verification (step 1)
- * and a Synchronization Token with a cookie-stored token on the front-end.
- *
- * <pre>
- * Positive scenario:
- *           Client                            Server
- *              |                                 |
- *              | GET Fetch Request              \| JSESSIONID
- *              |---------------------------------| X-CSRF-Token
- *              |                                /| pair generation
- *              |/Response to Fetch Request       |
- *              |---------------------------------|
- * JSESSIONID   |\                                |
- * X-CSRF-Token |                                 |
- * pair cached  | POST Request with valid token  \| JSESSIONID
- *              | header                          |
- *              |---------------------------------| X-CSRF-Token
- *              |                                /| pair validation
- *              |/ Response to POST Request       |
- *              |---------------------------------|
- *              |\                                |
- *
- * Negative scenario:
- *           Client                            Server
- *              |                                 |
- *              | POST Request without token      | JSESSIONID
- *              | header                         \| X-CSRF-Token
- *              |---------------------------------| pair validation
- *              |                                /|
- *              |/Request is rejected             |
- *              |---------------------------------|
- *              |\                                |
- *
- *           Client                            Server
- *              |                                 |
- *              | POST Request with invalid token\| JSESSIONID
- *              |---------------------------------| X-CSRF-Token
- *              |                                /| pair validation
- *              |/Request is rejected             |
- *              |---------------------------------|
- *              |\                                |
- * </pre>
- *
- * <i>Parts of this code were ported from the <code>CsrfPreventionFilter</code> class
- * of Apache Tomcat. Furthermore, the <code>RestCsrfPreventionFilter</code> class from
- * the same codebase was used as a guideline.</i>
- *
- * @author Nikola Koevski
+ * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ * WARNING: THE WHOLE CONTENT OF THIS FILE IS A COPY FROM
+ * CLASSES OF THE camunda-bpm-webapp REPOSITORY:
+ * - org.camunda.bpm.webapp.impl.security.filter.CsrfPreventionFilter
+ * - org.camunda.bpm.webapp.impl.security.filter.CsrfPreventionCookieConfigurator
+ * - org.camunda.bpm.webapp.impl.security.filter.util.CsrfConstants
+ * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  */
 public class SpringBootCsrfPreventionFilter implements Filter {
-
-  public static final String CSRF_TOKEN_SESSION_ATTR_NAME = "CAMUNDA_CSRF_TOKEN";
-
-  public static final String CSRF_TOKEN_HEADER_NAME = "X-XSRF-TOKEN";
-
-  public static final String CSRF_TOKEN_HEADER_REQUIRED = "Required";
-
-  public static final String CSRF_TOKEN_COOKIE_NAME = "XSRF-TOKEN";
-
-  public static final Pattern CSRF_NON_MODIFYING_METHODS_PATTERN = Pattern.compile("GET|HEAD|OPTIONS");
-
-  public static final Pattern CSRF_DEFAULT_ENTRY_URL_PATTERN = Pattern.compile("^/api/admin/auth/user/.+/login/(cockpit|tasklist|admin|welcome)$");
 
   private String randomClass = SecureRandom.class.getName();
 
@@ -115,6 +62,7 @@ public class SpringBootCsrfPreventionFilter implements Filter {
 
   private final Set<String> entryPoints = new HashSet<String>();
 
+  protected CsrfPreventionCookieConfigurator cookieConfigurator = new CsrfPreventionCookieConfigurator();
 
   @Override
   public void init(FilterConfig filterConfig) throws ServletException {
@@ -142,6 +90,9 @@ public class SpringBootCsrfPreventionFilter implements Filter {
       if (!isBlank(customEntryPoints)) {
         setEntryPoints(customEntryPoints);
       }
+
+      cookieConfigurator.parseParams(filterConfig);
+
     } catch (ClassNotFoundException e) {
       throw new ServletException("Cannot instantiate CSRF Prevention filter: Random class not found.", e);
     } catch (InstantiationException e) {
@@ -196,7 +147,7 @@ public class SpringBootCsrfPreventionFilter implements Filter {
 
     if (isBlank(tokenHeader)) {
       session.invalidate();
-      response.setHeader(CSRF_TOKEN_HEADER_NAME, CSRF_TOKEN_HEADER_REQUIRED);
+      response.setHeader(CsrfConstants.CSRF_TOKEN_HEADER_NAME, CsrfConstants.CSRF_TOKEN_HEADER_REQUIRED);
       response.sendError(getDenyStatus(), "CSRFPreventionFilter: Token provided via HTTP Header is absent/empty.");
       isValid = false;
     } else if (isBlank(tokenSession) || !tokenSession.equals(tokenHeader)) {
@@ -259,25 +210,29 @@ public class SpringBootCsrfPreventionFilter implements Filter {
     HttpSession session = request.getSession();
     Object sessionMutex = getSessionMutex(session);
 
-    if (session.getAttribute(CSRF_TOKEN_SESSION_ATTR_NAME) == null) {
+    if (session.getAttribute(CsrfConstants.CSRF_TOKEN_SESSION_ATTR_NAME) == null) {
 
       synchronized (sessionMutex) {
 
-        if (session.getAttribute(CSRF_TOKEN_SESSION_ATTR_NAME) == null) {
+        if (session.getAttribute(CsrfConstants.CSRF_TOKEN_SESSION_ATTR_NAME) == null) {
           String token = generateCSRFToken();
 
-          Cookie csrfCookie = getCSRFCookie(request);
-          csrfCookie.setValue(token);
+          String csrfCookieValue = CsrfConstants.CSRF_TOKEN_COOKIE_NAME + "=" + token;
 
           String contextPath = "/";
           if (!request.getContextPath().isEmpty()) {
             contextPath = request.getContextPath();
           }
-          csrfCookie.setPath(contextPath);
 
-          session.setAttribute(CSRF_TOKEN_SESSION_ATTR_NAME, token);
-          response.addCookie(csrfCookie);
-          response.setHeader(CSRF_TOKEN_HEADER_NAME, token);
+          csrfCookieValue += CsrfConstants.CSRF_PATH_FIELD_NAME + contextPath;
+
+          session.setAttribute(CsrfConstants.CSRF_TOKEN_SESSION_ATTR_NAME, token);
+
+          csrfCookieValue += cookieConfigurator.getConfig();
+
+          response.addHeader(CsrfConstants.CSRF_SET_COOKIE_HEADER_NAME, csrfCookieValue);
+
+          response.setHeader(CsrfConstants.CSRF_TOKEN_HEADER_NAME, token);
         }
       }
     }
@@ -361,8 +316,8 @@ public class SpringBootCsrfPreventionFilter implements Filter {
    * @return true if the request is a non-modifying request
    * */
   protected boolean isNonModifyingRequest(HttpServletRequest request) {
-    return CSRF_NON_MODIFYING_METHODS_PATTERN.matcher(request.getMethod()).matches()
-      || CSRF_DEFAULT_ENTRY_URL_PATTERN.matcher(getRequestedPath(request)).matches()
+    return CsrfConstants.CSRF_NON_MODIFYING_METHODS_PATTERN.matcher(request.getMethod()).matches()
+      || CsrfConstants.CSRF_DEFAULT_ENTRY_URL_PATTERN.matcher(getRequestedPath(request)).matches()
       || entryPoints.contains(getRequestedPath(request));
   }
 
@@ -399,24 +354,11 @@ public class SpringBootCsrfPreventionFilter implements Filter {
   }
 
   private Object getCSRFTokenSession(HttpSession session) {
-    return session.getAttribute(CSRF_TOKEN_SESSION_ATTR_NAME);
+    return session.getAttribute(CsrfConstants.CSRF_TOKEN_SESSION_ATTR_NAME);
   }
 
   private String getCSRFTokenHeader(HttpServletRequest request) {
-    return request.getHeader(CSRF_TOKEN_HEADER_NAME);
-  }
-
-  private Cookie getCSRFCookie(HttpServletRequest request) {
-    Cookie[] cookies = request.getCookies();
-    if (cookies != null) {
-      for (Cookie cookie : cookies) {
-        if (cookie.getName().equals(CSRF_TOKEN_COOKIE_NAME)) {
-          return cookie;
-        }
-      }
-    }
-
-    return new Cookie(CSRF_TOKEN_COOKIE_NAME, null);
+    return request.getHeader(CsrfConstants.CSRF_TOKEN_HEADER_NAME);
   }
 
   private Object getSessionMutex(HttpSession session) {
@@ -424,7 +366,7 @@ public class SpringBootCsrfPreventionFilter implements Filter {
       throw new InvalidRequestException(Response.Status.BAD_REQUEST, "HttpSession is missing");
     }
 
-    Object mutex =  session.getAttribute(SESSION_MUTEX_ATTRIBUTE);
+    Object mutex =  session.getAttribute(CsrfConstants.CSRF_SESSION_MUTEX);
     if (mutex == null) {
       mutex = session;
     }
@@ -457,5 +399,135 @@ public class SpringBootCsrfPreventionFilter implements Filter {
     }
 
     return urlSet;
+  }
+
+
+  public static final class CsrfConstants {
+
+    public static final String CSRF_SESSION_MUTEX = "CAMUNDA_SESSION_MUTEX";
+
+    public static final String CSRF_TOKEN_SESSION_ATTR_NAME = "CAMUNDA_CSRF_TOKEN";
+
+    public static final String CSRF_TOKEN_HEADER_NAME = "X-XSRF-TOKEN";
+
+    public static final String CSRF_TOKEN_HEADER_REQUIRED = "Required";
+
+    public static final String CSRF_TOKEN_COOKIE_NAME = "XSRF-TOKEN";
+
+    public static final Pattern CSRF_NON_MODIFYING_METHODS_PATTERN = Pattern.compile("GET|HEAD|OPTIONS");
+
+    public static final Pattern CSRF_DEFAULT_ENTRY_URL_PATTERN = Pattern.compile("^/api/admin/auth/user/.+/login/(cockpit|tasklist|admin|welcome)$");
+
+    public static final String CSRF_SET_COOKIE_HEADER_NAME = "Set-Cookie";
+
+    public static final String CSRF_SAME_SITE_FIELD_NAME = ";SameSite=";
+
+    public static final String CSRF_SECURE_FLAG_NAME = ";Secure";
+
+    public static final String CSRF_PATH_FIELD_NAME = ";Path=";
+
+  }
+
+  public static class CsrfPreventionCookieConfigurator {
+
+    protected static final String ENABLE_SECURE_PARAM = "enableSecureCookie";
+    protected static final String ENABLE_SAME_SITE_PARAM = "enableSameSiteCookie";
+    protected static final String SAME_SITE_OPTION_PARAM = "sameSiteCookieOption";
+    protected static final String SAME_SITE_VALUE_PARAM = "sameSiteCookieValue";
+
+    protected boolean isSecureCookieEnabled;
+    protected boolean isSameSiteCookieEnabled;
+
+    protected String sameSiteCookieValue;
+
+    public void parseParams(FilterConfig filterConfig) {
+
+      String enableSecureCookie = filterConfig.getInitParameter(ENABLE_SECURE_PARAM);
+      if (!isEmpty(enableSecureCookie)) {
+        isSecureCookieEnabled = Boolean.valueOf(enableSecureCookie);
+      }
+
+      String enableSameSiteCookie = filterConfig.getInitParameter(ENABLE_SAME_SITE_PARAM);
+      if (!isEmpty(enableSameSiteCookie)) {
+        isSameSiteCookieEnabled = Boolean.valueOf(enableSameSiteCookie);
+      } else {
+        isSameSiteCookieEnabled = true; // default
+      }
+
+      String sameSiteCookieValue = filterConfig.getInitParameter(SAME_SITE_VALUE_PARAM);
+      String sameSiteCookieOption = filterConfig.getInitParameter(SAME_SITE_OPTION_PARAM);
+
+      if (!isEmpty(sameSiteCookieValue) && !isEmpty(sameSiteCookieOption)) {
+        throw new ProcessEngineException("Please either configure " + SAME_SITE_OPTION_PARAM +
+          " or " + SAME_SITE_VALUE_PARAM + ".");
+
+      } else if (!isEmpty(sameSiteCookieValue)) {
+        this.sameSiteCookieValue = sameSiteCookieValue;
+
+      } else if (!isEmpty(sameSiteCookieOption)) {
+
+        if (SameSiteOption.LAX.compareTo(sameSiteCookieOption)) {
+          this.sameSiteCookieValue = SameSiteOption.LAX.getValue();
+
+        } else if (SameSiteOption.STRICT.compareTo(sameSiteCookieOption)) {
+          this.sameSiteCookieValue = SameSiteOption.STRICT.getValue();
+
+        } else {
+          throw new ProcessEngineException("For " + SAME_SITE_OPTION_PARAM + " param, please configure one of the " +
+            "following options: " + Arrays.toString(SameSiteOption.values()));
+
+        }
+
+      } else { // default
+        this.sameSiteCookieValue = SameSiteOption.STRICT.getValue();
+
+      }
+    }
+
+    public String getConfig() {
+      StringBuilder stringBuilder = new StringBuilder();
+
+      if (isSameSiteCookieEnabled) {
+        stringBuilder
+          .append(CsrfConstants.CSRF_SAME_SITE_FIELD_NAME)
+          .append(sameSiteCookieValue);
+      }
+
+      if (isSecureCookieEnabled) {
+        stringBuilder.append(CsrfConstants.CSRF_SECURE_FLAG_NAME);
+      }
+
+      return stringBuilder.toString();
+    }
+
+    protected boolean isEmpty(String string) {
+      return string == null || string.trim().isEmpty();
+    }
+
+    public enum SameSiteOption {
+
+      LAX("Lax"),
+      STRICT("Strict");
+
+      protected final String value;
+
+      SameSiteOption(String value) {
+        this.value = value;
+      }
+
+      public String getValue() {
+        return value;
+      }
+
+      public String getName() {
+        return this.name();
+      }
+
+      public boolean compareTo(String value) {
+        return this.value.equalsIgnoreCase(value);
+      }
+
+    }
+
   }
 }
