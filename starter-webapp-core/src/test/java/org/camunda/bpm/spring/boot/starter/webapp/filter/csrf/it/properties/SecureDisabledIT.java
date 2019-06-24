@@ -18,6 +18,7 @@ package org.camunda.bpm.spring.boot.starter.webapp.filter.csrf.it.properties;
 
 import org.camunda.bpm.spring.boot.starter.webapp.filter.csrf.it.util.HeaderRule;
 import org.camunda.bpm.spring.boot.starter.webapp.filter.csrf.it.util.TestApplication;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,6 +31,7 @@ import java.net.URLConnection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Ignore("CAM-10510")
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { TestApplication.class }, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(properties = {
