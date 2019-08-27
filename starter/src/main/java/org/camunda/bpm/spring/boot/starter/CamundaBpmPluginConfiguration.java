@@ -18,7 +18,10 @@ package org.camunda.bpm.spring.boot.starter;
 
 import org.camunda.bpm.engine.impl.cfg.ProcessEnginePlugin;
 import org.camunda.connect.plugin.impl.ConnectProcessEnginePlugin;
+import org.camunda.spin.impl.json.jackson.format.JacksonJsonDataFormat;
 import org.camunda.spin.plugin.impl.SpinProcessEnginePlugin;
+import org.camunda.spin.spi.DataFormatConfigurator;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -35,6 +38,17 @@ public class CamundaBpmPluginConfiguration {
     @ConditionalOnMissingBean(name = "spinProcessEnginePlugin")
     public static ProcessEnginePlugin spinProcessEnginePlugin() {
       return new SpinProcessEnginePlugin();
+    }
+
+    @Configuration
+    @ConditionalOnBean(name = "spinProcessEnginePlugin")
+    @ConditionalOnClass(name = "org.camunda.spin.impl.json.jackson.format.JacksonJsonDataFormat")
+    static class CamundaJacksonFormatConfiguraton {
+
+      @Bean
+      public DataFormatConfigurator<JacksonJsonDataFormat> dataFormatConfigurator() {
+        return new CamundaJacksonFormatConfigurator();
+      }
     }
   }
 
