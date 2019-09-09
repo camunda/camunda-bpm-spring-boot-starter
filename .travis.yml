@@ -1,9 +1,14 @@
 sudo: false
 language: java
 jdk:
-  - oraclejdk8
+  - oraclejdk11
+  - openjdk12
+  - openjdk-ea
+matrix:
+  allow_failures:
+    - jdk: openjdk-ea
 install: true
 cache:
   directories:
     - $HOME/.m2
-script: ./mvnw clean install
+script: ./mvnw clean install -pl \!starter-qa/integration-test-webapp/runtimes/enterprise
