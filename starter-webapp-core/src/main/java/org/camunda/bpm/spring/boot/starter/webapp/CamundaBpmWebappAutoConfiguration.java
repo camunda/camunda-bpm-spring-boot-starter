@@ -24,6 +24,7 @@ import org.camunda.bpm.spring.boot.starter.webapp.filter.LazyInitRegistration;
 import org.camunda.bpm.spring.boot.starter.webapp.filter.ResourceLoaderDependingFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
@@ -35,6 +36,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @ConditionalOnProperty(prefix = WebappProperty.PREFIX, name = "enabled", matchIfMissing = true)
+@ConditionalOnBean(CamundaBpmProperties.class)
 @ConditionalOnWebApplication
 @AutoConfigureAfter(CamundaBpmAutoConfiguration.class)
 public class CamundaBpmWebappAutoConfiguration implements WebMvcConfigurer {

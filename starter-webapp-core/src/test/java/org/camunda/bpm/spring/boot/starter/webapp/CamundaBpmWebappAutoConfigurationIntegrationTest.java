@@ -20,7 +20,6 @@ import org.camunda.bpm.spring.boot.starter.CamundaBpmAutoConfiguration;
 import org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties;
 import org.camunda.bpm.spring.boot.starter.property.WebappProperty;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -65,7 +64,6 @@ public class CamundaBpmWebappAutoConfigurationIntegrationTest {
   }
 
   @Test
-  @Ignore("fails currently")
   public void test_bpmIsDisabled_and_webappIsNotDisabled_shouldNotInitWebapp() {
     contextRunner.withPropertyValues(bpmDisabled).run(context -> {
       assertThat(context).hasNotFailed();
@@ -90,7 +88,6 @@ public class CamundaBpmWebappAutoConfigurationIntegrationTest {
   }
 
   @Test
-  @Ignore("fails currently")
   public void test_bpmIsDisabled_and_webappIsEnabled_shouldNotInitWebapp() {
     contextRunner.withPropertyValues(bpmDisabled, webappEnabled).run(context -> {
       assertThat(context).hasNotFailed();
