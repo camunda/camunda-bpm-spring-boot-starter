@@ -14,16 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.camunda.bpm.spring.boot.starter;
+package org.camunda.bpm.spring.boot.starter.spin;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import org.camunda.spin.impl.json.jackson.format.JacksonJsonDataFormat;
 import org.camunda.spin.spi.DataFormatConfigurator;
 
-public class CamundaJacksonFormatConfigurator implements DataFormatConfigurator<JacksonJsonDataFormat> {
+
+public class CamundaJacksonFormatConfiguratorJSR310 implements DataFormatConfigurator<JacksonJsonDataFormat> {
 
   @Override
   public Class<JacksonJsonDataFormat> getDataFormatClass() {
@@ -33,9 +32,8 @@ public class CamundaJacksonFormatConfigurator implements DataFormatConfigurator<
   @Override
   public void configure(JacksonJsonDataFormat dataFormat) {
     ObjectMapper mapper = dataFormat.getObjectMapper();
+    final JavaTimeModule javaTimeModule = new JavaTimeModule();
 
-    mapper.registerModule(new JavaTimeModule());
-    mapper.registerModule(new ParameterNamesModule());
-    mapper.registerModule(new Jdk8Module());
+    mapper.registerModule(javaTimeModule);
   }
 }
