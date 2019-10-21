@@ -1,5 +1,5 @@
 /*
- * Copyright Â© 2015 - 2018 camunda services GmbH and various authors (info@camunda.com)
+ * Copyright © 2015 - 2018 camunda services GmbH and various authors (info@camunda.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.ServletContextAware;
@@ -107,8 +106,12 @@ public class SpringBootProcessApplication extends SpringProcessApplication {
   }
 
   @ConditionalOnWebApplication
-  @Configuration
-  class WebApplicationConfiguration implements ServletContextAware {
+  @Bean
+  public WebApplicationConfiguration myWebAppConfiguration() {
+    return new WebApplicationConfiguration();
+  }
+
+  public class WebApplicationConfiguration implements ServletContextAware {
 
     @Override
     public void setServletContext(ServletContext servletContext) {
