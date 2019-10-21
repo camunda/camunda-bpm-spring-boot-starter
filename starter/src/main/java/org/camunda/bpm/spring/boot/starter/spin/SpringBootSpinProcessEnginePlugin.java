@@ -41,10 +41,6 @@ public class SpringBootSpinProcessEnginePlugin extends SpinProcessEnginePlugin {
 
   @Override
   public void preInit(ProcessEngineConfigurationImpl processEngineConfiguration) {
-    super.preInit(processEngineConfiguration);
-
-    // After any DataFormats are loaded through SPI, additionally execute
-    // configurators through Spring beans and Spring Factories
     ClassLoader classloader = ClassLoaderUtil.getClassloader(SpringBootSpinProcessEnginePlugin.class);
     loadSpringBootDataFormats(classloader);
   }
@@ -60,8 +56,6 @@ public class SpringBootSpinProcessEnginePlugin extends SpinProcessEnginePlugin {
     // next, add any configurators defined in the spring.factories file
     configurators.addAll(SpringFactoriesLoader.loadFactories(DataFormatConfigurator.class, classloader));
 
-    for (DataFormatConfigurator configurator : configurators) {
-      DataFormats.applyConfigurator(configurator);
-    }
+    DataFormats.loadDataFormats(classloader, configurators);
   }
 }
