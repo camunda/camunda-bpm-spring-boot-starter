@@ -86,7 +86,7 @@ public class CsrfPreventionIT {
       fail("Exception expected!");
     } catch (IOException e) {
       // then
-      assertThat(e).hasMessageContaining("Server returned HTTP response code: 500 for URL: ");
+      assertThat(e).hasMessageContaining("Server returned HTTP response code: 403 for URL: ");
     }
 
   }
