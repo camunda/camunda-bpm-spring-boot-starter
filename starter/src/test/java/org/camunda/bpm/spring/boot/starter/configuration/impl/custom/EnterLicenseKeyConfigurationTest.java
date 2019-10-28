@@ -43,9 +43,7 @@ public class EnterLicenseKeyConfigurationTest {
     enterLicenseKeyConfiguration.postProcessEngineBuild(processEngineRule.getProcessEngine());
 
     // then
-    String licenseKey = processEngineRule.getManagementService()
-                                         .getProperties()
-                                         .get("camunda-license-key");
+    String licenseKey = enterLicenseKeyConfiguration.getLicenseKey(processEngineRule.getProcessEngine());
     assertValidLicenseKeyFormat(licenseKey);
   }
 
