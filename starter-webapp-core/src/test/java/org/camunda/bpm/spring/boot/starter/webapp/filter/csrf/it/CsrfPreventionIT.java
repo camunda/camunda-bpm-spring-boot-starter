@@ -23,14 +23,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.net.URLConnection;
 
-import java.io.IOException;
-
 import static org.assertj.core.api.Assertions.assertThat;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { TestApplication.class }, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CsrfPreventionIT {
@@ -65,18 +63,6 @@ public class CsrfPreventionIT {
     assertThat(xsrfTokenHeader).matches("[A-Z0-9]{32}");
 
     assertThat(xsrfCookieValue).contains(xsrfTokenHeader);
-  }
-
-  @Test
-  public void shouldRejectModifyingRequest() {
-    // given
-
-    // when
-    headerRule.performPostRequest("http://localhost:" + port + "/api/admin/auth/user/default/login/welcome");
-
-    // then
-    assertThat(headerRule.getResponseBody())
-      .contains("CSRFPreventionFilter: Token provided via HTTP Header is absent/empty.");
   }
 
 }

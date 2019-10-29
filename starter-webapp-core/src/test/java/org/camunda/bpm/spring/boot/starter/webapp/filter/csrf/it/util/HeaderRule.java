@@ -16,12 +16,9 @@
  */
 package org.camunda.bpm.spring.boot.starter.webapp.filter.csrf.it.util;
 
-import org.apache.commons.io.IOUtils;
 import org.junit.rules.ExternalResource;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
@@ -29,36 +26,13 @@ import java.util.Map;
 
 public class HeaderRule extends ExternalResource {
 
-  protected HttpURLConnection connection = null;
-
-  @Override
-  protected void after() {
-    connection = null;
-  }
+  protected URLConnection connection = null;
 
   public URLConnection performRequest(String url) {
-    return performRequest(url, null);
-  }
-
-  public URLConnection performPostRequest(String url) {
-    return performRequest(url, "POST");
-  }
-
-  public URLConnection performRequest(String url, String method) {
     try {
-      connection =
-        (HttpURLConnection) new URL(url)
-          .openConnection();
+      connection = new URL(url).openConnection();
     } catch (IOException e) {
       throw new RuntimeException(e);
-    }
-
-    if ("POST".equals(method)) {
-      try {
-        connection.setRequestMethod("POST");
-      } catch (ProtocolException e) {
-        throw new RuntimeException(e);
-      }
     }
 
     try {
@@ -95,16 +69,5 @@ public class HeaderRule extends ExternalResource {
     return "";
   }
 
-  public String getResponseBody() {
-    try {
-      return IOUtils.toString(connection.getInputStream());
-    } catch (IOException e) {
-      try {
-        return IOUtils.toString(connection.getErrorStream());
-      } catch (IOException ex) {
-        throw new RuntimeException(ex);
-      }
-    }
-  }
 
 }
