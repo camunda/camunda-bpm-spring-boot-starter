@@ -18,14 +18,11 @@ package org.camunda.bpm.spring.boot.starter.configuration.impl.custom;
 
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.Scanner;
 
 import org.camunda.bpm.engine.ProcessEngine;
-import org.camunda.bpm.engine.ProcessEngineException;
-import org.camunda.bpm.engine.impl.ManagementServiceImpl;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.camunda.bpm.engine.impl.interceptor.Command;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.AbstractCamundaConfiguration;
@@ -96,22 +93,10 @@ public class EnterLicenseKeyConfiguration extends AbstractCamundaConfiguration {
   }
 
   protected String getLicenseKey(ProcessEngine processEngine) {
-    try {
-      return (String) ManagementServiceImpl.class.getDeclaredMethod("getLicenseKey").invoke(processEngine.getManagementService());
-    } catch (NoSuchMethodException e) {
-      return processEngine.getManagementService().getProperties().get("camunda-license-key");
-    }catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException e) {
-      throw new ProcessEngineException(e);
-    }
+    return processEngine.getManagementService().getLicenseKey();
   }
 
   private void setLicenseKey(ProcessEngine processEngine, String license) {
-    try {
-      ManagementServiceImpl.class.getDeclaredMethod("setLicenseKey", String.class).invoke(processEngine.getManagementService(), license);
-    } catch (NoSuchMethodException e) {
-      processEngine.getManagementService().setProperty("camunda-license-key", license);
-    }catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException e) {
-      throw new ProcessEngineException(e);
-    }
+    processEngine.getManagementService().setLicenseKey(license);
   }
 }
