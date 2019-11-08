@@ -80,6 +80,23 @@
         <module>starter-webapp-ee</module>
       </modules>
     </profile>
+    <profile>
+      <id>qa-ee</id>
+      <modules>
+        <module>starter-qa</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>license-header-check</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.mycila</groupId>
+            <artifactId>license-maven-plugin</artifactId>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
 
   <build>
