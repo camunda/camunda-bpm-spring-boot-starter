@@ -29,26 +29,12 @@ import org.camunda.bpm.engine.impl.util.xml.Element;
 import org.camunda.bpm.spring.boot.starter.property.EventingProperty;
 import org.springframework.context.ApplicationEventPublisher;
 
-import java.util.Arrays;
-import java.util.List;
-
 import static org.camunda.bpm.engine.delegate.ExecutionListener.*;
-import static org.camunda.bpm.engine.delegate.TaskListener.*;
 
 /**
  * Parse listener adding provided execution and task listeners.
  */
 public class PublishDelegateParseListener extends AbstractBpmnParseListener {
-
-  private static final List<String> TASK_EVENTS = Arrays.asList(
-    EVENTNAME_COMPLETE,
-    EVENTNAME_ASSIGNMENT,
-    EVENTNAME_CREATE,
-    EVENTNAME_DELETE,
-    EVENTNAME_UPDATE);
-  private static final List<String> EXECUTION_EVENTS = Arrays.asList(
-    EVENTNAME_START,
-    EVENTNAME_END);
 
   private final TaskListener taskListener;
   private final ExecutionListener executionListener;
@@ -185,7 +171,7 @@ public class PublishDelegateParseListener extends AbstractBpmnParseListener {
   @Override
   public void parseProcess(Element processElement, ProcessDefinitionEntity processDefinition) {
     if (executionListener != null) {
-      for (String event : EXECUTION_EVENTS) {
+      for (String event : CamundaEventNames.EXECUTION_EVENTS) {
         processDefinition.addListener(event, executionListener);
       }
     }
@@ -238,7 +224,7 @@ public class PublishDelegateParseListener extends AbstractBpmnParseListener {
 
   private void addExecutionListener(final ActivityImpl activity) {
     if (executionListener != null) {
-      for (String event : EXECUTION_EVENTS) {
+      for (String event : CamundaEventNames.EXECUTION_EVENTS) {
         activity.addListener(event, executionListener);
       }
     }
@@ -252,7 +238,7 @@ public class PublishDelegateParseListener extends AbstractBpmnParseListener {
 
   private void addTaskListener(TaskDefinition taskDefinition) {
     if (taskListener != null) {
-      for (String event : TASK_EVENTS) {
+      for (String event : CamundaEventNames.TASK_EVENTS) {
         taskDefinition.addTaskListener(event, taskListener);
       }
     }
