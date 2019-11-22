@@ -68,6 +68,7 @@ public class EventPublisherPlugin extends SpringBootProcessEnginePlugin {
       }
       // register parse listener
       processEngineConfiguration.getCustomPostBPMNParseListeners().add(new PublishDelegateParseListener(this.publisher, property));
+      processEngineConfiguration.getCustomPostCmmnTransformListeners().add(new PublishDelegateCmmnTranformListener(this.publisher, property));
     }
 
     if (property.isHistory()) {
