@@ -60,6 +60,44 @@
         <os.type>mac64</os.type>
       </properties>
     </profile>
+
+    <profile>
+      <id>skip-selenium</id>
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-surefire-plugin</artifactId>
+              <executions>
+                <execution>
+                  <id>integration-tests</id>
+                  <phase>integration-test</phase>
+                  <goals>
+                    <goal>test</goal>
+                  </goals>
+                  <configuration>
+                    <includes>
+                      <include>**/*IT.*</include>
+                    </includes>
+
+                    <excludes>
+                      <!-- [Google Chrome is missing on Travis CI]
+                         See https://app.camunda.com/jira/browse/CAM-11161
+                      -->
+                      <exclude>**/LoginIT.*</exclude>
+                      <!-- [/Google Chrome is missing on Travis CI] -->
+
+                      <exclude>**/ErrorPageIT.*</exclude>
+                    </excludes>
+                  </configuration>
+                </execution>
+              </executions>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+      </build>
+    </profile>
   </profiles>
 
   <dependencies>
