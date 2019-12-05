@@ -11,4 +11,4 @@ install: true
 cache:
   directories:
     - $HOME/.m2
-script: ./mvnw clean install -Pskip-selenium -pl \!starter-qa/integration-test-webapp/runtimes/enterprise
+script: ./mvnw clean install -Pskip-selenium,skip-ee-qa
