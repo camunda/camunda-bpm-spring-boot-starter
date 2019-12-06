@@ -30,11 +30,7 @@
 
   <profiles>
     <profile>
-      <id>default</id>
-
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
+      <id>distro-ee</id>
 
       <modules>
         <module>community</module>
@@ -43,10 +39,20 @@
     </profile>
 
     <profile>
-      <id>skip-ee-qa</id>
+      <!-- used by travis ci; No enterprise repo access -->
+      <id>webapp-qa-ce</id>
 
       <modules>
         <module>community</module>
+      </modules>
+    </profile>
+
+    <profile>
+      <!-- convenience profile; Not used by any build jobs -->
+      <id>webapp-qa-ee</id>
+
+      <modules>
+        <module>enterprise</module>
       </modules>
     </profile>
 
