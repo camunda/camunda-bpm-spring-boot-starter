@@ -1,2 +1,2 @@
 @Library("camunda-ci") _
-buildMavenAndDeployToMavenCentral([jdk:8, mvn:3.5, agent: 'chrome_78', mvnProfiles:'distro-ee,webapp-qa', licenseCheck:true, publishZipArtifactToCamundaOrg:true])
+buildMavenAndDeployToMavenCentral([jdk:8, mvn:3.5, agent: 'chrome_78', mvnProfiles:'distro-ee', licenseCheck:true, publishZipArtifactToCamundaOrg:true])
