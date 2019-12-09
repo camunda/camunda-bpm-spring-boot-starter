@@ -11,4 +11,4 @@ install: true
 cache:
   directories:
     - $HOME/.m2
-script: ./mvnw clean install -Pskip-selenium,webapp-qa-ce
+script: ./mvnw clean install -B -Pskip-selenium,webapp-qa-ce -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
