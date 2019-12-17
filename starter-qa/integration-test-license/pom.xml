@@ -15,7 +15,7 @@
   <artifactId>qa-license</artifactId>
   
   <properties>
-    <camunda.version>7.9.18-SNAPSHOT</camunda.version>
+    <camunda.version>7.9.19-ee</camunda.version>
   </properties>
   
   <dependencies>
