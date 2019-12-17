@@ -8,14 +8,14 @@
   <parent>
     <groupId>org.camunda.bpm.springboot.project</groupId>
     <artifactId>camunda-bpm-spring-boot-starter-qa</artifactId>
-    <version>3.1.8-SNAPSHOT</version>
+    <version>3.1.9-SNAPSHOT</version>
     <relativePath>../</relativePath>
   </parent>
 
   <artifactId>qa-license</artifactId>
   
   <properties>
-    <camunda.version>7.10.12-SNAPSHOT</camunda.version>
+    <camunda.version>7.10.14-ee</camunda.version>
   </properties>
   
   <dependencies>
