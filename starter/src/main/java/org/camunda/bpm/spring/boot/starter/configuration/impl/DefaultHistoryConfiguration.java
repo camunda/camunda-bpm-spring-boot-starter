@@ -16,6 +16,8 @@
  */
 package org.camunda.bpm.spring.boot.starter.configuration.impl;
 
+import org.camunda.bpm.engine.impl.history.handler.CompositeDbHistoryEventHandler;
+import org.camunda.bpm.engine.impl.history.handler.CompositeHistoryEventHandler;
 import org.camunda.bpm.engine.impl.history.handler.HistoryEventHandler;
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.CamundaHistoryConfiguration;
@@ -32,9 +34,26 @@ public class DefaultHistoryConfiguration extends AbstractCamundaConfiguration im
     if (historyLevel != null) {
       configuration.setHistory(historyLevel);
     }
+
+    HistoryEventHandler existingHandler =  configuration.getHistoryEventHandler();
     if (historyEventHandler != null) {
       logger.debug("registered history event handler: {}", historyEventHandler.getClass());
-      configuration.setHistoryEventHandler(historyEventHandler);
+      // it is assumed that, when a historyEventHandler bean is provided,
+      // the intention is to override the default DbHistoryEventHandler
+      CompositeHistoryEventHandler compositeHandler = new CompositeHistoryEventHandler(historyEventHandler);
+      if (existingHandler != null) {
+        compositeHandler.add(existingHandler);
+      }
+      configuration.setHistoryEventHandler(compositeHandler);
+    } else {
+      logger.debug("registered history event handler: {}", CompositeDbHistoryEventHandler.class);
+      // if no historyEventHandler bean is provided, the default DbHistoryEventHandler will
+      // be included together with any HistoryEventHandlers added through other Spring Beans.
+      CompositeHistoryEventHandler compositeDbHandler = new CompositeDbHistoryEventHandler();
+      if (existingHandler != null) {
+        compositeDbHandler.add(existingHandler);
+      }
+      configuration.setHistoryEventHandler(compositeDbHandler);
     }
   }
 
