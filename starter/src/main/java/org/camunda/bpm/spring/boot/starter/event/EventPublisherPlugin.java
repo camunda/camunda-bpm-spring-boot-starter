@@ -17,9 +17,12 @@
 package org.camunda.bpm.spring.boot.starter.event;
 
 import org.camunda.bpm.engine.impl.history.handler.CompositeDbHistoryEventHandler;
+import org.camunda.bpm.engine.impl.history.handler.CompositeHistoryEventHandler;
+import org.camunda.bpm.engine.impl.history.handler.HistoryEventHandler;
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties;
 import org.camunda.bpm.spring.boot.starter.property.EventingProperty;
+import org.camunda.bpm.spring.boot.starter.util.CamundaSpringBootUtil;
 import org.camunda.bpm.spring.boot.starter.util.SpringBootProcessEnginePlugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,8 +75,14 @@ public class EventPublisherPlugin extends SpringBootProcessEnginePlugin {
 
     if (property.isHistory()) {
       logger.info("EVENTING-007: History events will be published as Spring events.");
-      // register composite DB event handler.
-      processEngineConfiguration.setHistoryEventHandler(new CompositeDbHistoryEventHandler(new PublishHistoryEventHandler(this.publisher)));
+      // register a composite DB event handler. Existing handlers will be included
+      // as part of the composite handler and executed recursively
+      CompositeHistoryEventHandler compositeHandler = new CompositeHistoryEventHandler(new PublishHistoryEventHandler(this.publisher));
+      HistoryEventHandler existingHandler =  processEngineConfiguration.getHistoryEventHandler();
+      if (existingHandler != null) {
+        compositeHandler.add(existingHandler);
+      }
+      processEngineConfiguration.setHistoryEventHandler(compositeHandler);
     } else {
       logger.info("EVENTING-008: History eventing is disabled via property.");
     }
