@@ -16,11 +16,14 @@
  */
 package org.camunda.bpm.spring.boot.starter.configuration.impl;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import org.camunda.bpm.engine.impl.history.HistoryLevel;
+import org.camunda.bpm.engine.impl.history.handler.CompositeDbHistoryEventHandler;
+import org.camunda.bpm.engine.impl.history.handler.CompositeHistoryEventHandler;
 import org.camunda.bpm.engine.impl.history.handler.HistoryEventHandler;
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties;
@@ -64,7 +67,7 @@ public class DefaultHistoryConfigurationTest {
   @Test
   public void noHistoryEventHandlerTest() {
     defaultHistoryConfiguration.preInit(springProcessEngineConfiguration);
-    verify(springProcessEngineConfiguration, times(0)).setHistoryEventHandler(Mockito.any(HistoryEventHandler.class));
+    verify(springProcessEngineConfiguration, times(1)).setHistoryEventHandler(Mockito.any(CompositeDbHistoryEventHandler.class));
   }
 
   @Test
@@ -72,6 +75,6 @@ public class DefaultHistoryConfigurationTest {
     HistoryEventHandler historyEventHandlerMock = mock(HistoryEventHandler.class);
     defaultHistoryConfiguration.historyEventHandler = historyEventHandlerMock;
     defaultHistoryConfiguration.preInit(springProcessEngineConfiguration);
-    verify(springProcessEngineConfiguration).setHistoryEventHandler(historyEventHandlerMock);
+    verify(springProcessEngineConfiguration).setHistoryEventHandler(any(CompositeHistoryEventHandler.class));
   }
 }
