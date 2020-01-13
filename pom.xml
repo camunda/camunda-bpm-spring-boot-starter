@@ -17,6 +17,7 @@
   <packaging>pom</packaging>
 
   <modules>
+    <module>starter-bom</module>
     <module>starter</module>
     <module>starter-rest</module>
     <module>starter-webapp-core</module>
