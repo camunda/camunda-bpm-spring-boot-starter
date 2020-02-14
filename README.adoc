@@ -1,3 +1,6 @@
+# Deprecated
+This repository moved here: https://github.com/camunda/camunda-bpm-platform/tree/master/spring-boot-starter
+
 # camunda-bpm-spring-boot-starter
 
 [cols="a,a,a,a"]
