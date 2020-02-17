@@ -4,10 +4,8 @@ This repository moved here: https://github.com/camunda/camunda-bpm-platform/tree
 
 # camunda-bpm-spring-boot-starter
 
-[cols="a,a,a,a"]
+[cols="a,a,a"]
 ,====
-// mvn travis
-image::https://travis-ci.org/camunda/camunda-bpm-spring-boot-starter.svg?branch=master[link="https://travis-ci.org/camunda/camunda-bpm-spring-boot-starter"]
 // license
 image::https://img.shields.io/badge/License-Apache%202.0-blue.svg[link="./LICENSE"]
 // mvn central
