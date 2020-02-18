@@ -23,6 +23,7 @@ import org.camunda.bpm.spring.boot.starter.property.FilterProperty;
 
 import javax.annotation.PostConstruct;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -40,9 +41,12 @@ public class CreateFilterConfiguration extends AbstractCamundaConfiguration {
   @Override
   public void postProcessEngineBuild(final ProcessEngine processEngine) {
     Objects.requireNonNull(filterName);
-    Filter filter = processEngine.getFilterService().createFilterQuery().filterName(filterName).singleResult();
-    if (filter == null) {
-      filter = processEngine.getFilterService().newTaskFilter(filterName);
+    long filterCount = processEngine.getFilterService().createFilterQuery().filterName(filterName).count();
+    if (filterCount > 0){
+      LOG.skipCreateInitialFilter(filterName);
+    }
+    else {
+      Filter filter = processEngine.getFilterService().newTaskFilter(filterName);
       processEngine.getFilterService().saveFilter(filter);
       LOG.createInitialFilter(filter);
     }
