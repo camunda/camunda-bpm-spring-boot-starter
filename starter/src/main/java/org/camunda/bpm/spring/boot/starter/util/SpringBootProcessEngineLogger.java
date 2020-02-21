@@ -43,6 +43,9 @@ public class SpringBootProcessEngineLogger extends BaseLogger {
     logInfo("015", "create initial filter: id={} name={}", filter.getId(), filter.getName());
   }
 
+  //todo: how to create id codes
+  public void skipCreateInitialFilter(String filterName) {logInfo("016","skip create initial filter, filter with this name already exists: {}", filterName); }
+
   public void skipAutoDeployment() {
     logInfo("020", "ProcessApplication enabled: autoDeployment via springConfiguration#deploymentResourcePattern is disabled");
   }
@@ -67,5 +70,4 @@ public class SpringBootProcessEngineLogger extends BaseLogger {
     return new SpringBootStarterException(exceptionMessage(
         "050", message));
   }
-
 }

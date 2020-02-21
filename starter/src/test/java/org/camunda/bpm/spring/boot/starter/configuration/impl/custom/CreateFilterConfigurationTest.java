@@ -100,7 +100,7 @@ public class CreateFilterConfigurationTest {
     when(engine.getFilterService()).thenReturn(filterService);
     when(filterService.createFilterQuery()).thenReturn(filterQuery);
     when(filterQuery.filterName(anyString())).thenReturn(filterQuery);
-    when(filterQuery.singleResult()).thenReturn(filter);
+    when(filterQuery.count()).thenReturn(1L);
 
     configuration.postProcessEngineBuild(engine);
 
