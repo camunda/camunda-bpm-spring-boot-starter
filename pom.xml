@@ -24,7 +24,7 @@
   </modules>
 
   <properties>
-    <spring-boot.version>2.1.10.RELEASE</spring-boot.version>
+    <spring-boot.version>2.1.13.RELEASE</spring-boot.version>
     <!-- for SNAPSHOT versions ${camunda.version} and ${camunda-webapp-ee.version} will be the same, for released versions, the latter must be with -ee suffix -->
     <camunda.version>7.10.0</camunda.version>
     <!-- <camunda-webapp-ee.version>${camunda.version}</camunda-webapp-ee.version> -->        <!-- for SNAPSHOT versions -->
