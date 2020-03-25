@@ -34,6 +34,8 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.util.List;
+
 public class CreateFilterConfigurationTest {
 
   private final CamundaBpmProperties camundaBpmProperties = new CamundaBpmProperties();
@@ -99,13 +101,13 @@ public class CreateFilterConfigurationTest {
     when(engine.getFilterService()).thenReturn(filterService);
     when(filterService.createFilterQuery()).thenReturn(filterQuery);
     when(filterQuery.filterName(anyString())).thenReturn(filterQuery);
-    when(filterQuery.singleResult()).thenReturn(filter);
+    when(filterQuery.count()).thenReturn(1L);
 
     configuration.postProcessEngineBuild(engine);
 
     verify(filterService).createFilterQuery();
     verify(filterQuery).filterName("All");
     verify(filterService, never()).newTaskFilter("All");
-
   }
+
 }
