@@ -33,7 +33,6 @@ import org.camunda.bpm.engine.test.ProcessEngineRule;
 import org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties;
 import org.camunda.bpm.spring.boot.starter.test.helper.StandaloneInMemoryTestConfiguration;
 import org.camunda.bpm.spring.boot.starter.util.SpringBootProcessEngineLogger;
-import org.camunda.commons.testing.ProcessEngineLoggingRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -61,10 +60,6 @@ public class CreateFilterConfigurationTest {
 
   @Rule
   public final ExpectedException thrown = ExpectedException.none();
-
-  @Rule
-  public ProcessEngineLoggingRule loggingRule = new ProcessEngineLoggingRule()
-      .watch(SpringBootProcessEngineLogger.PACKAGE);
 
   @Test
   public void createAdminUser() throws Exception {
@@ -114,16 +109,9 @@ public class CreateFilterConfigurationTest {
 
     configuration.postProcessEngineBuild(engine);
 
-    verifyLogs(Level.INFO, "the filter with this name already exists");
     verify(filterService).createFilterQuery();
     verify(filterQuery).filterName("All");
     verify(filterService, never()).newTaskFilter("All");
   }
 
-  protected void verifyLogs(Level logLevel, String message) {
-    List<ILoggingEvent> logs = loggingRule.getLog();
-    assertThat(logs).hasSize(1);
-    assertThat(logs.get(0).getLevel()).isEqualTo(logLevel);
-    assertThat(logs.get(0).getMessage()).containsIgnoringCase(message);
-  }
 }
