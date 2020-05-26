@@ -31,6 +31,11 @@
   <profiles>
     <profile>
       <id>distro-ee</id>
+      <activation>
+        <property>
+          <name>env.RELEASE_VERSION</name>
+        </property>
+      </activation>
 
       <modules>
         <module>community</module>
