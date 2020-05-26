@@ -89,6 +89,11 @@
     </profile>
     <profile>
       <id>qa-ee</id>
+      <activation>
+        <property>
+          <name>env.RELEASE_VERSION</name>
+        </property>
+      </activation>
       <modules>
         <module>starter-qa</module>
       </modules>
