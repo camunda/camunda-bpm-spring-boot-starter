@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.camunda.bpm.springboot.project</groupId>
     <artifactId>qa-plugins</artifactId>
-    <version>3.4.4-SNAPSHOT</version>
+    <version>3.4.4</version>
     <relativePath>../</relativePath>
   </parent>
 
