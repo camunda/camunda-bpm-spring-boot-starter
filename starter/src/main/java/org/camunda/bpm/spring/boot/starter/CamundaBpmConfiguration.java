@@ -54,6 +54,7 @@ import org.camunda.bpm.spring.boot.starter.configuration.impl.GenericPropertiesC
 import org.camunda.bpm.spring.boot.starter.event.EventPublisherPlugin;
 import org.camunda.bpm.spring.boot.starter.jdbc.HistoryLevelDeterminator;
 import org.camunda.bpm.spring.boot.starter.property.CamundaBpmProperties;
+import org.camunda.bpm.spring.boot.starter.telemetry.CamundaIntegrationDeterminator;
 import org.camunda.bpm.spring.boot.starter.util.CamundaBpmVersion;
 import org.camunda.bpm.spring.boot.starter.util.CamundaSpringBootUtil;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -189,6 +190,11 @@ public class CamundaBpmConfiguration {
   @Bean
   public EventPublisherPlugin eventPublisherPlugin(CamundaBpmProperties properties, ApplicationEventPublisher publisher) {
     return new EventPublisherPlugin(properties.getEventing(), publisher);
+  }
+
+  @Bean
+  public CamundaIntegrationDeterminator camundaIntegrationDeterminator() {
+    return new CamundaIntegrationDeterminator();
   }
 
 }
