@@ -1,6 +1,6 @@
 # How to contribute
 
-First of all, please follow the same [contributing guidelines](https://github.com/camunda/camunda-bpm-platform/blob/master/CONTRIBUTING.md) as for the Camunda BPM Platform.
+First of all, please follow the same [contributing guidelines](https://github.com/camunda/camunda-bpm-platform/blob/master/CONTRIBUTING.md) as for the Camunda Platform.
 
 We have an active discussion forum where we are happy to help/discuss all your "why is this not working", "what am I missing", "do you support this feature" questions. 
 Please only file issues here for concrete bug reports and feature requests. Thank you! 
