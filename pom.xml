@@ -200,12 +200,12 @@
   <distributionManagement>
     <repository>
       <id>camunda-nexus</id>
-      <name>camunda bpm</name>
+      <name>Camunda Platform</name>
       <url>https://app.camunda.com/nexus/content/repositories/camunda-bpm</url>
     </repository>
     <snapshotRepository>
       <id>camunda-nexus</id>
-      <name>camunda bpm snapshots</name>
+      <name>Camunda Platform snapshots</name>
       <url>https://app.camunda.com/nexus/content/repositories/camunda-bpm-snapshots</url>
       <uniqueVersion>true</uniqueVersion>
     </snapshotRepository>
