@@ -25,6 +25,7 @@ import java.util.Scanner;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.camunda.bpm.engine.impl.interceptor.Command;
+import org.camunda.bpm.engine.impl.interceptor.CommandContext;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.AbstractCamundaConfiguration;
 import org.camunda.bpm.spring.boot.starter.util.CamundaBpmVersion;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,10 +69,7 @@ public class EnterLicenseKeyConfiguration extends AbstractCamundaConfiguration {
     Optional<String> finalLicenseKey = licenseKey;
     ProcessEngineConfigurationImpl processEngineConfiguration =
       (ProcessEngineConfigurationImpl) processEngine.getProcessEngineConfiguration();
-    processEngineConfiguration.getCommandExecutorTxRequired().execute((Command<Void>) commandContext -> {
-      setLicenseKey(processEngine, finalLicenseKey.get());
-      return null;
-    });
+    processEngineConfiguration.getCommandExecutorTxRequired().execute(new StarterSetLicenseKey(processEngine, finalLicenseKey.get()));
 
     LOG.enterLicenseKey(fileUrl);
   }
@@ -99,4 +97,23 @@ public class EnterLicenseKeyConfiguration extends AbstractCamundaConfiguration {
   private void setLicenseKey(ProcessEngine processEngine, String license) {
     processEngine.getManagementService().setLicenseKey(license);
   }
+
+  protected class StarterSetLicenseKey implements Command {
+
+
+    protected ProcessEngine processEngine;
+    protected String finalLicenseKey;
+
+    public StarterSetLicenseKey(ProcessEngine processEngine, String finalLicenseKey) {
+      this.processEngine = processEngine;
+      this.finalLicenseKey = finalLicenseKey;
+    }
+
+    @Override
+    public Object execute(CommandContext commandContext) {
+      setLicenseKey(processEngine, finalLicenseKey);
+      return null;
+    }
+  }
+
 }
