@@ -1,0 +1,14 @@
+version: 2
+updates:
+- package-ecosystem: maven
+  directory: "/"
+  schedule:
+    interval: daily
+    timezone: Europe/Berlin
+  ignore:
+  - dependency-name: org.glassfish.jaxb:jaxb-runtime
+    versions:
+    - 3.0.0
+  - dependency-name: org.apache.commons:commons-lang3
+    versions:
+    - "3.11"
